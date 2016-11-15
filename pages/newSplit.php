@@ -123,7 +123,7 @@
 	}
 ?>
 <?php	//Select contacts
-	$req="SELECT * FROM contacts ORDER BY surname, lastname;";
+	$req="SELECT * FROM contacts where ref_customer >= 8000 ORDER BY surname, lastname;";
 	$req_contacts = $db->query($req);
 	while ($w_contacts = mysqli_fetch_assoc($req_contacts)) {
 		$tbl_contacts[]=$w_contacts;
