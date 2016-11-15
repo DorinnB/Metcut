@@ -1,0 +1,20 @@
+<?php
+header ("Content-type: image/png");
+$image = imagecreate(400,200);
+
+$orange = imagecolorallocate($image, 255, 128, 0);
+$bleu = imagecolorallocate($image, 0, 0, 255);
+$bleuclair = imagecolorallocate($image, 156, 227, 254);
+$noir = imagecolorallocate($image, 0, 0, 0);
+$blanc = imagecolorallocate($image, 255, 255, 255);
+
+imagestring($image, 4, 35, 15, "Salut les Zér0s !", $blanc);
+$x1=10;
+$y1=10;
+$x2=20;
+$y2=30;
+$trait=$noir;
+ImageLine ($image, $x1, $y1, $x2, $y2, $trait);
+
+imagepng($image);
+?>

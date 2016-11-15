@@ -1,0 +1,2 @@
+exportation de BDD :
+http://forum.webrankinfo.com/automatiser-une-sauvegarde-mysql-t69743.html

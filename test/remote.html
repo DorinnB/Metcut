@@ -1,0 +1,23 @@
+<html>
+<head>
+ <title>test du remote scripting</title>
+
+ <script language="javascript">
+ function TraiteReponse(valeur) {
+ nouvel_element = new Option(valeur,0);
+ document.fiche.titre.options[document.fiche.titre.length] = nouvel_element;
+ }
+ </script>
+
+ </head>
+ <body>
+ <form name="fiche" action="remote.php" method="post" target="RemoteScripting">
+ <select name="id" onChange="fiche.submit();">
+ <option value="0">liste 1</option>
+ <option value="1">liste 2</option>
+ </select><br><br>
+ <select name="titre">
+ </select>
+ </form>
+ </body>
+</html>
