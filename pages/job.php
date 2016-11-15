@@ -1243,11 +1243,11 @@
 																	$duree=(($liste_ep[$j]['cycle_estime']-$liste_ep[$j]['c_cycle_STL'])/$liste_ep[$j]['c_frequence_STL'] + $liste_ep[$j]['cycle_estime']/$liste_ep[$j]['c_frequence'])/3600/24;
 																}
 																else	{
-																	$duree=$liste_ep[$j]['cycle_estime']/$liste_ep[$j]['c_frequence']/3600/24;
+																	$duree=$liste_ep[$j]['cycle_estime']/$liste_ep[$j]['c_frequence']/3600/24+3/24;	//Ajout de 3h par essai pour montage/demontage. Améliorer en fonction temps essai/ouverture labo
 																}
 															}
 															$sum=$sum+$duree;
-														}											
+														}	
 														echo (int) $sum.' jours/machine';
 													?>
 												</div>
