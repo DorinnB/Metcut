@@ -29,7 +29,7 @@
 		var blocListe = document.getElementById('contact');
 		
 		$.ajax({
-			url : "contact.php?id_customer="+ idclient+"&id_contact"+idcontact,
+			url : "contact.php?ref_customer="+ idclient+"&id_contact"+idcontact,
 			type: "GET",
 			dataType: 'json', // JSON
 				success: function(data)
@@ -128,7 +128,7 @@
 	while ($w_contacts = mysqli_fetch_assoc($req_contacts)) {
 		$tbl_contacts[]=$w_contacts;
 
-		$n_clients[]=$w_contacts['id_customer'];
+		$n_clients[]=$w_contacts['ref_customer'];
 	}
 	//var_dump($tbl_contacts);
 	$n_clients=array_unique($n_clients);

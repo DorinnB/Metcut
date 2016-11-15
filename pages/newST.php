@@ -24,12 +24,12 @@
 	
 	
 <script type="text/javascript">	//Ajax pour gerer le la liste des contacts
-	function getDepartements(idclient, idcontact)
+	function getContactList(idclient, idcontact)
 	{
 		var blocListe = document.getElementById('contact');
 		
 		$.ajax({
-			url : "contact.php?id_customer="+ idclient+"&id_contact"+idcontact,
+			url : "contact.php?ref_customer="+ idclient+"&id_contact"+idcontact,
 			type: "GET",
 			dataType: 'json', // JSON
 				success: function(data)
@@ -40,7 +40,23 @@
 			});
 	}
 </script>
-
+<script type="text/javascript">	//Ajax pour gerer le la liste des contacts
+	function getContactListST(idclient, idcontact)
+	{
+		var blocListe = document.getElementById('contact');
+		
+		$.ajax({
+			url : "contact.php?ref_customer="+ idclient+"&id_contact"+idcontact,
+			type: "GET",
+			dataType: 'json', // JSON
+				success: function(data)
+				{
+					document.getElementById('contact').innerHTML = data['liste'];
+					document.getElementById('compagnie').innerHTML = data['compagnie'];					
+				}
+			});
+	}
+</script>
 
 
 
@@ -128,7 +144,7 @@
 	while ($w_contacts = mysqli_fetch_assoc($req_contacts)) {
 		$tbl_contacts[]=$w_contacts;
 
-		$n_clients[]=$w_contacts['id_customer'];
+		$n_clients[]=$w_contacts['ref_customer'];
 	}
 	//var_dump($tbl_contacts);
 	$n_clients=array_unique($n_clients);
@@ -362,7 +378,7 @@ input[type=submit], input[type=reset] {
 											<div class="valeur check" style="height:50%; padding-top: 5px;">											
 												<?php
 												$contactpresent=($tbl_tbljobs['id_contact']!="")?	', '.$tbl_tbljobs['id_contact']	:''	;
-												echo '<SELECT name="global-customer" style="width:30%;" onchange="getDepartements(this.value'.$contactpresent.');">
+												echo '<SELECT name="global-customer" style="width:30%;" onchange="getContactList(this.value'.$contactpresent.');">
 														<option>-</option>
 													';
 													foreach ($n_clients as $val)	{
@@ -376,7 +392,7 @@ input[type=submit], input[type=reset] {
 												<input type="hidden" name="<?php	echo $tbl_tbljobs['id_tbljob'];	?>-split" value="<?php	echo $splitencours;?>">
 											</div>
 											<div class="valeur nocheck" style="height:50%; padding-top: 5px;">
-												<?php	echo $tbl_tbljobs['customer'];?>-<?php	echo $tbl_tbljobs['job'];?>-<?php	echo $splitencours;?>
+												<?php	echo $tbl_tbljobs['customer'];?>-<?php	echo $tbl_tbljobs['job'];?>-<?php	echo 'ST'.-$splitencours;?>
 											</div>
 										</td>
 										<td style="width: 15%; padding: 0px 10px 0px 10px;" class="colored">	<!--Type Essai-->

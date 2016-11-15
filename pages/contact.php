@@ -3,9 +3,9 @@
 	Connectionsql();
 
 
-	if(isset($_GET['id_customer']))	{
+	if(isset($_GET['ref_customer']))	{
 
-		$req='SELECT * FROM contacts WHERE id_customer= '.$_GET['id_customer'].' AND contact_actif=1 ORDER BY surname';
+		$req='SELECT * FROM contacts WHERE ref_customer= '.$_GET['ref_customer'].' AND contact_actif=1 ORDER BY surname';
 
 		$req_contacts = $db->query($req);
 
