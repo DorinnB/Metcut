@@ -46,7 +46,7 @@
 
 <?php	//count split
 	$req="
-	SELECT max(split) 
+	SELECT min(split) 
 	FROM tbljobs 
 	LEFT JOIN info_jobs ON info_jobs.id_info_job=tbljobs.id_info_job
 	LEFT JOIN type_essais ON type_essais.id_type_essai=tbljobs.id_type_essai 
@@ -56,14 +56,14 @@
 	$req_split = $db->query($req);
 
 //	$splitencours=mysqli_num_rows($req_split)+1;
-	$splitencours=mysqli_fetch_array($req_split)[0]+1;
+	$splitencours=mysqli_fetch_array($req_split)[0]-1;
 
 ?>
 <?php	//SELECT tbljobs
-			$req="SELECT id_tbljob, id_statut, info_jobs.id_info_job, customer, job, split, contacts.id_contact, surname, lastname, compagnie, specification, type_essais.id_type_essai, type_essai, id_condition_temps, material, matieres.id_matiere, matiere, type_matiere, dessin, dessins.id_dessin, drawing, comments, nb_specimen, type_feuille, nb_type_feuille, tooling, MRI_req, MFG_qty, nb_MRI, sub_C, type_machine, nb_test_MRSAS, ordre, reception_eprouvette, retour_eprouvette, test_leadtime, test_start, test_end, test_leadtime, estimated_turn_over, estimated_testing, invoiced_turn_over, invoiced_testing, waveform, instructions_particulieres, tbljob_commentaire, po_number, devis, instruction 
+			$req="SELECT id_tbljob, id_statut, info_jobs.id_info_job, customer, job, split, contacts.id_contact, surname, lastname, compagnie, specification, type_soustraitances.id_type_soustraitance, type_soustraitance, id_condition_temps, material, matieres.id_matiere, matiere, type_matiere, dessin, dessins.id_dessin, drawing, comments, nb_specimen, type_feuille, nb_type_feuille, tooling, MRI_req, MFG_qty, nb_MRI, sub_C, type_machine, nb_test_MRSAS, ordre, reception_eprouvette, retour_eprouvette, test_leadtime, test_start, test_end, test_leadtime, estimated_turn_over, estimated_testing, invoiced_turn_over, invoiced_testing, waveform, instructions_particulieres, tbljob_commentaire, po_number, devis, instruction 
 			FROM tbljobs 
 			LEFT JOIN dessins ON dessins.id_dessin=tbljobs.id_dessin
-			LEFT JOIN type_soustraitances ON type_soustraitances.id_type_essai=tbljobs.id_type_essai
+			LEFT JOIN type_soustraitances ON type_soustraitances.id_type_soustraitance=tbljobs.id_type_essai
 			LEFT JOIN matieres ON matieres.id_matiere=tbljobs.id_matiere
 			LEFT JOIN info_jobs ON info_jobs.id_info_job=tbljobs.id_info_job			
 			LEFT JOIN contacts ON contacts.id_contact=tbljobs.id_contact
@@ -116,7 +116,7 @@
 	}
 ?>
 <?php	//Select type_soustraitances
-	$req="SELECT * FROM type_soustraitances ORDER BY id_type_essai;";
+	$req="SELECT * FROM type_soustraitances ORDER BY id_type_soustraitance;";
 	$req_type_soustraitances = $db->query($req);
 	while ($w_type_soustraitances = mysqli_fetch_array($req_type_soustraitances)) {
 		$tbl_type_soustraitances[]=$w_type_soustraitances;
@@ -383,11 +383,11 @@ input[type=submit], input[type=reset] {
 											<div class="titre">Type Essai</div>
 											<div class="valeur" style="height:50%; padding-top: 5px;">
 												<?php		
-													$titreLigne='type_essai';	echo '<SELECT name="'.$tbl_tbljobs['id_tbljob'].'-id_'.$titreLigne.'" class="cache">
+													$titreLigne='type_soustraitance';	echo '<SELECT name="'.$tbl_tbljobs['id_tbljob'].'-id_'.$titreLigne.'" class="cache">
 													';
-													for($k=0;$k < count($tbl_type_essais);$k++)	{
-														$selected=($tbl_type_essais[$k]['id_'.$titreLigne]==$tbl_tbljobs['id_'.$titreLigne])?"selected":"";
-														echo '<option value="'.$tbl_type_essais[$k]['id_'.$titreLigne].'" '.$selected.'>'.$tbl_type_essais[$k][$titreLigne].'</option>
+													for($k=0;$k < count($tbl_type_soustraitances);$k++)	{
+														$selected=($tbl_type_soustraitances[$k]['id_'.$titreLigne]==$tbl_tbljobs['id_'.$titreLigne])?"selected":"";
+														echo '<option value="'.$tbl_type_soustraitances[$k]['id_'.$titreLigne].'" '.$selected.'>'.$tbl_type_soustraitances[$k][$titreLigne].'</option>
 														';	
 													}
 													echo '</select>
