@@ -399,7 +399,7 @@ input[type=submit], input[type=reset] {
 											<div class="titre">Type Essai</div>
 											<div class="valeur" style="height:50%; padding-top: 5px;">
 												<?php		
-													$titreLigne='type_soustraitance';	echo '<SELECT name="'.$tbl_tbljobs['id_tbljob'].'-id_'.$titreLigne.'" class="cache">
+													$titreLigne='type_soustraitance';	echo '<SELECT name="'.$tbl_tbljobs['id_tbljob'].'-id_type_essai" class="cache">
 													';
 													for($k=0;$k < count($tbl_type_soustraitances);$k++)	{
 														$selected=($tbl_type_soustraitances[$k]['id_'.$titreLigne]==$tbl_tbljobs['id_'.$titreLigne])?"selected":"";

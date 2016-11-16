@@ -3,7 +3,7 @@
 	Connectionsql();
 ?>
 <?php
-//	var_dump($_POST);
+	var_dump($_POST);
 
 
 foreach ($_POST as $key=>$value){
@@ -26,22 +26,8 @@ var_dump($info);
 var_dump($job);
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
-if (isset($_POST['info-checked']))	{
+if (isset($_POST['info-checked']))	{	//type d'insertion (ajout, update, check)
 		
 	$req='SELECT * FROM techniciens where id_technicien="'.$_POST['info-technicien'].'" AND technicien_actif = 1 ORDER BY technicien;';
 	$req_techniciens = $db->query($req);

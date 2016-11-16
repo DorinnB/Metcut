@@ -11,18 +11,23 @@
 	<link rel="shortcut icon" href="../css/favicon.ico" />
 	<link rel="stylesheet" href="../css/style.css" type="text/css" />
 
+
 	<!--Calendrier	http://api.jqueryui.com/datepicker/	-->
 
 		<link rel="stylesheet" href="../css/jquery-ui.css" type="text/css" media="all" />
 		<link rel="stylesheet" href="../css/ui.theme.css" type="text/css" media="all" />
 		<script src="../jquery/jquery.min.js" type="text/javascript"></script>
 		<script src="../jquery/jquery-ui.min.js" type="text/javascript"></script>
-		<script>    $(function() {	        $( ".datepicker" ).datepicker();	    });	    </script>
-	
-	
-	
-	
-	
+
+		
+		
+<script>
+	$(function() {
+		$( ".datepicker" ).datepicker({
+			dateFormat: "yy-mm-dd"
+		});	    
+	});	    
+</script>
 <script type="text/javascript">	//Ajax pour gerer le la liste des contacts
 	function getDepartements(idclient, idcontact)
 	{
@@ -66,7 +71,7 @@
 			LEFT JOIN type_essais ON type_essais.id_type_essai=tbljobs.id_type_essai
 			LEFT JOIN matieres ON matieres.id_matiere=tbljobs.id_matiere
 			LEFT JOIN info_jobs ON info_jobs.id_info_job=tbljobs.id_info_job			
-			LEFT JOIN contacts ON contacts.id_contact=tbljobs.id_contact
+			LEFT JOIN contacts ON contacts.id_contact=info_jobs.id_contact
 			WHERE id_tbljob=".$_GET['id_tbljob'].";";
 //echo $req;
 		$req_tbljobs = $db->query($req);
@@ -92,15 +97,10 @@
 		
 			$checked=3;
 		}
+		
+		//var_dump($tbl_tbljobs);
 ?>
-<?php	//SELECT consigne_temperature
-	$req='SELECT DISTINCT round(c_temperature,0) as temperature FROM `eprouvettes` where id_job='.$tbl_tbljobs['id_tbljob'];
-	$req_constemp = $db->query($req) or die (mysql_error());
-	$cons_temp="";
-	while ($tbl_constemp = mysqli_fetch_array($req_constemp)) {
-		$cons_temp.=$tbl_constemp['temperature']."&nbsp;&nbsp;&nbsp;";
-	}
-?>	
+
 <?php	//Select dessins
 	$req="SELECT * FROM dessins ORDER BY id_dessin;";
 	$req_dessins = $db->query($req);
@@ -123,7 +123,7 @@
 	}
 ?>
 <?php	//Select contacts
-	$req="SELECT * FROM contacts where ref_customer >= 8000 ORDER BY surname, lastname;";
+	$req="SELECT * FROM contacts where ref_customer >= 8000 ORDER BY ref_customer, surname, lastname;";
 	$req_contacts = $db->query($req);
 	while ($w_contacts = mysqli_fetch_assoc($req_contacts)) {
 		$tbl_contacts[]=$w_contacts;
@@ -362,7 +362,7 @@ input[type=submit], input[type=reset] {
 											<div class="valeur check" style="height:50%; padding-top: 5px;">											
 												<?php
 												$contactpresent=($tbl_tbljobs['id_contact']!="")?	', '.$tbl_tbljobs['id_contact']	:''	;
-												echo '<SELECT name="global-customer" style="width:30%;" onchange="getDepartements(this.value'.$contactpresent.');">
+												echo '<SELECT name="global-customer" style="width:40%;" onchange="getDepartements(this.value'.$contactpresent.');">
 														<option>-</option>
 													';
 													foreach ($n_clients as $val)	{
@@ -401,7 +401,7 @@ input[type=submit], input[type=reset] {
 										<td style="width:15%; padding: 0px 10px 0px 10px;" class="colored">	<!--leadtime-->
 											<div class="titre">Lead Time (YYYY-MM-DD)</div>
 											<div class="valeur" style="height:50%; padding-top: 5px;">
-												<?php	$titreLigne="test_leadtime"; echo '<input form="FormcontenuaOnglet'.$splitencours.'-0" name="'.$tbl_tbljobs['id_tbljob']."-".$titreLigne.'" class="datepicker cache" type="text" value="'.$tbl_tbljobs[$titreLigne].'"/>';	?>
+												<?php	$titreLigne="test_leadtime"; echo '<input form="ajoutsplit" name="'.$tbl_tbljobs['id_tbljob']."-".$titreLigne.'" class="datepicker cache" type="text" value="'.$tbl_tbljobs[$titreLigne].'"/>';	?>
 												<a class="pascache"><?php	echo $tbl_tbljobs[$titreLigne];	?></a>
 											</div>
 										</td>
@@ -445,16 +445,24 @@ input[type=submit], input[type=reset] {
 												</div>											
 											</td>
 											<td style="width:8%">&nbsp;</td>
-											<td style="width: 23%; padding: 0px 0px 0px 10px;" class="colored">	<!--specification-->
-												<div class="titre">Specification</div>
-												<div class="valeur" style="height:50%; padding-top: 5px; font : 12px Batang, arial, serif;">
-													<INPUT name="<?php	echo $tbl_tbljobs['id_tbljob'];	?>-specification" value="<?php	echo $tbl_tbljobs['specification'];	?>" class="cache" style="font : 12px Batang, arial, serif;">
-													<a class="pascache"><?php	echo $tbl_tbljobs['specification'];	?></a>
-												</div>
+											<td style="width: 23%; padding: 0px 0px 0px 10px;" class="colored">	<!--forme signal-->
+												<div class="titre">Forme du signal</div>
+												<div class="valeur" style="height:50%; padding-top: 5px;">
+												<?php		
+													$titreLigne='waveform';	echo '<SELECT name="'.$tbl_tbljobs['id_tbljob']."-".$titreLigne.'" class="cache">
+													';
+													$lst_waveform= array('Sinus','Triangle','Rampe');
+													for($k=0;$k < count($lst_waveform);$k++)	{
+														$selected=($lst_waveform[$k]==$tbl_tbljobs[$titreLigne])?"selected":"";
+														echo '<option value="'.$lst_waveform[$k].'" '.$selected.'>'.$lst_waveform[$k].'</option>
+														';	
+													}
+													echo '</select>
+													<a class="pascache">'.$tbl_tbljobs[$titreLigne].'</a>';
+												?>
+												</div>	
 											</td>
-											<td style="width: 23%; padding: 0px 0px 0px 10px;" class="colored">	<!--temperature-->
-												<div class="titre">Temperature</div>
-												<div class="valeur" style="height:50%; padding-top: 5px;"><?php	echo $cons_temp;	?></div>
+											<td style="width: 23%; padding: 0px 0px 0px 10px;">
 											</td>
 										</tr>
 										<tr>
@@ -465,7 +473,7 @@ input[type=submit], input[type=reset] {
 													<a class="nocheck"><?php	echo $tbl_tbljobs['po_number'];	?></a>
 												</div>												
 											</td>
-											<td colspan="1" rowspan="2" style="text-align:center; vertical-align:middle">
+											<td colspan="1" rowspan="2" style="text-align:center; vertical-align:middle">	<!--OneNote-->
 												<a target="_blank" href="https://metcut.sharepoint.com/MRSAS - Metcut France/SiteAssets/Notebook-JOBS En Cours"	>
 													<img alt="" src="../img/onenote-icone.png" style="height:80px; width:80px" />
 												</a></td>
@@ -486,22 +494,12 @@ input[type=submit], input[type=reset] {
 													?>	
 													</div>
 											</td>
-											<td style="width: 23%; padding: 0px 0px 0px 10px;" class="colored">	<!--forme signal-->
-												<div class="titre">Forme du signal</div>
-												<div class="valeur" style="height:50%; padding-top: 5px;">
-												<?php		
-													$titreLigne='waveform';	echo '<SELECT name="'.$tbl_tbljobs['id_tbljob']."-".$titreLigne.'" class="cache">
-													';
-													$lst_waveform= array('Sinus','Triangle','Rampe');
-													for($k=0;$k < count($lst_waveform);$k++)	{
-														$selected=($lst_waveform[$k]==$tbl_tbljobs[$titreLigne])?"selected":"";
-														echo '<option value="'.$lst_waveform[$k].'" '.$selected.'>'.$lst_waveform[$k].'</option>
-														';	
-													}
-													echo '</select>
-													<a class="pascache">'.$tbl_tbljobs[$titreLigne].'</a>';
-												?>
-												</div>	
+											<td style="width: 23%; padding: 0px 0px 0px 10px;" class="colored">	<!--specification-->
+												<div class="titre">Specification</div>
+												<div class="valeur" style="height:50%; padding-top: 5px; font : 12px Batang, arial, serif;">
+													<INPUT name="<?php	echo $tbl_tbljobs['id_tbljob'];	?>-specification" value="<?php	echo $tbl_tbljobs['specification'];	?>" class="cache" style="font : 12px Batang, arial, serif;">
+													<a class="pascache"><?php	echo $tbl_tbljobs['specification'];	?></a>
+												</div>
 											</td>
 										</tr>
 										<tr>
@@ -530,13 +528,11 @@ input[type=submit], input[type=reset] {
 													?>	
 													</div>
 											</td>
-											<td style="width: 23%; padding: 0px 0px 0px 10px;" class="colored">	<!--taille machine-->
-												<div class="titre">Taille machine (ToDo)</div>
-												<div class="valeur" style="height:50%; padding-top: 5px;text-align: center;">
-													<?php	//check des considtions d'essais pour determiner quels tranches de valeur d'effort contient le job. Coloration de chaque element si un essai le contient	?>
-													<div style="float:left; border:1px solid #666; border-radius:5px; padding:0 10 0 10px; margin:0 10 0 10px;">10</div>
-													<div style="float:left; border:1px solid #666; border-radius:5px; padding:0 10 0 10px; margin:0 10 0 10px;">100</div>
-													<div style="float:left; border:1px solid #666; border-radius:5px; padding:0 10 0 10px; margin:0 10 0 10px;">250</div> 
+											<td style="width:23%; padding: 0px 10px 0px 10px;" class="colored">	<!--Instructions Particulières-->
+												<div class="titre">Instructions Particulières</div>
+												<div class="valeur" style="height:50%; padding-top: 5px;">
+													<INPUT class="cache" TYPE="file" style="font : 8px Batang, arial, serif;" name="<?php	echo $tbl_tbljobs['id_tbljob'];	?>-instructions_particulieres">
+													<a class="pascache" href="javascript:popup('readPDF.php?pathfile=<?php	echo 'C:/Quality/IP/'.$tbl_tbljobs['instructions_particulieres'];	?>',595,842,'IP')" ><?php	echo $tbl_tbljobs['instructions_particulieres'];	?></a>
 												</div>
 											</td>
 										</tr>
@@ -550,12 +546,7 @@ input[type=submit], input[type=reset] {
 											</td>
 											
 											<td>&nbsp;</td>
-											<td style="width:23%; padding: 0px 10px 0px 10px;" class="colored">	<!--Instructions Particulières-->
-												<div class="titre">Instructions Particulières</div>
-												<div class="valeur" style="height:50%; padding-top: 5px;">
-													<INPUT class="cache" TYPE="file" style="font : 8px Batang, arial, serif;" name="<?php	echo $tbl_tbljobs['id_tbljob'];	?>-instructions_particulieres">
-													<a class="pascache" href="javascript:popup('readPDF.php?pathfile=<?php	echo 'C:/Quality/IP/'.$tbl_tbljobs['instructions_particulieres'];	?>',595,842,'IP')" ><?php	echo $tbl_tbljobs['instructions_particulieres'];	?></a>
-												</div>
+											<td style="width:23%; padding: 0px 10px 0px 10px;">	<!--Instructions Particulières-->
 											</td>
 											<td style="width: 23%">&nbsp;</td>
 										</tr>
