@@ -25,7 +25,7 @@ var_dump($global);
 var_dump($info);
 var_dump($job);
 	
-	
+	//exit();
 
 if (isset($_POST['info-checked']))	{	//type d'insertion (ajout, update, check)
 		

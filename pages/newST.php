@@ -41,22 +41,38 @@
 	}
 </script>
 <script type="text/javascript">	//Ajax pour gerer le la liste des contacts
-	function getContactListST(idclient, idcontact)
+	function getCompagnieType(type)
 	{
 		var blocListe = document.getElementById('contact');
 		
 		$.ajax({
-			url : "contact.php?ref_customer="+ idclient+"&id_contact"+idcontact,
+			url : "compagnieST.php?type_soustraitance="+ type,
 			type: "GET",
 			dataType: 'json', // JSON
 				success: function(data)
 				{
-					document.getElementById('contact').innerHTML = data['liste'];
-					document.getElementById('compagnie').innerHTML = data['compagnie'];					
+					document.getElementById('compagnieST').innerHTML = data['liste'];					
 				}
 			});
 	}
 </script>
+<script type="text/javascript">	//Ajax pour gerer le la liste des contacts ST
+	function getContactListST (idclient)
+	{
+		var blocListe = document.getElementById('contact');
+		
+		$.ajax({
+			url : "contactST.php?ref_customer="+ idclient,
+			type: "GET",
+			dataType: 'json', // JSON
+				success: function(data)
+				{
+					document.getElementById('contactST').innerHTML = data['liste'];					
+				}
+			});
+	}
+</script>
+
 
 
 
@@ -76,19 +92,20 @@
 
 ?>
 <?php	//SELECT tbljobs
-			$req="SELECT id_tbljob, id_statut, info_jobs.id_info_job, customer, job, split, contacts.id_contact, surname, lastname, compagnie, specification, type_soustraitances.id_type_soustraitance, type_soustraitance, id_condition_temps, material, matieres.id_matiere, matiere, type_matiere, dessin, dessins.id_dessin, drawing, comments, nb_specimen, type_feuille, nb_type_feuille, tooling, MRI_req, MFG_qty, nb_MRI, sub_C, type_machine, nb_test_MRSAS, ordre, reception_eprouvette, retour_eprouvette, test_leadtime, test_start, test_end, test_leadtime, estimated_turn_over, estimated_testing, invoiced_turn_over, invoiced_testing, waveform, instructions_particulieres, tbljob_commentaire, po_number, devis, instruction 
+			$req="SELECT id_tbljob, id_statut, info_jobs.id_info_job, customer, job, split, contacts.id_contact, contacts.surname, contacts.lastname, contacts.compagnie, id_contactST, contactsST.surname surnameST, contactsST.lastname lastnameST, contactsST.compagnie compagnieST, specification, type_soustraitances.id_type_soustraitance, type_soustraitance, id_condition_temps, material, matieres.id_matiere, matiere, type_matiere, dessin, dessins.id_dessin, drawing, comments, nb_specimen, type_feuille, nb_type_feuille, tooling, MRI_req, MFG_qty, nb_MRI, sub_C, type_machine, nb_test_MRSAS, ordre, reception_eprouvette, retour_eprouvette, test_leadtime, test_start, test_end, test_leadtime, estimated_turn_over, estimated_testing, invoiced_turn_over, invoiced_testing, waveform, instructions_particulieres, tbljob_commentaire, po_number, devis, instruction 
 			FROM tbljobs 
 			LEFT JOIN dessins ON dessins.id_dessin=tbljobs.id_dessin
 			LEFT JOIN type_soustraitances ON type_soustraitances.id_type_soustraitance=tbljobs.id_type_essai
 			LEFT JOIN matieres ON matieres.id_matiere=tbljobs.id_matiere
 			LEFT JOIN info_jobs ON info_jobs.id_info_job=tbljobs.id_info_job			
-			LEFT JOIN contacts ON contacts.id_contact=tbljobs.id_contact
+			LEFT JOIN contacts ON contacts.id_contact=info_jobs.id_contact
+			LEFT JOIN contacts contactsST ON contactsST.id_contact=tbljobs.id_contactST
 			WHERE id_tbljob=".$_GET['id_tbljob'].";";
 //echo $req;
 		$req_tbljobs = $db->query($req);
 		$tbl_tbljobs = mysqli_fetch_array($req_tbljobs);
 
-		
+		echo $tbl_tbljobs['id_contactST'];
 
 		if($_GET['id_tbljob']==0)	{								//creation, avec modif
 				//on supprimer "job" du 8000-00000 pour avoir un champ vide
@@ -139,7 +156,7 @@
 	}
 ?>
 <?php	//Select contacts
-	$req="SELECT * FROM contacts where ref_customer >= 8000  ORDER BY surname, lastname;";
+	$req="SELECT * FROM contacts where ref_customer >= 8000 ORDER BY ref_customer, surname, lastname;";
 	$req_contacts = $db->query($req);
 	while ($w_contacts = mysqli_fetch_assoc($req_contacts)) {
 		$tbl_contacts[]=$w_contacts;
@@ -148,6 +165,17 @@
 	}
 	//var_dump($tbl_contacts);
 	$n_clients=array_unique($n_clients);
+?>
+<?php	//Select contacts soustraitant
+	$req="SELECT * FROM contacts where ref_customer < 8000 ORDER BY ref_customer, surname, lastname;";
+	$req_contactsST = $db->query($req);
+	while ($w_contactsST = mysqli_fetch_assoc($req_contactsST)) {
+		$tbl_contactsST[]=$w_contactsST;
+
+		$n_clientsST[$w_contactsST['id_contact']]=$w_contactsST['ref_customer'];
+	}
+	//var_dump($tbl_contacts);
+	$n_clientsST=array_unique($n_clientsST);
 ?>
 <?php	//Select techniciens
 	$req="SELECT * FROM techniciens WHERE technicien_actif=1 ORDER BY technicien;";
@@ -399,7 +427,7 @@ input[type=submit], input[type=reset] {
 											<div class="titre">Type Essai</div>
 											<div class="valeur" style="height:50%; padding-top: 5px;">
 												<?php		
-													$titreLigne='type_soustraitance';	echo '<SELECT name="'.$tbl_tbljobs['id_tbljob'].'-id_type_essai" class="cache">
+													$titreLigne='type_soustraitance';	echo '<SELECT name="'.$tbl_tbljobs['id_tbljob'].'-id_type_essai" class="cache" onchange="getCompagnieType(this.value'.$contactpresent.');">
 													';
 													for($k=0;$k < count($tbl_type_soustraitances);$k++)	{
 														$selected=($tbl_type_soustraitances[$k]['id_'.$titreLigne]==$tbl_tbljobs['id_'.$titreLigne])?"selected":"";
@@ -464,12 +492,33 @@ input[type=submit], input[type=reset] {
 											<td style="width: 23%; padding: 0px 0px 0px 10px;" class="colored">	<!--compagnie-->
 												<div class="titre">Compagnie</div>
 												<div class="valeur" style="height:50%; padding-top: 5px; font : 12px Batang, arial, serif;">
-													compagnie
+													<?php
+														$contactpresent=($tbl_tbljobs['id_contactST']!="")?	', '.$tbl_tbljobs['id_contactST']	:''	;
+														echo '<SELECT id="compagnieST" form="aaa" name="'.$tbl_tbljobs['id_tbljob'].'-customer" onchange="getContactListST(this.value'.$contactpresent.');">
+																<option>-</option>
+															';	
+														foreach ($n_clientsST as $key => $val)	{
+															if ($key==$tbl_tbljobs['id_contactST'])	{
+																echo '<option value="'.$val.'" selected>'.$val.'</option>';
+															}
+														}
+														echo '</select>
+														';
+													?>													
 												</div>
 											</td>
 											<td style="width: 23%; padding: 0px 0px 0px 10px;" class="colored">	<!--contact-->
 												<div class="titre">contact</div>
-												<div class="valeur" style="height:50%; padding-top: 5px;">contact</div>
+												<div class="valeur" style="height:50%; padding-top: 5px;">
+													<?php		
+														$titreLigne='contactST';	echo '<SELECT id="contactST" name="'.$tbl_tbljobs['id_tbljob'].'-id_'.$titreLigne.'">
+														';
+														if ($tbl_tbljobs['id_contactST']!="")
+															echo '<option value="'.$tbl_tbljobs['id_contactST'].'">'.$tbl_tbljobs['lastnameST']." ".$tbl_tbljobs['surnameST'].'</option>';
+														echo '</SELECT>
+														';
+													?>												
+												</div>
 											</td>
 										</tr>
 										<tr>
