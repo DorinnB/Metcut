@@ -175,6 +175,15 @@
 				cachetruc();
 		}
 	</script>
+	<script type="text/javascript">	//newTest - affichage modal pour new test
+		function newTest(id,nomep){
+				modalNewTest.style.display = "block";
+				document.getElementById('eprouvettenewtest').innerHTML=nomep;
+				document.getElementById('id_eprouvettenewTest').value=id;
+
+				
+		}
+	</script>
 	<script type="text/javascript">	//showLogged
 	var elemsLogged = document.getElementsByClassName('logged');
 	function showLogged(yn){
@@ -213,6 +222,7 @@
 						iduser = data['id_technicien'];				;
 						//on affiche en haut le nom de l'opérateur
 					document.getElementById('affichage').innerHTML = user;
+					document.getElementById('usernewTest').innerHTML = user;
 					
 						//on change la valeur des input hidden de toute la page avec id_technicien = user
 					var classuser = document.getElementsByClassName('user');
@@ -744,6 +754,21 @@
 	//echo $req;
 	$query_nbep = $db->query($req);
 	$nb=mysqli_fetch_assoc($query_nbep)
+?>
+<?php	//Select postes
+	$req='SELECT t1.id_poste, t1.id_machine, machines.machine
+		FROM postes t1
+		LEFT JOIN machines ON machines.id_machine = t1.id_machine
+		WHERE t1.id_poste = ( 
+		SELECT MAX( t2.id_poste ) 
+		FROM postes t2
+		WHERE t2.id_machine = t1.id_machine ) 
+		AND machines.machine_actif =1
+		ORDER BY machines.id_machine;';
+	$req_postes = $db->query($req);
+	while ($w_postes = mysqli_fetch_array($req_postes)) {
+		$tbl_postes[]=$w_postes;
+	}
 ?>
 			
 <?php	//ConvTitre
@@ -1488,7 +1513,7 @@ $list_ep=array();
 													
 																echo '<td bgcolor="'.est_assigne($liste_ep[$k]['assigne']).'">
 																<INPUT id="'.$splitencours.'-1_'.$k.'-nom_eprouvette" name="'.$k.'-nom_eprouvette" value="'.$liste_ep[$k]['nom_eprouvette'].'" class="cache">
-																<a class="pascache" href="file:///[NE MARCHE PAS]I:/Trans/'.$liste_ep[$k]['id_eprouvette'].'">'.$liste_ep[$k]['nom_eprouvette'].'</a>
+																<a class="pascache" href="file:///[NE MARCHE PAS]I:/Trans/'.$liste_ep[$k]['id_eprouvette'].'" onclick="newTest('.$liste_ep[$k]['id_eprouvette'].',\''.$liste_ep[$k]['nom_eprouvette'].'\');">'.$liste_ep[$k]['nom_eprouvette'].'</a>
 																<input type="hidden" name="'.$k.'-id_eprouvette" value="'.$liste_ep[$k]['id_eprouvette'].'">
 																</td>';
 															}
@@ -2171,7 +2196,7 @@ $list_ep=array();
 				</td>
 			</tr>
 			<tr>
-				<span class="close">CLOSE</span>
+				<span onclick = "modal.style.display = 'none'">CLOSE</span>
 			</tr>
 		</table>
 	</form>
@@ -2209,8 +2234,6 @@ var modal = document.getElementById('myModal');
 var btn = document.getElementsByClassName("myBtn");
 var valid = document.getElementsByClassName("valid");
 
-// Get the <span> element that closes the modal
-var span = document.getElementsByClassName("close")[0];
 
 // When the user clicks the button, open the modal 
 for(var i = 0; i < btn.length; i++) {
@@ -2219,6 +2242,7 @@ for(var i = 0; i < btn.length; i++) {
 	}
 }
 
+
 for(var i = 0; i < valid.length; i++) {
 	valid[i].onclick= function() {
 		modal.style.display = "none";
@@ -2226,9 +2250,121 @@ for(var i = 0; i < valid.length; i++) {
 		password=document.getElementById("password").value;
 	}
 }
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+	   if (event.target == modalNewTest) {
+        modalNewTest.style.display = "none";
+    }
+}
 </script>
 </div>
 
+
+<!-- The ModalNewTest -->
+<div id="myModalNewTest" class="modalNewTest">	<!--	newTest	-->
+
+  <!-- ModalNewTest content -->
+  <div class="modalNewTest-content" style="margin:300px; height:200px">
+	  <form>	
+		<table class="datajob">
+			<tr>
+				<td class="colored">
+					<div class="titre">Ep</div>
+					<div id="eprouvettenewtest" class="valeur" style="height:50%; padding-top: 5px;">
+						nom de l'ep
+					</div>
+					<input type="hidden" id="id_eprouvettenewTest" name="id_eprouvette" value="">
+				</td>
+				<td class="colored">
+					<div class="titre">Operateur</div>
+					<div id ="usernewTest" class="valeur" style="height:50%; padding-top: 5px;">
+						Merci de vous connecter avant
+					</div>
+					<input type="hidden" class="user" name="operateur" value="">
+				</td>
+			</tr>
+			<tr>
+				<td class="colored">
+					<div class="titre">Poste</div>
+					<div class="valeur" style="height:50%; padding-top: 5px;">
+						<?php		
+							$titreLigne='poste';	echo '<SELECT id="poste" name="'.$titreLigne.'"><option value="0">-</option>
+							';
+							for($k=0;$k < count($tbl_postes);$k++)	{
+								echo '<option value="'.$tbl_postes[$k]['id_'.$titreLigne].'">'.$tbl_postes[$k]['machine'].'</option>
+								';	
+							}
+							echo '</select>
+							';
+						?>
+					</div>
+				</td>
+				<td class="colored">
+					<div class="titre">Checkeur</div>
+					<div class="valeur" style="height:50%; padding-top: 5px;">
+						<?php		
+							$titreLigne='technicien';	echo '<SELECT id="checkeur" name="'.$titreLigne.'"><option value="0">-</option>
+							';
+							for($k=0;$k < count($tbl_techniciens);$k++)	{
+								if($tbl_techniciens[$k]['technicien_actif']==1)	{
+									echo '<option value="'.$tbl_techniciens[$k]['id_'.$titreLigne].'">'.$tbl_techniciens[$k][$titreLigne].'</option>
+									';	
+								}
+							}
+							echo '</select>
+							';
+						?>
+					</div>
+				</td>				
+				<td>
+					<a id="newTest" class="newTest">
+						<img alt="" src="../img/checked.png" style="height:40px; width:35px;" />
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<span style="color:white" onclick = "modalNewTest.style.display = 'none'">CLOSE</span>
+			</tr>
+		</table>
+	</form>
+  </div>
+
+<style>
+ /* The ModalNewTest (background) */
+.modalNewTest {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.6); /* Black w/ opacity */
+}
+
+/* ModalNewTest Content/Box */
+.modalNewTest-content {
+    background-color: #086a87;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 40%; /* Could be more or less, depending on screen size */
+}
+</style>
+<script>
+// Get the modalNewTest
+var modalNewTest = document.getElementById('myModalNewTest');
+
+var valid = document.getElementsByClassName("valid");
+
+</script>
+</div>
 
 
 <script>	//couleur si on change une valeur
