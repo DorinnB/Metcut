@@ -1495,184 +1495,188 @@
 								<form id="FormcontenuaOnglet<?php echo $splitencours; ?>-1" action="../index.php?page=newEp" method="POST">
 									<input type="hidden" name="job-idjob" value="<?php	echo $tblsplit[$splitencours-1]['id_tbljob'];	?>">
 									<input type="hidden" class="user" name="job-id_user" value="">
-<?php if(empty($liste_ep))	{	
-$list_ep=array();
-}	?>
-						
-										<table>
-											<tr>
-												<td>
-													<table id="my-table<?php echo $splitencours; ?>-1" class="job2">
-														<?php
-															$titreLigne='prefixe';	echo '<tr><td name="'.$titreLigne.'">'.$convTitre[$titreLigne].'</td>';	FOR($j=0;$j < count($liste_ep);$j++){echo '<td bgcolor="'.est_assigne($liste_ep[$j]['assigne']).'"><INPUT id="'.$splitencours.'-1_'.$j.'-'.$titreLigne.'" name="'.$j."-".$titreLigne.'" value="'.$liste_ep[$j][$titreLigne].'" class="cache modified"><a class="pascache">'.$liste_ep[$j][$titreLigne].'</a></td>';}	echo '</tr>';
+									<?php if(empty($liste_ep))	{	
+									$list_ep=array();
+									}	?>
+					
+									<table>
+										<tr>
+											<td>
+												<table id="my-table<?php echo $splitencours; ?>-1" class="job2">
+													<?php
+														$titreLigne='prefixe';	echo '<tr><td name="'.$titreLigne.'">'.$convTitre[$titreLigne].'</td>';	FOR($j=0;$j < count($liste_ep);$j++){echo '<td bgcolor="'.est_assigne($liste_ep[$j]['assigne']).'"><INPUT id="'.$splitencours.'-1_'.$j.'-'.$titreLigne.'" name="'.$j."-".$titreLigne.'" value="'.$liste_ep[$j][$titreLigne].'" class="cache modified"><a class="pascache">'.$liste_ep[$j][$titreLigne].'</a></td>';}	echo '</tr>';
+														
+													
+														echo '<tr><td style="max-width:200px;" name="nom_eprouvette">Nom éprouvette</td>';
+														for($k=0;$k < count($liste_ep);$k++)	{
+															echo '<td bgcolor="'.est_assigne($liste_ep[$k]['assigne']).'">';
+															if($liste_ep[$k]['n_fichier']==""){
+																echo '<a class="pascache" href="file:///[ENREGISTREMENT ESSAI]'.$liste_ep[$k]['id_eprouvette'].'" onclick="newTest('.$liste_ep[$k]['id_eprouvette'].',\''.$liste_ep[$k]['nom_eprouvette'].'\');">'.$liste_ep[$k]['nom_eprouvette'].'</a>';
+															}
+															else{
+																	echo '<a class="pascache" href="file:///[NE MARCHE PAS]I:/Trans/'.$liste_ep[$k]['id_eprouvette'].'">'.$liste_ep[$k]['nom_eprouvette'].'</a>';
+															}
+															echo '
+															<INPUT id="'.$splitencours.'-1_'.$k.'-nom_eprouvette" name="'.$k.'-nom_eprouvette" value="'.$liste_ep[$k]['nom_eprouvette'].'" class="cache">
+															<input type="hidden" name="'.$k.'-id_eprouvette" value="'.$liste_ep[$k]['id_eprouvette'].'">
+															</td>';
+														}
+														echo '</tr>';
+
+
+
+														$titreLigne='n_essai';	echo '<tr><td>'.$convTitre[$titreLigne].'</td>';	FOR($j=0;$j < count($liste_ep);$j++){echo '<td bgcolor="'.est_assigne($liste_ep[$j]['assigne']).'">'.$liste_ep[$j][$titreLigne].'</td>';}	echo '</tr>';
+														$titreLigne='n_fichier';	echo '<tr><td>'.$convTitre[$titreLigne].'</td>';	FOR($j=0;$j < count($liste_ep);$j++){	echo '<td bgcolor="'.est_assigne($liste_ep[$j]['assigne']).'">'.$liste_ep[$j][$titreLigne].'</td>';}	echo '</tr>';
+														//Operateur
+														$titreLigne='machine';	echo '<tr><td>'.$convTitre[$titreLigne].'</td>';	FOR($j=0;$j < count($liste_ep);$j++){	echo '<td bgcolor="'.est_assigne($liste_ep[$j]['assigne']).'">'.$liste_ep[$j][$titreLigne].'</td>';}	echo '</tr>';
+														$titreLigne='date';	echo '<tr><td>'.$convTitre[$titreLigne].'</td>';	FOR($j=0;$j < count($liste_ep);$j++){	echo '<td bgcolor="'.est_assigne($liste_ep[$j]['assigne']).'">'.$liste_ep[$j][$titreLigne].'</td>';}	echo '</tr>';
+
+														$titreLigne='c_temperature';	echo '<tr class="consigne"><td name="'.$titreLigne.'">'.$convTitre[$titreLigne].'</td>';	FOR($j=0;$j < count($liste_ep);$j++){	if ($liste_ep[$j][$titreLigne]==""){	$cache1="";	$cache2="";	}	else	{	$cache1="cache";	$cache2="pascache";	}	echo '<td><INPUT id="'.$splitencours.'-1_'.$j.'-'.$titreLigne.'" name="'.$j."-".$titreLigne.'" value="'.$liste_ep[$j][$titreLigne].'" class="'.$cache1.' modified"><a class="'.$cache2.'">'.$liste_ep[$j][$titreLigne].'</a></td>';}	echo '</tr>';
+														$titreLigne='c_frequence';	echo '<tr class="consigne"><td name="'.$titreLigne.'">'.$convTitre[$titreLigne].'</td>';	FOR($j=0;$j < count($liste_ep);$j++){	if ($liste_ep[$j][$titreLigne]==""){	$cache1="";	$cache2="";	}	else	{	$cache1="cache";	$cache2="pascache";	}	echo '<td><INPUT id="'.$splitencours.'-1_'.$j.'-'.$titreLigne.'" name="'.$j."-".$titreLigne.'" value="'.$liste_ep[$j][$titreLigne].'" class="'.$cache1.' modified"><a class="'.$cache2.'">'.$liste_ep[$j][$titreLigne].'</a></td>';}	echo '</tr>';
+														$titreLigne='c_frequence_STL';	echo '<tr class="consigne"><td name="'.$titreLigne.'">'.$convTitre[$titreLigne].'</td>';	FOR($j=0;$j < count($liste_ep);$j++){	if ($liste_ep[$j][$titreLigne]==""){	$cache1="";	$cache2="";	}	else	{	$cache1="cache";	$cache2="pascache";	}	echo '<td><INPUT id="'.$splitencours.'-1_'.$j.'-'.$titreLigne.'" name="'.$j."-".$titreLigne.'" value="'.$liste_ep[$j][$titreLigne].'" class="'.$cache1.' modified"><a class="'.$cache2.'">'.$liste_ep[$j][$titreLigne].'</a></td>';}	echo '</tr>';
+														$titreLigne='c_cycle_STL';	echo '<tr class="consigne"><td name="'.$titreLigne.'">'.$convTitre[$titreLigne].'</td>';	FOR($j=0;$j < count($liste_ep);$j++){	if ($liste_ep[$j][$titreLigne]==""){	$cache1="";	$cache2="";	}	else	{	$cache1="cache";	$cache2="pascache";	}	echo '<td><INPUT id="'.$splitencours.'-1_'.$j.'-'.$titreLigne.'" name="'.$j."-".$titreLigne.'" value="'.$liste_ep[$j][$titreLigne].'" class="'.$cache1.' modified"><a class="'.$cache2.'">'.$liste_ep[$j][$titreLigne].'</a></td>';}	echo '</tr>';
+												
+	
+
+														for($k=1;$k <= nb_dim($tbl_tbljobs['type']);$k++)	{
+															$titreLigne='dim_'.$k;	echo '<tr><td>'.$denomination[$k-1].'</td>';	FOR($j=0;$j < count($liste_ep);$j++){	echo '<td bgcolor="'.est_assigne($liste_ep[$j]['assigne']).'">'.$liste_ep[$j][$titreLigne].'</td>';}	echo '</tr>';
+														}
+
+														$titreLigne='waveform';	echo '<tr><td>'.$convTitre[$titreLigne].'</td>';	FOR($j=0;$j < count($liste_ep);$j++){	echo '<td bgcolor="'.est_assigne($liste_ep[$j]['assigne']).'">'.$liste_ep[$j][$titreLigne].'</td>';}	echo '</tr>';
+
+
+														
+														
+														
+														
+														$titreLigne='c_type_1';	$units=(($tbl_tbljobs[$titreLigne]=="R") OR ($tbl_tbljobs[$titreLigne]=="A"))?		$tbl_tbljobs[$titreLigne]	:	$tbl_tbljobs[$titreLigne]." (".$tbl_tbljobs['c_unite'].")";
+														echo '
+														<tr class="consigne">
+															<td name="'.$titreLigne.'_val">';
+														echo '<SELECT name="job-id_'.$titreLigne.'" class="cache modified">
+														';
+														for($k=0;$k < count($tbl_consigne_types);$k++)	{
+															$selected=($tbl_consigne_types[$k]['id_consigne_type']==$tbl_tbljobs['id_'.$titreLigne])?"selected":"";
+															echo '<option value="'.$tbl_consigne_types[$k]['id_consigne_type'].'" '.$selected.'>'.$tbl_consigne_types[$k]['consigne_type'].'</option>
+															';	
+														}
+														echo '</select>	';
+															echo '	
+																<a class="pascache">'.$units.'</a>
+															</td>';	
+															FOR($j=0;$j < count($liste_ep);$j++){	
+																if ($liste_ep[$j][$titreLigne.'_val']==""){	
+																	$cache1="";	$cache2="";	
+																}	
+																else	{
+																	$cache1="cache";	$cache2="pascache";	
+																}	
+																echo '
+																	<td>
+																		<INPUT id="'.$splitencours.'-1_'.$j.'-'.$titreLigne.'_val" name="'.$j."-".$titreLigne.'_val" value="'.$liste_ep[$j][$titreLigne."_val"].'" class="'.$cache1.' modified">
+																			<a class="'.$cache2.'">'.$liste_ep[$j][$titreLigne."_val"].'
+																			</a>
+																		</td>';
+															}	echo '
+														</tr>';
+
+
+
+
+
+														$titreLigne='c_type_2';	$units=(($tbl_tbljobs[$titreLigne]=="R") OR ($tbl_tbljobs[$titreLigne]=="A"))?		$tbl_tbljobs[$titreLigne]	:	$tbl_tbljobs[$titreLigne]." (".$tbl_tbljobs['c_unite'].")";
+														echo '
+														<tr class="consigne">
+															<td name="'.$titreLigne.'_val">';
+														echo '<SELECT name="job-id_'.$titreLigne.'" class="cache  modified" style="width:60%; float: left;">
+														';
+														for($k=0;$k < count($tbl_consigne_types);$k++)	{
+															$selected=($tbl_consigne_types[$k]['id_consigne_type']==$tbl_tbljobs['id_'.$titreLigne])?"selected":"";
+															echo '<option value="'.$tbl_consigne_types[$k]['id_consigne_type'].'" '.$selected.'>'.$tbl_consigne_types[$k]['consigne_type'].'</option>
+															';	
+														}
+														echo '</select>	';
+														echo'<SELECT name="job-c_unite" class="cache  modified" style="width:40%;float: left;">
+															<option value="%" '.(($tbl_tbljobs['c_unite']=="%")?"selected":"").'>%</option>
+															<option value="kN" '.(($tbl_tbljobs['c_unite']=="kN")?"selected":"").'>kN</option>
+															<option value="MPa" '.(($tbl_tbljobs['c_unite']=="MPa")?"selected":"").'>MPa</option>
+														</select>';
+															echo '	
+																<a class="pascache">'.$units.'</a>
+
+															</td>';	
+															FOR($j=0;$j < count($liste_ep);$j++){	
+																if ($liste_ep[$j][$titreLigne.'_val']==""){	
+																	$cache1="";	$cache2="";	
+																}	
+																else	{
+																	$cache1="cache";	$cache2="pascache";	
+																}	
+																echo '
+																	<td>
+																		<INPUT id="'.$splitencours.'-1_'.$j.'-'.$titreLigne.'_val" name="'.$j."-".$titreLigne.'_val" value="'.$liste_ep[$j][$titreLigne."_val"].'" class="'.$cache1.' modified">
+																			<a class="'.$cache2.'">'.$liste_ep[$j][$titreLigne."_val"].'
+																			</a>
+																		</td>';
+															}	echo '
+														</tr>';
+														
 															
 														
-															echo '<tr><td style="max-width:200px;" name="nom_eprouvette">Nom éprouvette</td>';
-															for($k=0;$k < count($liste_ep);$k++)	{
-																
-													
-																echo '<td bgcolor="'.est_assigne($liste_ep[$k]['assigne']).'">
-																<INPUT id="'.$splitencours.'-1_'.$k.'-nom_eprouvette" name="'.$k.'-nom_eprouvette" value="'.$liste_ep[$k]['nom_eprouvette'].'" class="cache">
-																<a class="pascache" href="file:///[NE MARCHE PAS]I:/Trans/'.$liste_ep[$k]['id_eprouvette'].'" onclick="newTest('.$liste_ep[$k]['id_eprouvette'].',\''.$liste_ep[$k]['nom_eprouvette'].'\');">'.$liste_ep[$k]['nom_eprouvette'].'</a>
-																<input type="hidden" name="'.$k.'-id_eprouvette" value="'.$liste_ep[$k]['id_eprouvette'].'">
-																</td>';
-															}
-															echo '</tr>';
+														$titreLigne='Niveau_max';	echo '<tr><td>'.$convTitre[$titreLigne].'</td>';	FOR($j=0;$j < count($liste_ep);$j++){	niveaumaxmin($tbl_tbljobs['c_type_1'], $tbl_tbljobs['c_type_2'], $liste_ep[$j]['c_type_1_val'], $liste_ep[$j]['c_type_2_val']);		echo '<td bgcolor="'.est_assigne($liste_ep[$j]['assigne']).'">'.$MAX.'</td>';}	echo '</tr>';
+														$titreLigne='Niveau_min';	echo '<tr><td>'.$convTitre[$titreLigne].'</td>';	FOR($j=0;$j < count($liste_ep);$j++){	niveaumaxmin($tbl_tbljobs['c_type_1'], $tbl_tbljobs['c_type_2'], $liste_ep[$j]['c_type_1_val'], $liste_ep[$j]['c_type_2_val']);		echo '<td bgcolor="'.est_assigne($liste_ep[$j]['assigne']).'">'.$MIN.'</td>';}	echo '</tr>';
 
+														$titreLigne='Cycle_STL';	echo '<tr><td>'.$convTitre[$titreLigne].'</td>';	FOR($j=0;$j < count($liste_ep);$j++){	echo '<td bgcolor="'.est_assigne($liste_ep[$j]['assigne']).'">'.(($liste_ep[$j][$titreLigne]==0)?"":$liste_ep[$j][$titreLigne]).'</td>';}	echo '</tr>';
+														$titreLigne='Cycle_final';	echo '<tr><td>'.$convTitre[$titreLigne].'</td>';	FOR($j=0;$j < count($liste_ep);$j++){	echo '<td bgcolor="'.est_assigne($liste_ep[$j]['assigne']).'">'.$liste_ep[$j][$titreLigne].'</td>';}	echo '</tr>';
+														$titreLigne='Rupture';	echo '<tr><td>'.$convTitre[$titreLigne].'</td>';	FOR($j=0;$j < count($liste_ep);$j++){	echo '<td bgcolor="'.est_assigne($liste_ep[$j]['assigne']).'">'.$liste_ep[$j][$titreLigne].'</td>';}	echo '</tr>';
+														$titreLigne='Fracture';	echo '<tr><td>'.$convTitre[$titreLigne].'</td>';	FOR($j=0;$j < count($liste_ep);$j++){	echo '<td bgcolor="'.est_assigne($liste_ep[$j]['assigne']).'">'.$liste_ep[$j][$titreLigne].'</td>';}	echo '</tr>';
+														$titreLigne='temps_essais';	echo '<tr><td>'.$convTitre[$titreLigne].'</td>';	FOR($j=0;$j < count($liste_ep);$j++){	echo '<td bgcolor="'.est_assigne($liste_ep[$j]['assigne']).'">'.$liste_ep[$j][$titreLigne].'</td>';}	echo '</tr>';
 
+														$titreLigne='Cycle_min';	echo '<tr class="consigne"><td name="'.$titreLigne.'">'.$convTitre[$titreLigne].'</td>';	FOR($j=0;$j < count($liste_ep);$j++){	if ($liste_ep[$j][$titreLigne]==""){	$cache1="";	$cache2="";	}	else	{	$cache1="cache";	$cache2="pascache";	}	echo '<td><INPUT id="'.$splitencours.'-1_'.$j.'-'.$titreLigne.'" name="'.$j."-".$titreLigne.'" value="'.$liste_ep[$j][$titreLigne].'" class="'.$cache1.' modified"><a class="'.$cache2.'">'.$liste_ep[$j][$titreLigne].'</a></td>';}	echo '</tr>';
+														$titreLigne='runout';	echo '<tr class="consigne"><td name="'.$titreLigne.'">'.$convTitre[$titreLigne].'</td>';	FOR($j=0;$j < count($liste_ep);$j++){	if ($liste_ep[$j][$titreLigne]==""){	$cache1="";	$cache2="";	}	else	{	$cache1="cache";	$cache2="pascache";	}	echo '<td><INPUT id="'.$splitencours.'-1_'.$j.'-'.$titreLigne.'" name="'.$j."-".$titreLigne.'" value="'.$liste_ep[$j][$titreLigne].'" class="'.$cache1.' modified"><a class="'.$cache2.'">'.$liste_ep[$j][$titreLigne].'</a></td>';}	echo '</tr>';
 
-															$titreLigne='n_essai';	echo '<tr><td>'.$convTitre[$titreLigne].'</td>';	FOR($j=0;$j < count($liste_ep);$j++){echo '<td bgcolor="'.est_assigne($liste_ep[$j]['assigne']).'">'.$liste_ep[$j][$titreLigne].'</td>';}	echo '</tr>';
-															$titreLigne='n_fichier';	echo '<tr><td>'.$convTitre[$titreLigne].'</td>';	FOR($j=0;$j < count($liste_ep);$j++){	echo '<td bgcolor="'.est_assigne($liste_ep[$j]['assigne']).'">'.$liste_ep[$j][$titreLigne].'</td>';}	echo '</tr>';
-															//Operateur
-															$titreLigne='machine';	echo '<tr><td>'.$convTitre[$titreLigne].'</td>';	FOR($j=0;$j < count($liste_ep);$j++){	echo '<td bgcolor="'.est_assigne($liste_ep[$j]['assigne']).'">'.$liste_ep[$j][$titreLigne].'</td>';}	echo '</tr>';
-															$titreLigne='date';	echo '<tr><td>'.$convTitre[$titreLigne].'</td>';	FOR($j=0;$j < count($liste_ep);$j++){	echo '<td bgcolor="'.est_assigne($liste_ep[$j]['assigne']).'">'.$liste_ep[$j][$titreLigne].'</td>';}	echo '</tr>';
+														$titreLigne='cycle_estime';	echo '<tr class="consigne"><td name="'.$titreLigne.'">'.$convTitre[$titreLigne].'</td>';	FOR($j=0;$j < count($liste_ep);$j++){	if ($liste_ep[$j][$titreLigne]==""){	$cache1="";	$cache2="";	}	else	{	$cache1="cache";	$cache2="pascache";	}	echo '<td><INPUT id="'.$splitencours.'-1_'.$j.'-'.$titreLigne.'" name="'.$j."-".$titreLigne.'" value="'.$liste_ep[$j][$titreLigne].'" class="'.$cache1.' modified"><a class="'.$cache2.'">'.$liste_ep[$j][$titreLigne].'</a></td>';}	echo '</tr>';
+														
+														
+														
+										
+														
+														
+														echo '<tr><td>Checked by</td>';	
+														FOR($j=0;$j < count($liste_ep);$j++){
+															echo '<td>';
+															if ($liste_ep[$j]['c_checked']==0)	{
 
-															$titreLigne='c_temperature';	echo '<tr class="consigne"><td name="'.$titreLigne.'">'.$convTitre[$titreLigne].'</td>';	FOR($j=0;$j < count($liste_ep);$j++){	if ($liste_ep[$j][$titreLigne]==""){	$cache1="";	$cache2="";	}	else	{	$cache1="cache";	$cache2="pascache";	}	echo '<td><INPUT id="'.$splitencours.'-1_'.$j.'-'.$titreLigne.'" name="'.$j."-".$titreLigne.'" value="'.$liste_ep[$j][$titreLigne].'" class="'.$cache1.' modified"><a class="'.$cache2.'">'.$liste_ep[$j][$titreLigne].'</a></td>';}	echo '</tr>';
-															$titreLigne='c_frequence';	echo '<tr class="consigne"><td name="'.$titreLigne.'">'.$convTitre[$titreLigne].'</td>';	FOR($j=0;$j < count($liste_ep);$j++){	if ($liste_ep[$j][$titreLigne]==""){	$cache1="";	$cache2="";	}	else	{	$cache1="cache";	$cache2="pascache";	}	echo '<td><INPUT id="'.$splitencours.'-1_'.$j.'-'.$titreLigne.'" name="'.$j."-".$titreLigne.'" value="'.$liste_ep[$j][$titreLigne].'" class="'.$cache1.' modified"><a class="'.$cache2.'">'.$liste_ep[$j][$titreLigne].'</a></td>';}	echo '</tr>';
-															$titreLigne='c_frequence_STL';	echo '<tr class="consigne"><td name="'.$titreLigne.'">'.$convTitre[$titreLigne].'</td>';	FOR($j=0;$j < count($liste_ep);$j++){	if ($liste_ep[$j][$titreLigne]==""){	$cache1="";	$cache2="";	}	else	{	$cache1="cache";	$cache2="pascache";	}	echo '<td><INPUT id="'.$splitencours.'-1_'.$j.'-'.$titreLigne.'" name="'.$j."-".$titreLigne.'" value="'.$liste_ep[$j][$titreLigne].'" class="'.$cache1.' modified"><a class="'.$cache2.'">'.$liste_ep[$j][$titreLigne].'</a></td>';}	echo '</tr>';
-															$titreLigne='c_cycle_STL';	echo '<tr class="consigne"><td name="'.$titreLigne.'">'.$convTitre[$titreLigne].'</td>';	FOR($j=0;$j < count($liste_ep);$j++){	if ($liste_ep[$j][$titreLigne]==""){	$cache1="";	$cache2="";	}	else	{	$cache1="cache";	$cache2="pascache";	}	echo '<td><INPUT id="'.$splitencours.'-1_'.$j.'-'.$titreLigne.'" name="'.$j."-".$titreLigne.'" value="'.$liste_ep[$j][$titreLigne].'" class="'.$cache1.' modified"><a class="'.$cache2.'">'.$liste_ep[$j][$titreLigne].'</a></td>';}	echo '</tr>';
-													
-		
-
-															for($k=1;$k <= nb_dim($tbl_tbljobs['type']);$k++)	{
-																$titreLigne='dim_'.$k;	echo '<tr><td>'.$denomination[$k-1].'</td>';	FOR($j=0;$j < count($liste_ep);$j++){	echo '<td bgcolor="'.est_assigne($liste_ep[$j]['assigne']).'">'.$liste_ep[$j][$titreLigne].'</td>';}	echo '</tr>';
-															}
-
-															$titreLigne='waveform';	echo '<tr><td>'.$convTitre[$titreLigne].'</td>';	FOR($j=0;$j < count($liste_ep);$j++){	echo '<td bgcolor="'.est_assigne($liste_ep[$j]['assigne']).'">'.$liste_ep[$j][$titreLigne].'</td>';}	echo '</tr>';
-
-
-															
-															
-															
-															
-															$titreLigne='c_type_1';	$units=(($tbl_tbljobs[$titreLigne]=="R") OR ($tbl_tbljobs[$titreLigne]=="A"))?		$tbl_tbljobs[$titreLigne]	:	$tbl_tbljobs[$titreLigne]." (".$tbl_tbljobs['c_unite'].")";
-															echo '
-															<tr class="consigne">
-																<td name="'.$titreLigne.'_val">';
-															echo '<SELECT name="job-id_'.$titreLigne.'" class="cache modified">
-															';
-															for($k=0;$k < count($tbl_consigne_types);$k++)	{
-																$selected=($tbl_consigne_types[$k]['id_consigne_type']==$tbl_tbljobs['id_'.$titreLigne])?"selected":"";
-																echo '<option value="'.$tbl_consigne_types[$k]['id_consigne_type'].'" '.$selected.'>'.$tbl_consigne_types[$k]['consigne_type'].'</option>
-																';	
-															}
-															echo '</select>	';
-																echo '	
-																	<a class="pascache">'.$units.'</a>
-																</td>';	
-																FOR($j=0;$j < count($liste_ep);$j++){	
-																	if ($liste_ep[$j][$titreLigne.'_val']==""){	
-																		$cache1="";	$cache2="";	
-																	}	
-																	else	{
-																		$cache1="cache";	$cache2="pascache";	
-																	}	
-																	echo '
-																		<td>
-																			<INPUT id="'.$splitencours.'-1_'.$j.'-'.$titreLigne.'_val" name="'.$j."-".$titreLigne.'_val" value="'.$liste_ep[$j][$titreLigne."_val"].'" class="'.$cache1.' modified">
-																				<a class="'.$cache2.'">'.$liste_ep[$j][$titreLigne."_val"].'
-																				</a>
-																			</td>';
-																}	echo '
-															</tr>';
-
-
-
-
-
-															$titreLigne='c_type_2';	$units=(($tbl_tbljobs[$titreLigne]=="R") OR ($tbl_tbljobs[$titreLigne]=="A"))?		$tbl_tbljobs[$titreLigne]	:	$tbl_tbljobs[$titreLigne]." (".$tbl_tbljobs['c_unite'].")";
-															echo '
-															<tr class="consigne">
-																<td name="'.$titreLigne.'_val">';
-															echo '<SELECT name="job-id_'.$titreLigne.'" class="cache  modified" style="width:60%; float: left;">
-															';
-															for($k=0;$k < count($tbl_consigne_types);$k++)	{
-																$selected=($tbl_consigne_types[$k]['id_consigne_type']==$tbl_tbljobs['id_'.$titreLigne])?"selected":"";
-																echo '<option value="'.$tbl_consigne_types[$k]['id_consigne_type'].'" '.$selected.'>'.$tbl_consigne_types[$k]['consigne_type'].'</option>
-																';	
-															}
-															echo '</select>	';
-															echo'<SELECT name="job-c_unite" class="cache  modified" style="width:40%;float: left;">
-																<option value="%" '.(($tbl_tbljobs['c_unite']=="%")?"selected":"").'>%</option>
-																<option value="kN" '.(($tbl_tbljobs['c_unite']=="kN")?"selected":"").'>kN</option>
-																<option value="MPa" '.(($tbl_tbljobs['c_unite']=="MPa")?"selected":"").'>MPa</option>
-															</select>';
-																echo '	
-																	<a class="pascache">'.$units.'</a>
-
-																</td>';	
-																FOR($j=0;$j < count($liste_ep);$j++){	
-																	if ($liste_ep[$j][$titreLigne.'_val']==""){	
-																		$cache1="";	$cache2="";	
-																	}	
-																	else	{
-																		$cache1="cache";	$cache2="pascache";	
-																	}	
-																	echo '
-																		<td>
-																			<INPUT id="'.$splitencours.'-1_'.$j.'-'.$titreLigne.'_val" name="'.$j."-".$titreLigne.'_val" value="'.$liste_ep[$j][$titreLigne."_val"].'" class="'.$cache1.' modified">
-																				<a class="'.$cache2.'">'.$liste_ep[$j][$titreLigne."_val"].'
-																				</a>
-																			</td>';
-																}	echo '
-															</tr>';
-															
-																
-															
-															$titreLigne='Niveau_max';	echo '<tr><td>'.$convTitre[$titreLigne].'</td>';	FOR($j=0;$j < count($liste_ep);$j++){	niveaumaxmin($tbl_tbljobs['c_type_1'], $tbl_tbljobs['c_type_2'], $liste_ep[$j]['c_type_1_val'], $liste_ep[$j]['c_type_2_val']);		echo '<td bgcolor="'.est_assigne($liste_ep[$j]['assigne']).'">'.$MAX.'</td>';}	echo '</tr>';
-															$titreLigne='Niveau_min';	echo '<tr><td>'.$convTitre[$titreLigne].'</td>';	FOR($j=0;$j < count($liste_ep);$j++){	niveaumaxmin($tbl_tbljobs['c_type_1'], $tbl_tbljobs['c_type_2'], $liste_ep[$j]['c_type_1_val'], $liste_ep[$j]['c_type_2_val']);		echo '<td bgcolor="'.est_assigne($liste_ep[$j]['assigne']).'">'.$MIN.'</td>';}	echo '</tr>';
-
-															$titreLigne='Cycle_STL';	echo '<tr><td>'.$convTitre[$titreLigne].'</td>';	FOR($j=0;$j < count($liste_ep);$j++){	echo '<td bgcolor="'.est_assigne($liste_ep[$j]['assigne']).'">'.(($liste_ep[$j][$titreLigne]==0)?"":$liste_ep[$j][$titreLigne]).'</td>';}	echo '</tr>';
-															$titreLigne='Cycle_final';	echo '<tr><td>'.$convTitre[$titreLigne].'</td>';	FOR($j=0;$j < count($liste_ep);$j++){	echo '<td bgcolor="'.est_assigne($liste_ep[$j]['assigne']).'">'.$liste_ep[$j][$titreLigne].'</td>';}	echo '</tr>';
-															$titreLigne='Rupture';	echo '<tr><td>'.$convTitre[$titreLigne].'</td>';	FOR($j=0;$j < count($liste_ep);$j++){	echo '<td bgcolor="'.est_assigne($liste_ep[$j]['assigne']).'">'.$liste_ep[$j][$titreLigne].'</td>';}	echo '</tr>';
-															$titreLigne='Fracture';	echo '<tr><td>'.$convTitre[$titreLigne].'</td>';	FOR($j=0;$j < count($liste_ep);$j++){	echo '<td bgcolor="'.est_assigne($liste_ep[$j]['assigne']).'">'.$liste_ep[$j][$titreLigne].'</td>';}	echo '</tr>';
-															$titreLigne='temps_essais';	echo '<tr><td>'.$convTitre[$titreLigne].'</td>';	FOR($j=0;$j < count($liste_ep);$j++){	echo '<td bgcolor="'.est_assigne($liste_ep[$j]['assigne']).'">'.$liste_ep[$j][$titreLigne].'</td>';}	echo '</tr>';
-
-															$titreLigne='Cycle_min';	echo '<tr class="consigne"><td name="'.$titreLigne.'">'.$convTitre[$titreLigne].'</td>';	FOR($j=0;$j < count($liste_ep);$j++){	if ($liste_ep[$j][$titreLigne]==""){	$cache1="";	$cache2="";	}	else	{	$cache1="cache";	$cache2="pascache";	}	echo '<td><INPUT id="'.$splitencours.'-1_'.$j.'-'.$titreLigne.'" name="'.$j."-".$titreLigne.'" value="'.$liste_ep[$j][$titreLigne].'" class="'.$cache1.' modified"><a class="'.$cache2.'">'.$liste_ep[$j][$titreLigne].'</a></td>';}	echo '</tr>';
-															$titreLigne='runout';	echo '<tr class="consigne"><td name="'.$titreLigne.'">'.$convTitre[$titreLigne].'</td>';	FOR($j=0;$j < count($liste_ep);$j++){	if ($liste_ep[$j][$titreLigne]==""){	$cache1="";	$cache2="";	}	else	{	$cache1="cache";	$cache2="pascache";	}	echo '<td><INPUT id="'.$splitencours.'-1_'.$j.'-'.$titreLigne.'" name="'.$j."-".$titreLigne.'" value="'.$liste_ep[$j][$titreLigne].'" class="'.$cache1.' modified"><a class="'.$cache2.'">'.$liste_ep[$j][$titreLigne].'</a></td>';}	echo '</tr>';
-
-															$titreLigne='cycle_estime';	echo '<tr class="consigne"><td name="'.$titreLigne.'">'.$convTitre[$titreLigne].'</td>';	FOR($j=0;$j < count($liste_ep);$j++){	if ($liste_ep[$j][$titreLigne]==""){	$cache1="";	$cache2="";	}	else	{	$cache1="cache";	$cache2="pascache";	}	echo '<td><INPUT id="'.$splitencours.'-1_'.$j.'-'.$titreLigne.'" name="'.$j."-".$titreLigne.'" value="'.$liste_ep[$j][$titreLigne].'" class="'.$cache1.' modified"><a class="'.$cache2.'">'.$liste_ep[$j][$titreLigne].'</a></td>';}	echo '</tr>';
-															
-															
-															
-											
-															
-															
-															echo '<tr><td>Checked by</td>';	
-															FOR($j=0;$j < count($liste_ep);$j++){
-																echo '<td>';
-																if ($liste_ep[$j]['c_checked']==0)	{
-
-																	echo '<a class="pascache" href="javascript:updateEp(\''.$liste_ep[$j]['id_eprouvette'].'\',\'consigne\')">
-																		<img id="consigne_'.$liste_ep[$j]['id_eprouvette'].'" alt="" src="../img/not-checked.png" style="height:30px; width:30px;" title="Created by : '.$liste_ep[$j]['createur'].' &#13; Updated by : '.$liste_ep[$j]['modif'].'"/>
-																	</a>';
-																}
-																else	{
-																	echo '<a class="pascache">
-																		<img id="consigne_'.$liste_ep[$j]['id_eprouvette'].'" alt="" src="../img/checked.png" style="height:30px; width:30px;" title="Created by : '.$liste_ep[$j]['createur'].' &#13; Updated by : '.$liste_ep[$j]['modif'].' &#13;Approved by : '.$liste_ep[$j]['checker'].'"/>
-																	</a>';
-																}
-																					
-																echo' <a class="cache" href="javascript:delEp('.$liste_ep[$j]['id_eprouvette'].', '.$j.', \'my-table'.$splitencours.'-1\')">
-																	<img alt="" src="../img/unchecked.png" style="height:30px; width:30px;" title="Created by : '.$liste_ep[$j]['createur'].' &#13; Updated by : '.$liste_ep[$j]['modif'].' &#13;Approved by : '.$liste_ep[$j]['checker'].'"/>
+																echo '<a class="pascache" href="javascript:updateEp(\''.$liste_ep[$j]['id_eprouvette'].'\',\'consigne\')">
+																	<img id="consigne_'.$liste_ep[$j]['id_eprouvette'].'" alt="" src="../img/not-checked.png" style="height:30px; width:30px;" title="Created by : '.$liste_ep[$j]['createur'].' &#13; Updated by : '.$liste_ep[$j]['modif'].'"/>
 																</a>';
-																echo '</td>';										
-															}	
-															echo '</tr>';
+															}
+															else	{
+																echo '<a class="pascache">
+																	<img id="consigne_'.$liste_ep[$j]['id_eprouvette'].'" alt="" src="../img/checked.png" style="height:30px; width:30px;" title="Created by : '.$liste_ep[$j]['createur'].' &#13; Updated by : '.$liste_ep[$j]['modif'].' &#13;Approved by : '.$liste_ep[$j]['checker'].'"/>
+																</a>';
+															}
+																				
+															echo' <a class="cache" href="javascript:delEp('.$liste_ep[$j]['id_eprouvette'].', '.$j.', \'my-table'.$splitencours.'-1\')">
+																<img alt="" src="../img/unchecked.png" style="height:30px; width:30px;" title="Created by : '.$liste_ep[$j]['createur'].' &#13; Updated by : '.$liste_ep[$j]['modif'].' &#13;Approved by : '.$liste_ep[$j]['checker'].'"/>
+															</a>';
+															echo '</td>';										
+														}	
+														echo '</tr>';
 
-														?>
-													</table>
-												</td>
-												<td align="left" valign="top" style="padding:7">
-													<button value="Add column" onclick="javascript:appendColumn('<?php echo $splitencours; ?>-1')" class="append_column" type="button">
-														<img src="../css/croix.png">
-													</button>
-													<button value="Add column" onclick="javascript:appendColumn2('<?php echo $splitencours; ?>-1')" class="append_column" type="button">
-														<img src="../css/croix.png">
-													</button>													
-												</td>
-											</tr>
-										</table>
+													?>
+												</table>
+											</td>
+											<td align="left" valign="top" style="padding:7">
+												<button value="Add column" onclick="javascript:appendColumn('<?php echo $splitencours; ?>-1')" class="append_column" type="button">
+													<img src="../css/croix.png">
+												</button>
+												<button value="Add column" onclick="javascript:appendColumn2('<?php echo $splitencours; ?>-1')" class="append_column" type="button">
+													<img src="../css/croix.png">
+												</button>													
+											</td>
+										</tr>
+									</table>
 
 								</form>
 							</div>
@@ -2269,7 +2273,7 @@ window.onclick = function(event) {
 
   <!-- ModalNewTest content -->
   <div class="modalNewTest-content" style="margin:300px; height:200px">
-	  <form>	
+	  <form  action="newTest" method="POST" name="formNewTest" onsubmit="return envoiNewTest()">	
 		<table class="datajob">
 			<tr>
 				<td class="colored">
@@ -2307,7 +2311,7 @@ window.onclick = function(event) {
 					<div class="titre">Checkeur</div>
 					<div class="valeur" style="height:50%; padding-top: 5px;">
 						<?php		
-							$titreLigne='technicien';	echo '<SELECT id="checkeur" name="'.$titreLigne.'"><option value="0">-</option>
+							$titreLigne='technicien';	echo '<SELECT id="checkeur" name="checkeur"><option value="0">-</option>
 							';
 							for($k=0;$k < count($tbl_techniciens);$k++)	{
 								if($tbl_techniciens[$k]['technicien_actif']==1)	{
@@ -2321,9 +2325,7 @@ window.onclick = function(event) {
 					</div>
 				</td>				
 				<td>
-					<a id="newTest" class="newTest">
-						<img alt="" src="../img/checked.png" style="height:40px; width:35px;" />
-					</a>
+					<input type="image" src="../img/checked.png" style="height:40px; width:35px;" alt="ok" />.
 				</td>
 			</tr>
 			<tr>
@@ -2357,12 +2359,27 @@ window.onclick = function(event) {
     width: 40%; /* Could be more or less, depending on screen size */
 }
 </style>
+<script type="text/javascript">	//envoi formulaire newTest
+//<![CDATA[
+
+function envoiNewTest(){
+	// si la valeur du champ chekeur, poste ou operateur est vide
+	if((document.formNewTest.checkeur.value == 0)||(document.formNewTest.poste.value == 0)||(document.formNewTest.operateur.value == "")) {
+		alert("Veuillez remplir tous les champs");
+		// et on indique de ne pas envoyer le formulaire
+		return false;
+	}
+	else {
+		// les données sont ok, on peut envoyer le formulaire    
+		return true;
+	}
+}
+
+//]]>
+</script>
 <script>
 // Get the modalNewTest
 var modalNewTest = document.getElementById('myModalNewTest');
-
-var valid = document.getElementsByClassName("valid");
-
 </script>
 </div>
 
