@@ -494,7 +494,7 @@ input[type=submit], input[type=reset] {
 												<div class="valeur" style="height:50%; padding-top: 5px; font : 12px Batang, arial, serif;">
 													<?php
 														$contactpresent=($tbl_tbljobs['id_contactST']!="")?	', '.$tbl_tbljobs['id_contactST']	:''	;
-														echo '<SELECT id="compagnieST" name="'.$tbl_tbljobs['id_tbljob'].'-customer" onchange="getContactListST(this.value'.$contactpresent.');">
+														echo '<SELECT id="compagnieST" form="aaa" name="'.$tbl_tbljobs['id_tbljob'].'-customer" onchange="getContactListST(this.value'.$contactpresent.');">
 																<option>-</option>
 															';	
 														foreach ($n_clientsST as $key => $val)	{
@@ -511,7 +511,7 @@ input[type=submit], input[type=reset] {
 												<div class="titre">contact</div>
 												<div class="valeur" style="height:50%; padding-top: 5px;">
 													<?php		
-														$titreLigne='contact';	echo '<SELECT id="contactST" name="'.$tbl_tbljobs['id_tbljob'].'-id_'.$titreLigne.'">
+														$titreLigne='contactST';	echo '<SELECT id="contactST" name="'.$tbl_tbljobs['id_tbljob'].'-id_'.$titreLigne.'">
 														';
 														if ($tbl_tbljobs['id_contactST']!="")
 															echo '<option value="'.$tbl_tbljobs['id_contactST'].'">'.$tbl_tbljobs['lastnameST']." ".$tbl_tbljobs['surnameST'].'</option>';
