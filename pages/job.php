@@ -678,7 +678,7 @@
 	LEFT JOIN info_jobs ON info_jobs.id_info_job=tbljobs.id_info_job
 	LEFT JOIN dessins ON dessins.id_dessin=tbljobs.id_dessin
 	LEFT JOIN matieres ON matieres.id_matiere=tbljobs.id_matiere 
-	LEFT JOIN contacts ON contacts.id_contact=tbljobs.id_contact
+	LEFT JOIN contacts ON contacts.id_contact=tbljobs.id_contactST
 	LEFT JOIN techniciens as crea ON crea.id_technicien=tbljobs.createur
 	LEFT JOIN techniciens as chec ON chec.id_technicien=tbljobs.checked 
 	WHERE tbljobs.id_info_job = (SELECT id_info_job FROM tbljobs WHERE id_tbljob='.$_GET['id_tbljob'].') 

@@ -29,7 +29,7 @@
 	});	    
 </script>
 <script type="text/javascript">	//Ajax pour gerer le la liste des contacts
-	function getDepartements(idclient, idcontact)
+	function getContactList(idclient, idcontact)
 	{
 		var blocListe = document.getElementById('contact');
 		
@@ -362,7 +362,7 @@ input[type=submit], input[type=reset] {
 											<div class="valeur check" style="height:50%; padding-top: 5px;">											
 												<?php
 												$contactpresent=($tbl_tbljobs['id_contact']!="")?	', '.$tbl_tbljobs['id_contact']	:''	;
-												echo '<SELECT name="global-customer" style="width:40%;" onchange="getDepartements(this.value'.$contactpresent.');">
+												echo '<SELECT name="global-customer" style="width:40%;" onchange="getContactList(this.value'.$contactpresent.');">
 														<option>-</option>
 													';
 													foreach ($n_clients as $val)	{
