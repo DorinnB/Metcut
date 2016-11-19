@@ -691,7 +691,7 @@
 	$soustraitance_checked=1;	//init 
 	while ($tbl = mysqli_fetch_assoc($req_soustraitances)) {
 		$tbl_soustraitances[] = $tbl;
-		$soustraitance_checked=($tbl['checker']==0)?0:$soustraitance_checked;
+		$soustraitance_checked=($tbl['checked']==0)?0:$soustraitance_checked;
 	}
 //var_dump($tbl_soustraitances);
 
