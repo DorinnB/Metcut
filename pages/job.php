@@ -691,6 +691,7 @@
 	$soustraitance_checked=1;	//init 
 	while ($tbl = mysqli_fetch_assoc($req_soustraitances)) {
 		$tbl_soustraitances[] = $tbl;
+		$soustraitance_checked=($tbl['checker']==0)?0:$soustraitance_checked;
 	}
 //var_dump($tbl_soustraitances);
 
@@ -1820,9 +1821,8 @@ $list_ep=array();
 										<ul id="onglets2">
 											<?php
 												for($k=0;$k < count($tbl_soustraitances);$k++)	{
-			$toBeCheck=($tbl_soustraitances[$k]['checked']==0)?'background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(255,255,255,.5) 5px, rgba(255,255,255,.5) 10px);':'';
-			$color="pink";
-
+													$toBeCheck=($tbl_soustraitances[$k]['checked']==0)?'background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(255,255,255,.5) 5px, rgba(255,255,255,.5) 10px);':'';
+													$color="pink";
 													echo '								
 													<li><a><span style="background-color:'.$color.';'.$toBeCheck.'" onclick="changeOnglet('.$splitencours.','.$k.','.count($tbl_soustraitances).')">&nbsp;&nbsp;  '.-$tbl_soustraitances[$k]['split'].' - '.$tbl_soustraitances[$k]['type_soustraitance'].'  &nbsp;&nbsp;</span></a></li>';
 												}
@@ -1835,7 +1835,7 @@ $list_ep=array();
 											<li class="check">
 												<?php					
 													if ($tbl_soustraitances[$l]['checked']==0)	{
-														echo '<a href="newSplit.php?id_tbljob='.$tbl_soustraitances[$l]['id_tbljob'].'&toBeCheck=1\">
+														echo '<a href="newST.php?id_tbljob='.$tbl_soustraitances[$l]['id_tbljob'].'&toBeCheck=1\">
 															<img alt="" src="../img/not-checked.png" style="height:30px; width:30px;" title="Created by : '.$tbl_soustraitances[$l]['createur'].'"/>
 														</a>';										
 													}

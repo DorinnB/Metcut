@@ -368,7 +368,7 @@ input[type=submit], input[type=reset] {
 <body>
 	
 <div>
-	
+
 
 <form id="ajoutsplit" action="./ajoutsplit" method="POST">
 	<table border="1" cellspacing="2" style="height:100%; width:100%">
@@ -437,7 +437,7 @@ input[type=submit], input[type=reset] {
 													echo '</select>
 													';
 												?>
-												<a class="pascache"><?php	echo $tbl_tbljobs['type_essai'];	?></a>
+												<a class="pascache"><?php	echo $tbl_tbljobs['type_soustraitance'];	?></a>
 											</div>
 										</td>
 										<td style="text-align: center; width:15%;"></td>
