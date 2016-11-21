@@ -201,9 +201,10 @@
 	}
 	</script>	
 	<script type="text/javascript">	//Ajax pour gerer le login utilisateur
-	$(document).ready(function() {
+	//$(document).ready(function() {
 
-		$('#login').click(function() {
+	//	$('#login').click(function() {
+	function logon(){
 
 			$.ajax({
 				type: "POST",
@@ -223,7 +224,9 @@
 						//on affiche en haut le nom de l'opérateur
 					document.getElementById('affichage').innerHTML = user;
 					document.getElementById('usernewTest').innerHTML = user;
-					
+						
+						modal.style.display = "none";
+						
 						//on change la valeur des input hidden de toute la page avec id_technicien = user
 					var classuser = document.getElementsByClassName('user');
 					for(var i = 0; i < classuser.length; i++) {
@@ -245,9 +248,9 @@
 				}
 			});
 
-		});
+}	//	});
 
-	});
+	//});
 	</script>
 	<script type="text/javascript">	//updateEp - Ajax pour gerer le check des ep
 	function updateEp(id,type){
@@ -2164,7 +2167,7 @@
 					</div>
 				</td>
 				<td>
-					<a id="login" class="valid">
+					<a id="login" class="valid" onclick="logon();">
 						<img alt="" src="../img/checked.png" style="height:40px; width:35px;" />
 					</a>
 				</td>
@@ -2217,13 +2220,6 @@ for(var i = 0; i < btn.length; i++) {
 }
 
 
-for(var i = 0; i < valid.length; i++) {
-	valid[i].onclick= function() {
-		modal.style.display = "none";
-		user=document.getElementById("username").value;
-		password=document.getElementById("password").value;
-	}
-}
 
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
@@ -2413,15 +2409,6 @@ $('.taillemodifiable').keypress(function() {
 
 
 </body>
-
-
-
-
-
-
-
-
-
 <!--Au chargement de la page-->
 <?php	//Affichage du split selectionné du tableau des jobs
 $req="select split from tbljobs where id_tbljob=".$_GET['id_tbljob'];
@@ -2451,9 +2438,11 @@ else
 <script type="text/javascript">	<!--affichage par defaut des valeurs modifiable ou non / input class="cache/pascache"	-->
 	cachetruc();
 	showLogged("n");
+	logon();
 </script>
-
+<!--
 <a href="mailto:lastname.firstname@xxx.com
 ?subject=APPname%20support%20issue
 &body=Version%20x.x%0D%0A%0D%0APlease%20make%20some%20descriptions%20here:%0D%0A%0D%0A%0D%0A
 &attach=""Y:\BDD\Summary\45939-DataBDD.csv""">Clique ici pour m'envoyer un e-mail</a>
+-->

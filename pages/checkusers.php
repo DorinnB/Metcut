@@ -10,8 +10,17 @@
 		$req_technicien = $db->query($req);
 	
 		if (mysqli_num_rows($req_technicien)==0)	{
-			$maReponse = array('result' => 'Utilisateur inconnu');
-			echo json_encode($maReponse);
+
+			
+			if (isset($_COOKIE['id_user']))	{
+				$maReponse = array('result' => 'correct', 'id_technicien' => $_COOKIE['id_user'], 'technicien' => $_COOKIE['user']);
+				echo json_encode($maReponse);
+
+			}
+			else{
+				$maReponse = array('result' => 'Utilisateur inconnu');
+				echo json_encode($maReponse);	
+			}			
 		}
 		else	{
 			$tbl_technicien = mysqli_fetch_assoc($req_technicien);
@@ -26,6 +35,4 @@
 			}
 		}
 	}
-	
-
 ?>
