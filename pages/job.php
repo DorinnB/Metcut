@@ -9,10 +9,10 @@
 
 	<!--Calendrier	http://api.jqueryui.com/datepicker/	-->
 
-		<link rel="stylesheet" href="../css/jquery-ui.css" type="text/css" media="all" />
-		<link rel="stylesheet" href="../css/ui.theme.css" type="text/css" media="all" />
-		<script src="../jquery/jquery.min.js" type="text/javascript"></script>
-		<script src="../jquery/jquery-ui.min.js" type="text/javascript"></script>
+		<link rel="stylesheet" href="../jquery/jquery-ui-1.12.1.custom/jquery-ui.css" type="text/css" media="all" />
+		<link rel="stylesheet" href="../jquery/jquery-ui-1.12.1.custom/jquery-ui.theme.css" type="text/css" media="all" />
+		<script src="../jquery/jquery-3.1.1.min.js" type="text/javascript"></script>
+		<script src="../jquery/jquery-ui-1.12.1.custom/jquery-ui.min.js" type="text/javascript"></script>
 	   
 <!--ancien jquery avant calendrier	<script src="https://code.jquery.com/jquery-1.10.2.js"></script>	-->
 	
@@ -322,51 +322,6 @@
 	}
 
 
-	</script>
-	<script type="text/javascript">	//majConsigne - Ajax pour gerer la maj des consignes
-	function majConsigne(form){
-	src_not_checked="../img/not-checked.png"	
-		
-		var str = $("#"+form).serialize();
-
-			$.ajax({
-				type: "POST",
-				url: 'newEp.php',
-                data: str,
-                dataType: 'json', // JSON
-                success: function(json) {
-					for(var i in json){
-						obj = json[i];
-
-						if (obj=="update"){
-							//modifier l'icone de check en bas
-							document.getElementById("consigne_"+i).src = src_not_checked;
-						}
-						else if (obj=="no_update")	{
-							//on ne fait rien
-						}
-						else if (obj=="job-update")	{
-							//modif de donnes de job (consigne)
-							document.getElementById("consigne_"+i).style.backgroundColor = "#01DF74";
-							document.getElementById("consigne_"+i).style.backgroundImage = "repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(255,255,255,.5) 5px, rgba(255,255,255,.5) 10px)";
-						}
-						else if (obj=="job-no_update")	{
-							//on ne fait rien
-						}
-						else	{	//insertion d'ep
-							//alert("creation");	
-						}
-						
-					}									
-
-
-
-                }
-            });
-
-		
-
-	}
 	</script>
 	<script type="text/javascript">	//affichage ep soustraitances
 		function changeSTSplit(ST,id_job)
@@ -1210,7 +1165,7 @@
 								</li>
 								<li id="BoutonOnglet<?php echo $splitencours; ?>-1" style="float:right; display:none;">
 									<a href="#" class="logged pascache" onclick="checkUser();">Modification des Consignes</a>
-									<a href="#" class="cache" onclick="majConsigne('FormcontenuaOnglet<?php echo $splitencours; ?>-1');" class="toolbar">Maj Consignes</a>
+									<a href="#" class="cache" onclick="document.getElementById('FormcontenuaOnglet<?php echo $splitencours; ?>-1').submit();" class="toolbar">Maj Consignes</a>
 								</li>
 								<li id="BoutonOnglet<?php echo $splitencours; ?>-2" style="float:right; display:none;">
 									<a href="#" class="logged pascache" onclick="checkUser();">Modification des Eprouvettes</a>

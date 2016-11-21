@@ -1,7 +1,4 @@
-<?php
-	Require("../fonctions.php");
-	Connectionsql();
-?>
+
 <?php
 var_dump($_POST);
 
@@ -166,5 +163,10 @@ var_dump($_POST);
 	
 
 	
-echo json_encode($maReponse);
+//echo json_encode($maReponse);
+
+
+
+echo '<br/><br/><br/><br/><br/>CETTE PAGE EST SENCEE REVENIR SUR job.php?id_tbljob='.$id_tbljob.'<br/>
+	<a href="http://192.168.0.66/Metcut/pages/job.php?id_tbljob='.$id_tbljob.'">OpenClassrooms</a>';
 ?>
