@@ -180,7 +180,7 @@
 				modalNewTest.style.display = "block";
 				document.getElementById('eprouvettenewtest').innerHTML=nomep;
 				document.getElementById('id_eprouvettenewTest').value=id;
-
+				lstPoste(id);
 				
 		}
 	</script>
@@ -290,8 +290,6 @@
 			}
 		});
 	}
-
-
 	</script>
 	<script type="text/javascript">	//delEp - Ajax pour supprimer les ep
 	function delEp(id, numero, table){
@@ -320,8 +318,6 @@
 			}
 		});
 	}
-
-
 	</script>
 	<script type="text/javascript">	//affichage ep soustraitances
 		function changeSTSplit(ST,id_job)
@@ -440,7 +436,24 @@
 			numInsertRow=numInsertRow+1;	//numero d'ep inséré
 		}
 	</script>
+	<script type="text/javascript">	//lstPoste - Ajax pour récupérer les postes / split
+	function lstPoste(id_ep){
 	
+		$.ajax({
+			type: "POST",
+			url: 'lstPoste.php',
+			dataType: "json",
+			data: {
+				id_ep: id_ep,
+			},
+			success: function(data)	{
+				document.getElementById('poste').innerHTML = data['liste'];
+			}
+		});
+	}
+
+
+	</script>	
 	<style>
 	#onglets
 	{
@@ -705,6 +718,7 @@
 					FROM tbljobs 
 					WHERE id_tbljob='.$_GET['id_tbljob'].' 
 						AND tbljob_actif = 1)
+			AND split>0
 	';
 	//echo $req;
 	$query_nbep = $db->query($req);
@@ -720,6 +734,7 @@
 		WHERE t2.id_machine = t1.id_machine ) 
 		AND machines.machine_actif =1
 		ORDER BY machines.id_machine;';
+		
 	$req_postes = $db->query($req);
 	while ($w_postes = mysqli_fetch_array($req_postes)) {
 		$tbl_postes[]=$w_postes;
