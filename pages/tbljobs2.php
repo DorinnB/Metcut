@@ -38,7 +38,7 @@ $(document).ready( function () {
         } );
     } );
 
-	table.column(2)			//par defaut, on affiche pas les job fini (=100)
+	table.column(1)			//par defaut, on affiche pas les job fini (=100)
 			.search(
 				'^([0-9]|[1-9][0-9])$', 
 				true, 
@@ -110,10 +110,10 @@ function formfiltre(filtre)	{
 	padding : 0 10 0 10px;
 }
 </style>
-<div class="filtre"><span onclick="javascript:filtre('2','')">Reset</span></div>
-<div class="filtre"><span onclick="javascript:filtre('2','^100')">Job terminé</span></div>
-<div class="filtre"><span onclick="javascript:filtre('2','[2-5][0-9]')">en cours</span></div>
-<div class="filtre"><span onclick="javascript:filtre('5','^[^-]');filtre('2','[2-3][0-9]')">PQF</span></div>
+<div class="filtre"><span onclick="javascript:filtre('1','')">Reset</span></div>
+<div class="filtre"><span onclick="javascript:filtre('1','^100')">Job terminé</span></div>
+<div class="filtre"><span onclick="javascript:filtre('1','[2-5][0-9]')">en cours</span></div>
+<div class="filtre"><span onclick="javascript:filtre('4','^[^-]');filtre('1','^([0-9]|[1-9][0-9])$')">PQF</span></div>
 
 	
 	

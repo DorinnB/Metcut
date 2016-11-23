@@ -9,7 +9,7 @@
 			FROM postes 
 			LEFT JOIN machines ON machines.id_machine=postes.id_machine 
 			WHERE id_tbljob = ( 
-				SELECT id_tbljob 
+				SELECT id_job 
 				FROM eprouvettes 
 				WHERE id_eprouvette='.$_POST['id_ep'].'
 				) 
@@ -19,7 +19,7 @@
 
 		$req_lst = $db->query($req);
 
-	//	echo $req;
+		//echo $req;
 	$liste = "";
     $liste .= '<select name="poste" id="poste">'."\n";	
 

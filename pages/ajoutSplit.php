@@ -225,7 +225,7 @@ if (isset($_POST['info-checked']))	{	//type d'insertion (ajout, update, check)
 
 //echo '<script>window.location.replace("job.php?id_tbljob='.$numero_job.'");</script>';
 	echo '<br/><br/><br/><br/><br/>CETTE PAGE EST SENCEE REVENIR SUR job.php?id_tbljob='.$numero_job.'<br/>
-	<a href="http://192.168.0.66/Metcut/pages/job.php?id_tbljob='.$numero_job.'">OpenClassrooms</a>';
+	<a href="http://192.168.0.66/Metcut/pages/job.php?id_tbljob='.$numero_job.'">lien</a>';
 	}
 
 	else

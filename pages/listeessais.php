@@ -48,7 +48,6 @@ echo '
 <table class="liste">
 	<tr>
 		<th><a href="index.php?page=listeessais&tri=n_fichier'.$sensinv.$temps1.$cat.$val.$nburl.$avance.'#menu">n° Fichier</a>'.fsens("&tri=n_fichier", $tri, $sens).'</th>
-		<th><a href="index.php?page=listeessais&tri=control'.$sensinv.$temps1.$cat.$val.$nburl.$avance.'#menu">Control</a>'.fsens("&tri=control", $tri, $sens).'</th>
 		<th><a href="index.php?page=listeessais&tri=type_essai'.$sensinv.$temps1.$cat.$val.$nburl.$avance.'#menu">Type d\'Essai</a>'.fsens("&tri=type_essai", $tri, $sens).'</th>		
 		<th><a href="index.php?page=listeessais&tri=eprouvettes.temperature'.$sensinv.$temps1.$cat.$val.$nburl.$avance.'#menu">Température</a>'.fsens("&tri=eprouvettes.temperature", $tri, $sens).'</th>
 		<th><a href="index.php?page=listeessais&tri=n_job'.$sensinv.$temps1.$cat.$val.$nburl.$avance.'#menu">n° du Job</a>'.fsens("&tri=n_job", $tri, $sens).'</th>
@@ -65,11 +64,12 @@ echo '
 	</tr>';
 
 $sql_liste='	
-	SELECT jobs.id_job, n_fichier, control, type_essai, eprouvettes.temperature, n_client, n_job, indice, n_essai, prefixe, nom_eprouvette, machine, acquisition, enregistrementessais.date, tech1.technicien AS operateur, tech2.technicien AS controleur
+	SELECT tbljobs.id_tbljob, n_fichier, type_essai, eprouvettes.c_temperature, customer, job, split, n_essai, prefixe, nom_eprouvette, machine, acquisition, enregistrementessais.date, tech1.technicien AS operateur, tech2.technicien AS controleur
 	FROM enregistrementessais
 	LEFT JOIN eprouvettes ON enregistrementessais.id_eprouvette = eprouvettes.id_eprouvette
-	LEFT JOIN jobs ON eprouvettes.id_job = jobs.id_job
-	LEFT JOIN type_essais ON jobs.id_type_essai = type_essais.id_type_essai
+	LEFT JOIN tbljobs ON eprouvettes.id_job = tbljobs.id_tbljob
+    LEFT JOIN info_jobs ON info_jobs.id_info_job=tbljobs.id_info_job
+	LEFT JOIN type_essais ON tbljobs.id_type_essai = type_essais.id_type_essai
 	LEFT JOIN postes ON enregistrementessais.id_poste = postes.id_poste
 	LEFT JOIN machines ON postes.id_machine = machines.id_machine
 	LEFT JOIN outillages o1 ON postes.id_outillage_top = o1.id_outillage
@@ -77,8 +77,8 @@ $sql_liste='
 	LEFT JOIN extensometres ON postes.id_extensometre = extensometres.id_extensometre
 	LEFT JOIN chauffages ON postes.id_chauffage = chauffages.id_chauffage
 	LEFT JOIN acquisitions ON enregistrementessais.id_acquisition = acquisitions.id_acquisition
-	left outer join techniciens tech1 on enregistrementessais.id_operateur = tech1.id_technicien
-	left outer join techniciens tech2 on enregistrementessais.id_controleur = tech2.id_technicien
+	LEFT OUTER join techniciens tech1 ON enregistrementessais.id_operateur = tech1.id_technicien
+	LEFT OUTER join techniciens tech2 ON enregistrementessais.id_controleur = tech2.id_technicien
 	'.$filtre.' '.$filtreavance.'
 	ORDER BY '.$range.'
 	LIMIT '.$nb
@@ -88,14 +88,13 @@ $nbligne=0;
     $req_liste = $db->query($sql_liste) or die (mysql_error());
 	if ($req_liste) {
 		while ($tbl_liste = mysqli_fetch_array($req_liste)) {
-		$job=$tbl_liste['n_client'].'-'.$tbl_liste['n_job'].((isset($tbl_liste['indice']))? '-'.$tbl_liste['indice'] : "");
+		$job=$tbl_liste['customer'].'-'.$tbl_liste['job'].((isset($tbl_liste['split']))? '-'.$tbl_liste['split'] : "");
 		$nbligne++;
 			echo '<tr>
 				<td>'.$tbl_liste['n_fichier'].'</td>
-				<td><a href="index.php?page=listeessais&cat=control&val='.$tbl_liste['control'].$temps1.$tri.$sens.$avance.$nburl.'#menu">'.$tbl_liste['control'].'</a></td>
 				<td><a href="index.php?page=listeessais&cat=type_essai&val='.$tbl_liste['type_essai'].$temps1.$tri.$sens.$avance.$nburl.'#menu">'.$tbl_liste['type_essai'].'</a></td>
-				<td><a href="index.php?page=listeessais&cat=eprouvettes.temperature&val='.$tbl_liste['temperature'].$temps1.$tri.$sens.$avance.$nburl.'#menu">'.$tbl_liste['temperature'].'</a></td>
-				<td><a href="index.php?page=listeessais&cat=jobs.id_job&val='.$tbl_liste['id_job'].$temps1.$tri.$sens.$avance.$nburl.'#menu">'.$job.'</a></td>				
+				<td><a href="index.php?page=listeessais&cat=eprouvettes.temperature&val='.$tbl_liste['c_temperature'].$temps1.$tri.$sens.$avance.$nburl.'#menu">'.$tbl_liste['c_temperature'].'</a></td>
+				<td><a href="index.php?page=listeessais&cat=tbljobs.id_tbljob&val='.$tbl_liste['id_tbljob'].$temps1.$tri.$sens.$avance.$nburl.'#menu">'.$job.'</a></td>				
 				<td>'.$tbl_liste['n_essai'].'</td>
 				<td><a href="index.php?page=listeessais&cat=prefixe&val='.$tbl_liste['prefixe'].$temps1.$tri.$sens.$avance.$nburl.'#menu">'.$tbl_liste['prefixe'].'</a></td>
 				<td>'.$tbl_liste['nom_eprouvette'].'</td>

@@ -2264,10 +2264,7 @@ window.onclick = function(event) {
 						<?php		
 							$titreLigne='poste';	echo '<SELECT id="poste" name="'.$titreLigne.'"><option value="0">-</option>
 							';
-							for($k=0;$k < count($tbl_postes);$k++)	{
-								echo '<option value="'.$tbl_postes[$k]['id_'.$titreLigne].'">'.$tbl_postes[$k]['machine'].'</option>
-								';	
-							}
+							
 							echo '</select>
 							';
 						?>

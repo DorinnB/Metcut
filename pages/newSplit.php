@@ -81,7 +81,12 @@
 
 		if($_GET['id_tbljob']==0)	{								//creation, avec modif
 				//on supprimer "job" du 8000-00000 pour avoir un champ vide
-			$tbl_tbljobs['job']="";	
+			$tbl_tbljobs['job']="";	//trouver le max
+			
+			$req='select max(job) from info_jobs';
+					$req_num_job = $db->query($req);
+					$tbl_tbljobs['job']=mysqli_fetch_array($req_num_job)[0]+1;
+			
 			$tbl_tbljobs['id_info_job']="";		
 			$checked=0;
 		}
