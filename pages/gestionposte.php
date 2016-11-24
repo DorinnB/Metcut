@@ -5,7 +5,11 @@ if (isset($_POST['modifposte']) AND $_POST['modifposte']="1")	{
 			//Enregistrement du nouveau poste
 	$ajoutposte='INSERT INTO postes (id_machine, id_tbljob, id_enregistreur, id_outillage_top, id_outillage_bot, id_extensometre, cartouche_load, cartouche_stroke, cartouche_strain, id_chauffage, id_ind_temp_top, id_ind_temp_strap, id_ind_temp_bot, compresseur)
 	VALUES ('.$id_machine.','.$id_tbljob.', '.$id_enregistreur.', '.$id_outillage_top.', '.$id_outillage_bot.', '.$id_extensometre.', "'.$cartouche_load.'", "'.$cartouche_stroke.'", "'.$cartouche_strain.'", '.$id_chauffage.', '.$id_ind_temp_top.', '.$id_ind_temp_strap.', '.$id_ind_temp_bot.', '.$compresseur.')';
+	
+//	echo $ajoutposte;
+	//exit();
 	$db->query($ajoutposte);
+	
 	header("Location: index.php?page=gestionposte");
 }
 ?>
@@ -97,7 +101,7 @@ if (isset($_POST['id_poste']) AND $_POST['id_poste']!="-")	{
 								$cartouchearray=mysqli_fetch_assoc($req_enum);
 								$cartouche=explode(',',str_replace(array ("'", "enum(",')'),"",$cartouchearray['Type']));
 
-								echo '<select name="'.$titresql[$i].'"><option value="-">-</option>';
+								echo '<select name="'.$titresql[$i].'"><option value="0">-</option>';
 								Foreach ($cartouche as $c) {
 									if ($tbl_poste[$titresql[$i]] == $c) {
 										echo '<option value="'.$c.'" selected>'.$c.'</option>';
