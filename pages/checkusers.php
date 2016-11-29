@@ -13,9 +13,18 @@
 
 			
 			if (isset($_COOKIE['id_user']))	{
-				$maReponse = array('result' => 'correct', 'id_technicien' => $_COOKIE['id_user'], 'technicien' => $_COOKIE['user']);
-				echo json_encode($maReponse);
-
+				$req='SELECT * FROM techniciens WHERE id_technicien='.$_COOKIE['id_user'];
+				$req_technicien = $db->query($req);
+				$tbl_technicien = mysqli_fetch_assoc($req_technicien);
+				
+				if ($_COOKIE['password']==$tbl_technicien['mdp'])	{
+					$maReponse = array('result' => 'correct', 'id_technicien' => $tbl_technicien['id_technicien'], 'technicien' => $tbl_technicien['technicien']);
+					echo json_encode($maReponse);
+				}
+				else	{
+					$maReponse = array('result' => 'Password incorrect');
+					echo json_encode($maReponse);
+				}
 			}
 			else{
 				$maReponse = array('result' => 'Utilisateur inconnu');
