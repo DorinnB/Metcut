@@ -164,8 +164,9 @@ global $MIN;
 
 
 	If (($R != "") And ($A == ""))	{
-		If ($R == -1)
-			ECHO "A = Infini";
+		If ($R == -1){
+		//ECHO "A = Infini";
+		}
 		Else
 			$A = (1 - $R) / (1 + $R);
 	}

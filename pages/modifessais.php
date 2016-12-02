@@ -1,14 +1,14 @@
-<?php		//mémorisation du job en temporaire pour les requetes liées (machines, acquisitions ...)
+<?php		//mÃ©morisation du job en temporaire pour les requetes liÃ©es (machines, acquisitions ...)
 
 $_POST['modif'] = (isset($_POST['edit']))? $_POST['edit'] : $_POST['modif'] ;
-$req_essai = mysql_query('
+$req_essai = $db->query('
 		SELECT n_fichier, id_type_essai, eprouvettes.temperature, eprouvettes.id_job, n_essai, eprouvettes.id_eprouvette, prefixe, id_poste, id_acquisition, enregistrementessais.date, id_operateur, id_controleur
 		FROM enregistrementessais
 		LEFT JOIN eprouvettes ON enregistrementessais.id_eprouvette = eprouvettes.id_eprouvette
 		LEFT JOIN jobs ON eprouvettes.id_job = jobs.id_job
 		WHERE n_fichier ='.$_POST['modif'].'
 		;') or die (mysql_error());
-$tbl_essai = mysql_fetch_assoc($req_essai);
+$tbl_essai = mysqli_fetch_assoc($req_essai);
 	
 if(isset($_POST['edit']))	{
 
@@ -32,29 +32,29 @@ if(isset($_POST['edit']))	{
 
 
 
-/!\ vous etes en train de modifier l'essai n° <?php echo $_POST['modif']; ?> !<br/><br/>
+/!\ vous etes en train de modifier l'essai nÂ° <?php echo $_POST['modif']; ?> !<br/><br/>
 
 <form method="post" name="modifessais"> 
 <table class="enregistrementessais">
 	<tr>
-		<th>Contrôle</th>
+		<th>ContrÃ´le</th>
 		<th>Type</th>
-		<th>Température</th>
-		<th>n° du Job</th>
-		<th>Préfixe</th>
+		<th>TempÃ©rature</th>
+		<th>nÂ° du Job</th>
+		<th>PrÃ©fixe</th>
 		<th>Eprouvette</th>
 		<th>Machine</th>
 		<th>Acquisition</th>
 		<th>Date</th>
-		<th>Opérateur</th>
+		<th>OpÃ©rateur</th>
 		<th>Controleur</th>
 	</tr>
 	<tr>
 		<td>	<!--Mode de controle-->
 <?php
-    $req_type = mysql_query('SELECT type_essai, Control FROM jobs LEFT JOIN type_essais ON jobs.id_type_essai=type_essais.id_type_essai WHERE id_job = '.$jobtemp.';') or die (mysql_error());
+    $req_type = $db->query('SELECT type_essai, Control FROM jobs LEFT JOIN type_essais ON jobs.id_type_essai=type_essais.id_type_essai WHERE id_job = '.$jobtemp.';') or die (mysql_error());
 	if ($req_type) {
-		$tbl_type = mysql_fetch_assoc($req_type);
+		$tbl_type = mysqli_fetch_assoc($req_type);
 		echo $tbl_type['Control'];
 	}
 ?>		
@@ -64,22 +64,22 @@ if(isset($_POST['edit']))	{
 		echo $tbl_type['type_essai'];
 ?>			
 		</td>		
-		<td>	<!--Température d'essais-->
+		<td>	<!--TempÃ©rature d'essais-->
 <?php
-    $req_temperature = mysql_query('SELECT temperature FROM eprouvettes WHERE id_eprouvette = '.$eprouvettetemp.';') or die (mysql_error());
+    $req_temperature = $db->query('SELECT c_temperature FROM eprouvettes WHERE id_eprouvette = '.$eprouvettetemp.';') or die (mysql_error());
 	if ($req_temperature) {
-		$tempe= mysql_result($req_temperature,0);
-		if ($tempe=="")
+		$tempe= mysqli_fetch_assoc($req_temperature);
+		if ($tempe['c_temperature']=="")
 			echo '';
 		else
-			echo $tempe.'°C';
+			echo $tempe['c_temperature'].'Â°C';
 	}
 ?>		
 		</td>
 		<td>	<!--Job-->
 		<select name="job" onchange="document.modifessais.submit()">		
 <?php
-    $req_job = mysql_query("SELECT jobs.id_job, n_client, n_job, indice, id_type_essai
+    $req_job = $db->query("SELECT jobs.id_job, n_client, n_job, indice, id_type_essai
 							FROM jobs
 							WHERE job_actif =1
 							AND termine IS NULL
@@ -87,7 +87,7 @@ if(isset($_POST['edit']))	{
 							ORDER BY n_job ASC , indice ASC;") or die (mysql_error());
   if ($req_job) {
     echo '<option value="-">-</option>';
-    while ($tbl_job = mysql_fetch_assoc($req_job)) {
+    while ($tbl_job = mysqli_fetch_assoc($req_job)) {
 		if (isset($tbl_job['indice']))		//groupement du nom du job avec ou sans indice
 			$jobcomplet= $tbl_job['n_client'].'-'.$tbl_job['n_job'].'-'.$tbl_job['indice'];
 		else
@@ -103,7 +103,7 @@ if(isset($_POST['edit']))	{
 		</select></td>
 		<td>	<!--Prefixe-->
 <?php
-    $req_prefixe = mysql_query('SELECT prefixe FROM eprouvettes
+    $req_prefixe = $db->query('SELECT prefixe FROM eprouvettes
 	LEFT JOIN jobs ON eprouvettes.id_job = jobs.id_job
 	WHERE eprouvette_actif =1 
 	AND assigne IS NULL
@@ -111,20 +111,20 @@ if(isset($_POST['edit']))	{
 	OR (jobs.id_job='.$jobtemp.' AND id_eprouvette='.$tbl_essai['id_eprouvette'].')
 	GROUP BY prefixe;') or die (mysql_error());
 	if ($req_prefixe) {
-		$num_prefixe = mysql_num_rows($req_prefixe);
+		$num_prefixe = mysqli_num_rows($req_prefixe);
 
-		if ($num_prefixe == 1)	{		// 1 seul préfixe
-			$prefixeunique = mysql_result($req_prefixe,0);
-			echo $prefixeunique;
-			echo '<input type="hidden" name="prefixe" value="'.$prefixeunique.'">';
-			if ($prefixeunique =="")
-				$prefixetemp=' is null';
+		if ($num_prefixe == 1)	{		// 1 seul prÃ©fixe
+			$prefixeunique = mysqli_fetch_assoc($req_prefixe);
+			echo $prefixeunique['prefixe'];
+			echo '<input type="hidden" name="prefixe" value="'.$prefixeunique['prefixe'].'">';
+			if ($prefixeunique['prefixe'] =="")
+				$prefixeunique['prefixe']=' is null';
 			else
-				$prefixetemp='= "'.mysql_result($req_prefixe,0).'"';
+				$prefixeunique['prefixe']='= "'.mysqli_fetch_assoc($req_prefixe).'"';
 		}
-		else if ($num_prefixe > 1)	{	// Plusieurs préfixe
+		else if ($num_prefixe > 1)	{	// Plusieurs prÃ©fixe
 			echo '<select name="prefixe" onchange="document.modifessais.submit()"><option value="-">-</option>';
-				while ($tbl_prefixe = mysql_fetch_assoc($req_prefixe)) {
+				while ($tbl_prefixe = mysqli_fetch_assoc($req_prefixe)) {
 					if ($_POST['prefixe'] == $tbl_prefixe['prefixe']) {
 						echo '<option value="'.$tbl_prefixe['prefixe'].'" selected>'.$tbl_prefixe['prefixe'].'</option>';
 					} else {
@@ -145,7 +145,7 @@ if(isset($_POST['edit']))	{
 		<td>	<!--Eprouvette-->
 			<select name="eprouvette" onchange="document.modifessais.submit()">
 <?php
-    $req_ep = mysql_query('SELECT id_eprouvette, nom_eprouvette, job_commentaire
+    $req_ep = $db->query('SELECT id_eprouvette, nom_eprouvette, job_commentaire
 			FROM eprouvettes
 			LEFT JOIN jobs ON eprouvettes.id_job = jobs.id_job
 			WHERE eprouvette_actif =1
@@ -155,7 +155,7 @@ if(isset($_POST['edit']))	{
 			OR (jobs.id_job='.$jobtemp.' AND prefixe '.$prefixetemp.' AND id_eprouvette='.$tbl_essai['id_eprouvette'].') ;') or die (mysql_error());
 	if ($req_ep) {
 		echo '<option value="-">-</option>';
-		while ($tbl_eprouvette = mysql_fetch_assoc($req_ep)) {
+		while ($tbl_eprouvette = mysqli_fetch_assoc($req_ep)) {
 			
 			if ($_POST['eprouvette'] == $tbl_eprouvette['id_eprouvette']) {
 				echo '<option value="'.$tbl_eprouvette['id_eprouvette'].'" selected>'.$tbl_eprouvette['nom_eprouvette'].'</option>';
@@ -169,7 +169,7 @@ if(isset($_POST['edit']))	{
 		<td>	<!--Machine-->
 		<select name="poste" onchange="document.modifessais.submit()">
 <?php
-    $req_poste = mysql_query('SELECT t1.id_poste, t1.id_machine, machines.machine
+    $req_poste = $db->query('SELECT t1.id_poste, t1.id_machine, machines.machine
 		FROM postes t1
 		LEFT JOIN machines ON machines.id_machine = t1.id_machine
 		WHERE t1.id_poste = ( 
@@ -180,8 +180,8 @@ if(isset($_POST['edit']))	{
 		ORDER BY machines.id_machine;') or die (mysql_error());
 	if ($req_poste) {
 		echo '<option value="-">-</option>';
-		//recup des postes/machines des essais précédent sur ce job
-		$req_machinejob = mysql_query('SELECT postes.id_poste, machines.id_machine, machines.machine
+		//recup des postes/machines des essais prÃ©cÃ©dent sur ce job
+		$req_machinejob = $db->query('SELECT postes.id_poste, machines.id_machine, machines.machine
 			FROM postes
 			LEFT JOIN machines ON postes.id_machine = machines.id_machine
 			LEFT JOIN enregistrementessais ON enregistrementessais.id_poste = postes.id_poste
@@ -189,7 +189,7 @@ if(isset($_POST['edit']))	{
 			LEFT JOIN jobs ON eprouvettes.id_job = jobs.id_job
 			WHERE jobs.id_job ='.$jobtemp.'
 			GROUP BY postes.id_poste;') or die (mysql_error());
-		while ($tbl_machinejob = mysql_fetch_assoc($req_machinejob)) {
+		while ($tbl_machinejob = mysqli_fetch_assoc($req_machinejob)) {
 			if ($_POST['poste'] == $tbl_machinejob['id_poste']) {
 				echo '<option class="formdefaut" value="'.$tbl_machinejob['id_poste'].'" selected>'.$tbl_machinejob['machine'].'</option>';
 			} else {
@@ -198,7 +198,7 @@ if(isset($_POST['edit']))	{
 		}
 		echo '<option value="-">---------</option>';
 		//affichage de toutes les machines avec le dernier indice de poste
-		while ($tbl_poste = mysql_fetch_assoc($req_poste)) {
+		while ($tbl_poste = mysqli_fetch_assoc($req_poste)) {
 			
 			if ($_POST['poste'] == $tbl_poste['id_poste']) {
 				echo '<option value="'.$tbl_poste['id_poste'].'" selected>'.$tbl_poste['machine'].'</option>';
@@ -212,17 +212,17 @@ if(isset($_POST['edit']))	{
 		<td>	<!--Acquisition-->
 		<select name="acquisition" onchange="document.modifessais.submit()">
 <?php
-    $req_acquisition = mysql_query('SELECT id_acquisition, acquisition FROM acquisitions WHERE acquisition_actif=1;') or die (mysql_error());
+    $req_acquisition = $db->query('SELECT id_acquisition, acquisition FROM acquisitions WHERE acquisition_actif=1;') or die (mysql_error());
 	if ($req_acquisition) {
 		echo '<option value="-">-</option>';
 		
-		$req_acquisitionjob = mysql_query('SELECT acquisitions.id_acquisition, acquisitions.acquisition FROM enregistrementessais LEFT JOIN acquisitions ON enregistrementessais.id_acquisition = acquisitions.id_acquisition LEFT JOIN eprouvettes ON enregistrementessais.id_eprouvette = eprouvettes.id_eprouvette LEFT JOIN jobs ON eprouvettes.id_job = jobs.id_job WHERE jobs.id_job ='.$jobtemp.' GROUP BY acquisitions.id_acquisition;') or die (mysql_error());
-		while ($tbl_acquisitionjob = mysql_fetch_assoc($req_acquisitionjob)) {
+		$req_acquisitionjob = $db->query('SELECT acquisitions.id_acquisition, acquisitions.acquisition FROM enregistrementessais LEFT JOIN acquisitions ON enregistrementessais.id_acquisition = acquisitions.id_acquisition LEFT JOIN eprouvettes ON enregistrementessais.id_eprouvette = eprouvettes.id_eprouvette LEFT JOIN jobs ON eprouvettes.id_job = jobs.id_job WHERE jobs.id_job ='.$jobtemp.' GROUP BY acquisitions.id_acquisition;') or die (mysql_error());
+		while ($tbl_acquisitionjob = mysqli_fetch_assoc($req_acquisitionjob)) {
 			echo '<option class="formdefaut" value="'.$tbl_acquisitionjob['id_acquisition'].'">'.$tbl_acquisitionjob['acquisition'].'</option>';
 		}
 		echo '<option value="-">---------</option>';
 	
-		while ($tbl_acquisition = mysql_fetch_assoc($req_acquisition)) {
+		while ($tbl_acquisition = mysqli_fetch_assoc($req_acquisition)) {
 			
 			if ($_POST['acquisition'] == $tbl_acquisition['id_acquisition']) {
 				echo '<option value="'.$tbl_acquisition['id_acquisition'].'" selected>'.$tbl_acquisition['acquisition'].'</option>';
@@ -242,13 +242,13 @@ if(isset($_POST['edit']))	{
 			echo date("d M Y");	
 		?>">/!\ pb de date fr/en. Jui au lieu de Jul
 		</td>
-		<td>	<!--Opérateur-->
+		<td>	<!--OpÃ©rateur-->
 		<select name="operateur" onchange="document.modifessais.submit()">
 <?php
-    $req_operateur = mysql_query('SELECT id_technicien, technicien FROM techniciens WHERE technicien_actif=1 ORDER BY technicien;') or die (mysql_error());
+    $req_operateur = $db->query('SELECT id_technicien, technicien FROM techniciens WHERE technicien_actif=1 ORDER BY technicien;') or die (mysql_error());
 	if ($req_operateur) {
 		echo '<option value="-">-</option>';
-		while ($tbl_operateur = mysql_fetch_assoc($req_operateur)) {
+		while ($tbl_operateur = mysqli_fetch_assoc($req_operateur)) {
 			
 			if ($_POST['operateur'] == $tbl_operateur['id_technicien']) {
 				echo '<option value="'.$tbl_operateur['id_technicien'].'" selected>'.$tbl_operateur['technicien'].'</option>';
@@ -262,10 +262,10 @@ if(isset($_POST['edit']))	{
 		<td>	<!--Controleur-->
 		<select name="controleur" onchange="document.modifessais.submit()">
 <?php
-    $req_controleur = mysql_query('SELECT id_technicien, technicien FROM techniciens WHERE technicien_actif=1 ORDER BY technicien;') or die (mysql_error());
+    $req_controleur = $db->query('SELECT id_technicien, technicien FROM techniciens WHERE technicien_actif=1 ORDER BY technicien;') or die (mysql_error());
 	if ($req_controleur) {
 		echo '<option value="-">-</option>';
-		while ($tbl_controleur = mysql_fetch_assoc($req_controleur)) {
+		while ($tbl_controleur = mysqli_fetch_assoc($req_controleur)) {
 			
 			if ($_POST['controleur'] == $tbl_controleur['id_technicien']) {
 				echo '<option value="'.$tbl_controleur['id_technicien'].'" selected>'.$tbl_controleur['technicien'].'</option>';
@@ -281,17 +281,17 @@ if(isset($_POST['edit']))	{
 	<input type="hidden" name="modif" value="<?php echo $_POST['modif'];	?>">
 </form>
 
-<?php	//affichage tableau récapitulatif du poste
+<?php	//affichage tableau rÃ©capitulatif du poste
 if (isset($_POST['poste']) AND $_POST['poste']!='-')	{
 	?>
 	<div id="poste">
 		<table class="poste">
-			<CAPTION>Récapitulatif du poste</CAPTION>
+			<CAPTION>RÃ©capitulatif du poste</CAPTION>
 			<tr>
 				<th>Cartouche Stroke (mm)</th><th>Cartouche Load (kN)</th><th>Cartouche Strain (%)</th><th>Enregistreur</th><th>Extensometre</th><th>Outillage Top</th><th>Outillage Bot</th><th>Chauffage</th><th>Ind. Temp Top</th><th>Ind. Temp Strap</th><th>Ind. Temp Bot</th><th>Compresseur</th>
 			</tr>
 			<?php 
-				$req_historique = mysql_query('SELECT cartouche_stroke, cartouche_load, cartouche_strain, enregistreur, extensometre, o1.outillage as outillage_top, o2.outillage as outillage_bot, chauffage, i1.ind_temp as ind_temp_top, i2.ind_temp as ind_temp_strap, i3.ind_temp as ind_temp_bot,  IF( compresseur = 1,  "&#10004;",  "" ) as compresseur, date
+				$req_historique = $db->query('SELECT cartouche_stroke, cartouche_load, cartouche_strain, enregistreur, extensometre, o1.outillage as outillage_top, o2.outillage as outillage_bot, chauffage, i1.ind_temp as ind_temp_top, i2.ind_temp as ind_temp_strap, i3.ind_temp as ind_temp_bot,  IF( compresseur = 1,  "&#10004;",  "" ) as compresseur, date
 				FROM postes 
 				LEFT JOIN enregistreurs ON enregistreurs.id_enregistreur=postes.id_enregistreur
 				LEFT JOIN extensometres ON extensometres.id_extensometre=postes.id_extensometre
@@ -303,7 +303,7 @@ if (isset($_POST['poste']) AND $_POST['poste']!='-')	{
 				LEFT JOIN ind_temps i3 ON i3.id_ind_temp = postes.id_ind_temp_bot
 				WHERE id_poste='.$_POST['poste'].' ORDER BY date DESC LIMIT 0,5') or die (mysql_error());
 				if ($req_historique) {
-					while ($tbl_historique = mysql_fetch_assoc($req_historique)) {
+					while ($tbl_historique = mysqli_fetch_assoc($req_historique)) {
 						$titresql=array('cartouche_stroke', 'cartouche_load', 'cartouche_strain', 'enregistreur', 'extensometre','outillage_top', 'outillage_bot', 'chauffage', 'ind_temp_top', 'ind_temp_strap', 'ind_temp_bot', 'compresseur');
 						echo'<tr>';
 						for($i=0; $i<count($titresql); $i++){
@@ -320,7 +320,7 @@ if (isset($_POST['poste']) AND $_POST['poste']!='-')	{
 ?>
 
 
-<?php	//Verification des données avant envoi
+<?php	//Verification des donnÃ©es avant envoi
 extract($_POST);
 
 $ok=1;
@@ -349,7 +349,7 @@ $month=array (
 'Dec'=> '12'
 );
 $mois=$month[$moisUS];			//Transformation du mois "US" en chiffre
-$date=date("Y-m-j",mktime(0, 0, 0, $mois, $jour, $annee)); // transformation de la date pret à etre envoyé à MYSQL
+$date=date("Y-m-j",mktime(0, 0, 0, $mois, $jour, $annee)); // transformation de la date pret Ã  etre envoyÃ© Ã  MYSQL
 
 	list($jour2, $mois2, $annee2) = explode('/', date("d/m/Y"));
 	
@@ -360,11 +360,11 @@ $date=date("Y-m-j",mktime(0, 0, 0, $mois, $jour, $annee)); // transformation de 
 		$timestamp2 = mktime(0,0,0,$mois2,$jour2,$annee2); 
 		$ecart = ($timestamp1 - $timestamp2)/86400;			//Ecart entre la date d'essai et aujourdhui (mais non bloquant)
 		if($ecart<0)	{
-			echo '<div id="ErreurFormulaire2">Date antérieur à aujourdhui</div>';
+			echo '<div id="ErreurFormulaire2">Date antÃ©rieur Ã  aujourdhui</div>';
 
 		}
 		if($ecart>15)	{
-			echo '<div id="ErreurFormulaire2">Attention, date supérieur à 15 jours</div>';
+			echo '<div id="ErreurFormulaire2">Attention, date supÃ©rieur Ã  15 jours</div>';
 
 		}
 	}
@@ -375,13 +375,13 @@ $date=date("Y-m-j",mktime(0, 0, 0, $mois, $jour, $annee)); // transformation de 
 }	else	$ok=0;
 
 
-if(isset($operateur) and $operateur!="-")	{	//Check des opérateur/controleur
+if(isset($operateur) and $operateur!="-")	{	//Check des opÃ©rateur/controleur
 	if(isset($controleur) and $controleur!="-")	{
 		if(($controleur!=$operateur))
 			$ok=$ok*1;
 		else	{
 			$ok=0;
-			echo '<div id="ErreurFormulaire">Veuillez choisir un controleur différent de l\'opérateur<br/></div>';
+			echo '<div id="ErreurFormulaire">Veuillez choisir un controleur diffÃ©rent de l\'opÃ©rateur<br/></div>';
 		}
 	}	else	$ok=0;
 }	else	$ok=0;
