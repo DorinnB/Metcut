@@ -60,29 +60,7 @@ function est_assigne($val) {
 	return $color;
 }	
 
-function nb_dim($format){
-	global $denomination;
-	if ($format=="Cylindrique")	{
-		$denomination=array("Diam.");
-		return 1;
-	}
-	elseif ($format=="tube")	{
-		$denomination=array("OD","ID");
-		return 2;
-	}
-	elseif ($format=="Plate")	{
-		$denomination=array("Largeur","Epaisseur");
-		return 2;
-	}
-	elseif ($format=="Plate Percée")	{
-		$denomination=array("Largeur","Epaisseur","ø trou");
-		return 3;
-	}
-	else	{
-		$denomination=array("rien");
-		return 1;
-	}
-}
+
 
 
 
@@ -141,6 +119,8 @@ function niveaumaxmin($consigne_type_1, $consigne_type_2, $consigne_type_1_val, 
 
 global $MAX;
 global $MIN;
+global $R;
+global $A;
 	
 	$R="";
 	$R=($consigne_type_1=="R")?$consigne_type_1_val:$R;
@@ -165,7 +145,7 @@ global $MIN;
 
 	If (($R != "") And ($A == ""))	{
 		If ($R == -1){
-		//ECHO "A = Infini";
+		$A = 'Infini';
 		}
 		Else
 			$A = (1 - $R) / (1 + $R);
@@ -231,9 +211,61 @@ global $MIN;
 			$MEAN = $ALT - $MIN;
 			$MAX = $MEAN + $ALT;
 		}
+		
+		
+		If (($MAX != 0)||($MAX != ""))
+			$R= $MIN / $MAX;
+		Else
+			$R = 'Infini';
+		If ($R == -1)
+			$A = 'Infini';
+		Else
+			$A = (1 - $R) / (1 + $R);
 	}
 
 	
 }
 
+function nb_dim($format){
+	global $denomination;
+	if ($format=="Cylindrique")	{
+		$denomination=array("Diam.");
+		return 1;
+	}
+	elseif ($format=="tube")	{
+		$denomination=array("OD","ID");
+		return 2;
+	}
+	elseif ($format=="Plate")	{
+		$denomination=array("Largeur","Epaisseur");
+		return 2;
+	}
+	elseif ($format=="Plate Percée")	{
+		$denomination=array("Largeur","Epaisseur","ø trou");
+		return 3;
+	}
+	else	{
+		$denomination=array("rien");
+		return 1;
+	}
+}
+
+function area($format,$dim1,$dim2,$dim3){
+	if ($format=="Cylindrique")	{
+		return ($dim1*$dim1*pi()/4);
+	}
+	elseif ($format=="tube")	{
+		return ($dim1*$dim1*pi()/4)-($dim2*$dim2*pi()/4);
+	}
+	elseif ($format=="Plate")	{
+		return ($dim1*$dim2);
+	}
+	elseif ($format=="Plate Percée")	{
+		$denomination=array("Largeur","Epaisseur","ø trou");
+		return ($dim1*$dim2-$dim3*$dim2);
+	}
+	else	{
+		return "";
+	}
+}
 ?>

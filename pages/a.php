@@ -1,8 +1,8 @@
  <?php
  if (isset($_GET['id_user'])){
-setcookie("id_user", $_GET['id_user'], time() + (86400 * 1), "/"); //1jours
-setcookie("password", $_GET['password'], time() + (86400 * 1), "/"); //1jours
-setcookie("machine", $_GET['machine'], time() + (86400 * 1), "/"); //1jours
+setcookie("id_user", $_GET['id_user'], time() + (86400 * 100), "/"); //100jours
+setcookie("password", $_GET['password'], time() + (86400 * 100), "/"); //100jours
+setcookie("machine", $_GET['machine'], time() + (86400 * 100), "/"); //100jours
  }
 ?>
 <?php
