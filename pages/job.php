@@ -1487,7 +1487,7 @@
 																echo '<a class="pascache" href="file:///[ENREGISTREMENT ESSAI]'.$liste_ep[$k]['id_eprouvette'].'" onclick="newTest('.$liste_ep[$k]['id_eprouvette'].',\''.$liste_ep[$k]['nom_eprouvette'].'\');">'.$liste_ep[$k]['nom_eprouvette'].'</a>';
 															}
 															else{
-																	echo '<a class="pascache" href="file:///[NE MARCHE PAS]I:/Trans/'.$liste_ep[$k]['id_eprouvette'].'">'.$liste_ep[$k]['nom_eprouvette'].'</a>';
+																	echo '<a class="pascache" href="creationfeuilleessai.php?n_fichier='.$liste_ep[$k]['n_fichier'].'">'.$liste_ep[$k]['nom_eprouvette'].'</a>';
 															}
 															echo '
 															<INPUT id="'.$splitencours.'-1_'.$k.'-nom_eprouvette" name="'.$k.'-nom_eprouvette" value="'.$liste_ep[$k]['nom_eprouvette'].'" class="cache">
@@ -1496,6 +1496,27 @@
 														}
 														echo '</tr>';
 
+$titreLigne='Restart';
+echo '<tr><td name="'.$titreLigne.'">Restart</td>';	
+FOR($j=0;$j < count($liste_ep);$j++){
+
+	
+	
+	echo '<td bgcolor="'.est_assigne($liste_ep[$j]['assigne']).'">
+		<a class="pascache">';
+		if ($liste_ep[$j]['heritage']!="")	{
+			if(isset($lst_heritage[$liste_ep[$j]['heritage']]))
+				$lst_heritage[$liste_ep[$j]['heritage']]=$lst_heritage[$liste_ep[$j]['heritage']]+1;
+			else
+				$lst_heritage[$liste_ep[$j]['heritage']]=1;
+			
+			echo 'Restart - '.$lst_heritage[$liste_ep[$j]['heritage']];
+		}
+		echo '
+		</a>
+	</td>';
+}
+echo '</tr>';
 
 
 														$titreLigne='n_essai';	echo '<tr><td>'.$convTitre[$titreLigne].'</td>';	FOR($j=0;$j < count($liste_ep);$j++){echo '<td bgcolor="'.est_assigne($liste_ep[$j]['assigne']).'">'.$liste_ep[$j][$titreLigne].'</td>';}	echo '</tr>';

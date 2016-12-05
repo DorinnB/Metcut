@@ -19,7 +19,7 @@ $(document).ready( function () {
 
 <form action="index.php?page=tbljobs_maj" method="POST">
     <div>
-        	<button type="submit">Mise à jour des données</button>
+        	<button type="submit">Mise Ã  jour des donnÃ©es</button>
     </div>
 
 <?php
