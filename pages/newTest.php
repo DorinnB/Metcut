@@ -62,5 +62,6 @@ if ( $req_verif->num_rows > 0 )	{
 	echo '<br/>';
 	echo 'n° de fichier : '.$n_fichier;
 	echo '</div>';
+	echo '<a class="pascache" href="creationfeuilleessai.php?n_fichier='.$n_fichier.'">Génération de la FT-'.$n_fichier.'</a>';
 	
 	?>
