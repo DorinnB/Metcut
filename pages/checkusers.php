@@ -10,7 +10,6 @@
 		$req_technicien = $db->query($req);
 	
 		if (mysqli_num_rows($req_technicien)==0)	{
-
 			
 			if (isset($_COOKIE['id_user']))	{
 				$req='SELECT * FROM techniciens WHERE id_technicien='.$_COOKIE['id_user'];

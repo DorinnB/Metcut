@@ -140,8 +140,8 @@ global $A;
 	$ALT="";
 	$ALT=($consigne_type_1=="Alt")?$consigne_type_1_val:$ALT;
 	$ALT=($consigne_type_2=="Alt")?$consigne_type_2_val:$ALT;
-
-
+		$ALT=($consigne_type_1=="Range")?$consigne_type_1_val/2:$ALT;
+		$ALT=($consigne_type_2=="Range")?$consigne_type_2_val/2:$ALT;
 
 	If (($R != "") And ($A == ""))	{
 		If ($R == -1){
@@ -232,7 +232,7 @@ function nb_dim($format){
 		$denomination=array("Diam.");
 		return 1;
 	}
-	elseif ($format=="tube")	{
+	elseif ($format=="Tube")	{
 		$denomination=array("OD","ID");
 		return 2;
 	}
@@ -254,7 +254,7 @@ function area($format,$dim1,$dim2,$dim3){
 	if ($format=="Cylindrique")	{
 		return ($dim1*$dim1*pi()/4);
 	}
-	elseif ($format=="tube")	{
+	elseif ($format=="Tube")	{
 		return ($dim1*$dim1*pi()/4)-($dim2*$dim2*pi()/4);
 	}
 	elseif ($format=="Plate")	{

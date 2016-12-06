@@ -9,7 +9,7 @@ if (isset($_GET['n_fichier']) AND $_GET['n_fichier']!="" AND $_GET['n_fichier']>
 			customer, job, split, n_essai, n_fichier, DATE_FORMAT(enregistrementessais.date,"%d %b %Y") as date, t1.technicien as operateur, t2.technicien as controleur, eprouvettes.c_temperature, c_frequence, eprouvettes.waveform, c_cycle_STL, c_Frequence_STL, runout, type_essai,
 			c_type_1_val,c_type_2_val,
 			type1.consigne_type as c_type_1, type2.consigne_type as c_type_2, c_unite,
-			Lo, type, dim_1, dim_2, dim_3, Cycle_min
+			Lo, type, dim_1, dim_2, dim_3, Cycle_min, tbljobs.waveform as c_waveform
 			FROM enregistrementessais
 			LEFT JOIN eprouvettes ON enregistrementessais.id_eprouvette = eprouvettes.id_eprouvette
 			LEFT JOIN tbljobs ON eprouvettes.id_job = tbljobs.id_tbljob
@@ -88,6 +88,12 @@ if (isset($_GET['n_fichier']) AND $_GET['n_fichier']!="" AND $_GET['n_fichier']>
 	else
 		$F_STL="";
 	
+	if (isset($tbl_essai['runout']) AND $tbl_essai['runout']!="0")	//Runout
+		$runout=$tbl_essai['runout'];
+	else
+		$runout="RTF";
+
+	
 //	if (isset($tbl_essai['Cycle_min']) AND $tbl_essai['Cycle_min']!="0")	//STL
 //		$tbl_essai['Cycle_min']=$tbl_essai['Cycle_min'];
 //	else
@@ -121,60 +127,101 @@ if (isset($_GET['n_fichier']) AND $_GET['n_fichier']!="" AND $_GET['n_fichier']>
 
 	If (isset($tbl_essai['type_essai']) AND $tbl_essai['type_essai']=="HCF")	{
 
-		$objPHPExcel = $objReader->load("Excel/templates/LCF HCF CTRL EFFORT Fiche Technique.xlsx");
+		$objPHPExcel = $objReader->load("../Excel/templates/HCF-LCF CTRL EFFORT FT TestSuite.xlsx");
+
+
+		
+		$objPHPExcel->getActiveSheet()->setCellValue('B7', $identification);
+		$objPHPExcel->getActiveSheet()->setCellValue('B8', $tbl_essai['dessin']);
+		$objPHPExcel->getActiveSheet()->setCellValue('B9', $tbl_essai['material']);
+		$objPHPExcel->getActiveSheet()->setCellValue('B13', $tbl_essai['machine']);
+		$objPHPExcel->getActiveSheet()->setCellValue('B15', '40001');
+		$objPHPExcel->getActiveSheet()->setCellValue('B16', $tbl_essai['enregistreur']);
+		$objPHPExcel->getActiveSheet()->setCellValue('F13', $compresseur);
+		$objPHPExcel->getActiveSheet()->setCellValue('F17', $ind_temp);
+		$objPHPExcel->getActiveSheet()->setCellValue('B17', $tbl_essai['extensometre']);
+		$objPHPExcel->getActiveSheet()->setCellValue('F15', $coil);
+		$objPHPExcel->getActiveSheet()->setCellValue('F16', $four);
+
+		$objPHPExcel->getActiveSheet()->setCellValue('B24', $tbl_essai['cartouche_load']);
+		$objPHPExcel->getActiveSheet()->setCellValue('B23', $tbl_essai['cartouche_stroke']);
+		$objPHPExcel->getActiveSheet()->setCellValue('B25', $tbl_essai['cartouche_strain']);
+
+		$objPHPExcel->getActiveSheet()->setCellValue('B28', "6");
+
+		
+		$objPHPExcel->getActiveSheet()->setCellValue('D28', "-6");
+		
+
+		$objPHPExcel->getActiveSheet()->setCellValue('I7', $jobcomplet);
+		$objPHPExcel->getActiveSheet()->setCellValue('I8', $tbl_essai['n_essai']);
+		$objPHPExcel->getActiveSheet()->setCellValue('I9', $tbl_essai['n_fichier']);
+		$objPHPExcel->getActiveSheet()->setCellValue('I10', $tbl_essai['date']);
+		$objPHPExcel->getActiveSheet()->setCellValue('I11', $tbl_essai['operateur']);
+		$objPHPExcel->getActiveSheet()->setCellValue('I12', $tbl_essai['controleur']);
+
+		$objPHPExcel->getActiveSheet()->setCellValue('J17', $tbl_essai['operateur']);
+		$objPHPExcel->getActiveSheet()->setCellValue('J18', $tbl_essai['controleur']);
+		$objPHPExcel->getActiveSheet()->setCellValue('K20', $tbl_essai['c_temperature']);
+		$objPHPExcel->getActiveSheet()->setCellValue('K22', $R);
+		$objPHPExcel->getActiveSheet()->setCellValue('K23', $tbl_essai['c_frequence']);
+		$objPHPExcel->getActiveSheet()->setCellValue('I22', $A);
+		$objPHPExcel->getActiveSheet()->setCellValue('I23', $tbl_essai['c_waveform']);	
+		
+		if ($nb_dim==1)	{
+			$objPHPExcel->getActiveSheet()->setCellValue('I24', $tbl_essai['dim_1']);
+		}
+		elseif ($nb_dim==2)	{
+			$objPHPExcel->getActiveSheet()->setCellValue('I24', $tbl_essai['dim_1']);
+			$objPHPExcel->getActiveSheet()->setCellValue('K24', $tbl_essai['dim_2']);
+		}
+		elseif ($nb_dim==3)	{
+			$objPHPExcel->getActiveSheet()->setCellValue('I24', $tbl_essai['dim_1']);
+			$objPHPExcel->getActiveSheet()->setCellValue('K24', $tbl_essai['dim_2']);
+			$objPHPExcel->getActiveSheet()->setCellValue('K25', $tbl_essai['dim_3']);
+		}
+		else	{
+			$objPHPExcel->getActiveSheet()->setCellValue('I24', "NA");
+		}
+
+
+		$objPHPExcel->getActiveSheet()->setCellValue('I25', $area);
+
+		if ($tbl_essai['c_unite']=="MPa")	{
+			$objPHPExcel->getActiveSheet()->setCellValue('I28', $MAX);
+				$objPHPExcel->getActiveSheet()->setCellValue('I29', ($MAX+$MIN)/2);
+				$objPHPExcel->getActiveSheet()->setCellValue('I30', ($MAX-$MIN)/2);
+			$objPHPExcel->getActiveSheet()->setCellValue('I31', $MIN);	
+
+			$objPHPExcel->getActiveSheet()->setCellValue('J28', $MAX*$area/1000);
+				$objPHPExcel->getActiveSheet()->setCellValue('J29', ($MAX+$MIN)/2*$area/1000);
+				$objPHPExcel->getActiveSheet()->setCellValue('J30', ($MAX-$MIN)/2*$area/1000);
+			$objPHPExcel->getActiveSheet()->setCellValue('J31', $MIN*$area/1000);
+			
+			$objPHPExcel->getActiveSheet()->setCellValue('B29', $MAX*$area/1000+$MAX*$area/1000*5/100);
+			$objPHPExcel->getActiveSheet()->setCellValue('D29', $MIN*$area/1000-$MAX*$area/1000*5/100);	
+		}
+		Elseif ($tbl_essai['c_unite']=="kN")	{
+			$objPHPExcel->getActiveSheet()->setCellValue('J28', $MAX);
+				$objPHPExcel->getActiveSheet()->setCellValue('J29', ($MAX+$MIN)/2);
+				$objPHPExcel->getActiveSheet()->setCellValue('J30', ($MAX-$MIN)/2);			
+			$objPHPExcel->getActiveSheet()->setCellValue('J31', $MIN);
+			
+			$objPHPExcel->getActiveSheet()->setCellValue('B29', $MAX+$MAX*5/100);
+			$objPHPExcel->getActiveSheet()->setCellValue('D29', $MIN-$MAX*5/100);			
+		}
+		Else	{
+			$objPHPExcel->getActiveSheet()->setCellValue('J28', "ERREUR d'unité");			
+		}
+		
+		$objPHPExcel->getActiveSheet()->setCellValue('K52', $STL);
+		$objPHPExcel->getActiveSheet()->setCellValue('I52', $F_STL);
+
+		
+		$objPHPExcel->getActiveSheet()->setCellValue('J46', $tbl_essai['Cycle_min']);
+		$objPHPExcel->getActiveSheet()->setCellValue('J49', $runout);
 		
 		
-		If ($tbl_essai['acquisition']=="759")
-			$acquisition="Enreg. Info. 759â– Dynâ–¡MPTâ–¡793â–¡TSâ–¡(*)";
-		ElseIf ($tbl_essai['acquisition']=="Dynamic")
-			$acquisition="Enreg. Info. 759â–¡Dynâ– MPTâ–¡793â–¡TSâ–¡(*)";
-		ElseIf ($tbl_essai['acquisition']=="MPT")
-			$acquisition="Enreg. Info. 759â–¡Dynâ–¡MPTâ– 793â–¡TSâ–¡(*)";
-		ElseIf ($tbl_essai['acquisition']=="793")
-			$acquisition="Enreg. Info. 759â–¡Dynâ–¡MPTâ–¡793â– TSâ–¡(*)";
-		ElseIf ($tbl_essai['acquisition']=="TestSuite")	
-			$acquisition="Enreg. Info. 759â–¡Dynâ–¡MPTâ–¡793â–¡TSâ– (*)";
-		ElseIf ($tbl_essai['acquisition']=="Strip Chart")	
-			$acquisition="Enreg. Info. 759â–¡Dynâ–¡MPTâ–¡793â–¡TSâ–¡(*)";
-
-		$compresseur=($compresseur=="o")?"Compresseur ON â–¡(*)" : "Compresseur ON â– (*)";	
-
-		$objPHPExcel->getActiveSheet()->setCellValue('B7', $identification)->getStyle('B7')->getFont()->setBold(true);
-		$objPHPExcel->getActiveSheet()->setCellValue('B8', $tbl_essai['format'])->getStyle('B8')->getFont()->setBold(true);
-		$objPHPExcel->getActiveSheet()->setCellValue('B9', $tbl_essai['matiere'])->getStyle('B9')->getFont()->setBold(true);
-		$objPHPExcel->getActiveSheet()->setCellValue('B14', $tbl_essai['machine'])->getStyle('B14')->getFont()->setBold(true);
-		$objPHPExcel->getActiveSheet()->setCellValue('B16', $tbl_essai['enregistreur'])->getStyle('B16')->getFont()->setBold(true);
-		$objPHPExcel->getActiveSheet()->setCellValue('A18', $compresseur);
-		$objPHPExcel->getActiveSheet()->setCellValue('D17', $ind_temp)->getStyle('D17')->getFont()->setBold(true);
-		$objPHPExcel->getActiveSheet()->setCellValue('B17', $tbl_essai['extensometre'])->getStyle('B17')->getFont()->setBold(true);
-		$objPHPExcel->getActiveSheet()->setCellValue('D15', $coil)->getStyle('D15')->getFont()->setBold(true);
-		$objPHPExcel->getActiveSheet()->setCellValue('D16', $four)->getStyle('D16')->getFont()->setBold(true);
-		$objPHPExcel->getActiveSheet()->setCellValue('D18', $acquisition);
-
-		$objPHPExcel->getActiveSheet()->setCellValue('B22', $tbl_essai['cartouche_load'])->getStyle('B22')->getFont()->setBold(true);
-		$objPHPExcel->getActiveSheet()->setCellValue('B23', $tbl_essai['cartouche_stroke'])->getStyle('B23')->getFont()->setBold(true);
-		$objPHPExcel->getActiveSheet()->setCellValue('B24', $tbl_essai['cartouche_strain'])->getStyle('B24')->getFont()->setBold(true);
-		$objPHPExcel->getActiveSheet()->setCellValue('D22', $tbl_essai['cartouche_load']/10)->getStyle('D22')->getFont()->setBold(true);
-		$objPHPExcel->getActiveSheet()->setCellValue('D23', $tbl_essai['cartouche_stroke']/10)->getStyle('D23')->getFont()->setBold(true);
-		$objPHPExcel->getActiveSheet()->setCellValue('D24', $tbl_essai['cartouche_strain']/1000*12)->getStyle('D24')->getFont()->setBold(true);
-
-		$objPHPExcel->getActiveSheet()->setCellValue('G7', $jobcomplet)->getStyle('G7')->getFont()->setBold(true);
-		$objPHPExcel->getActiveSheet()->setCellValue('G8', $tbl_essai['n_essai'])->getStyle('G8')->getFont()->setBold(true);
-		$objPHPExcel->getActiveSheet()->setCellValue('G9', $tbl_essai['n_fichier'])->getStyle('G9')->getFont()->setBold(true);
-		$objPHPExcel->getActiveSheet()->setCellValue('G10', $tbl_essai['date'])->getStyle('G10')->getFont()->setBold(true);
-		$objPHPExcel->getActiveSheet()->setCellValue('G11', $tbl_essai['operateur'])->getStyle('G11')->getFont()->setBold(true);
-		$objPHPExcel->getActiveSheet()->setCellValue('G12', $tbl_essai['controleur'])->getStyle('G12')->getFont()->setBold(true);
-
-		$objPHPExcel->getActiveSheet()->setCellValue('H18', $tbl_essai['operateur'])->getStyle('H18')->getFont()->setBold(true);
-		$objPHPExcel->getActiveSheet()->setCellValue('H19', $tbl_essai['controleur'])->getStyle('H19')->getFont()->setBold(true);
-		$objPHPExcel->getActiveSheet()->setCellValue('I21', $tbl_essai['temperature'])->getStyle('I21')->getFont()->setBold(true);
-		$objPHPExcel->getActiveSheet()->setCellValue('I22', $tbl_essai['rapport'])->getStyle('I22')->getFont()->setBold(true);
-		$objPHPExcel->getActiveSheet()->setCellValue('I23', $tbl_essai['frequence'])->getStyle('I23')->getFont()->setBold(true);
-		$objPHPExcel->getActiveSheet()->setCellValue('G22', (1-$tbl_essai['rapport'])/(1+$tbl_essai['rapport']))->getStyle('G22')->getFont()->setBold(true);
-		$objPHPExcel->getActiveSheet()->setCellValue('G23', $tbl_essai['forme_cycle'])->getStyle('G23')->getFont()->setBold(true);	
-		$objPHPExcel->getActiveSheet()->setCellValue('H46', $tbl_essai['Arret_cycle'])->getStyle('H46')->getFont()->setBold(true);
-		$objPHPExcel->getActiveSheet()->getStyle('H46')->getNumberFormat()->setFormatCode('# ### ### ###');
-
 	}
 	ElseIf (isset($tbl_essai['type_essai']) AND $tbl_essai['type_essai']=="LCF")	{
 
@@ -219,7 +266,7 @@ if (isset($_GET['n_fichier']) AND $_GET['n_fichier']!="" AND $_GET['n_fichier']>
 		$objPHPExcel->getActiveSheet()->setCellValue('K21', $R);
 		$objPHPExcel->getActiveSheet()->setCellValue('K22', $tbl_essai['c_frequence']);
 		$objPHPExcel->getActiveSheet()->setCellValue('I21', $A);
-		$objPHPExcel->getActiveSheet()->setCellValue('I22', $tbl_essai['waveform']);	
+		$objPHPExcel->getActiveSheet()->setCellValue('I22', $tbl_essai['c_waveform']);	
 		
 		if ($nb_dim==1)	{
 			$objPHPExcel->getActiveSheet()->setCellValue('J24', $tbl_essai['dim_1']);
@@ -250,7 +297,7 @@ if (isset($_GET['n_fichier']) AND $_GET['n_fichier']!="" AND $_GET['n_fichier']>
 		//$objPHPExcel->getActiveSheet()->setCellValue('J47', $tbl_essai['c_temperature']);
 		
 		$objPHPExcel->getActiveSheet()->setCellValue('J56', $tbl_essai['Cycle_min']);
-		$objPHPExcel->getActiveSheet()->setCellValue('J59', $tbl_essai['runout']);
+		$objPHPExcel->getActiveSheet()->setCellValue('J59', $runout);
 		
 		
 	}

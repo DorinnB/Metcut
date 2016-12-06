@@ -1,7 +1,7 @@
-<?php session_start();
-Require("fonctions.php");
-Connectionsql();
-
+<?php
+	session_start();
+	Require("fonctions.php");
+	Connectionsql();
 ?>	 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Enregistrement des Essais</title>

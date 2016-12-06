@@ -1533,7 +1533,7 @@ echo '</tr>';
 	
 
 														for($k=1;$k <= nb_dim($tbl_tbljobs['type']);$k++)	{
-															$titreLigne='dim_'.$k;	echo '<tr><td>'.$denomination[$k-1].'</td>';	FOR($j=0;$j < count($liste_ep);$j++){	echo '<td bgcolor="'.est_assigne($liste_ep[$j]['assigne']).'">'.$liste_ep[$j][$titreLigne].'</td>';}	echo '</tr>';
+															$titreLigne='dim_'.$k;	echo '<tr class="consigne"><td name="'.$titreLigne.'">'.$denomination[$k-1].'</td>';	FOR($j=0;$j < count($liste_ep);$j++){		if ($liste_ep[$j][$titreLigne]==""){	$cache1="";	$cache2="";	}	else	{	$cache1="cache";	$cache2="pascache";	}	echo '<td><INPUT id="'.$splitencours.'-1_'.$j.'-'.$titreLigne.'" name="'.$j."-".$titreLigne.'" value="'.$liste_ep[$j][$titreLigne].'" class="'.$cache1.' modified"><a class="'.$cache2.'">'.$liste_ep[$j][$titreLigne].'</a></td>';}	echo '</tr>';
 														}
 
 														$titreLigne='waveform';	echo '<tr><td>'.$convTitre[$titreLigne].'</td>';	FOR($j=0;$j < count($liste_ep);$j++){	echo '<td bgcolor="'.est_assigne($liste_ep[$j]['assigne']).'">'.$liste_ep[$j][$titreLigne].'</td>';}	echo '</tr>';
