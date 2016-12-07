@@ -15,8 +15,8 @@
     <script src="JSCal2/js/lang/en.js"></script>
 
 	<script type="text/javascript" src="jquery/jquery-3.1.0.js"></script>
-	<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.12/css/jquery.dataTables.css">
-	<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.js"></script>
+	<link rel="stylesheet" type="text/css" href="DataTables/jquery.dataTables.css">
+	<script type="text/javascript" charset="utf8" src="DataTables/jquery.dataTables.js"></script>
 
 
 <?php			//Fonction microtime

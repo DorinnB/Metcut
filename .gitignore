@@ -19,6 +19,7 @@ $RECYCLE.BIN/
 
 # Excel files
 *.xlsx
+*.xls
 
 # =========================
 # Operating System Files

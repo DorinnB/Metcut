@@ -1110,7 +1110,7 @@
 	<div id="contenuSplit<?php echo $splitencours;?>" style="display:none;">	<!--split <?php echo $splitencours;?>-->
 	
 		<?php	//SELECT tbljobs
-			$req="SELECT id_tbljob, id_statut, customer, job, split, specification, type_essais.id_type_essai, type_essai, id_condition_temps, matieres.id_matiere, material, matiere, type_matiere, dessin, dessins.id_dessin, drawing, comments, nb_specimen, type_feuille, nb_type_feuille, tooling, MRI_req, MFG_qty, nb_MRI, sub_C, type_machine, nb_test_MRSAS, ordre, reception_eprouvette, retour_eprouvette, test_start, test_end, test_leadtime, estimated_turn_over, estimated_testing, invoiced_turn_over, invoiced_testing, checked, crea.technicien as createur, chec.technicien as checker, type1.consigne_type as c_type_1, type2.consigne_type as c_type_2, type1.id_consigne_type as id_c_type_1, type2.id_consigne_type as id_c_type_2, c_unite, tbljob_commentaire, waveform, instructions_particulieres, type
+			$req="SELECT id_tbljob, id_statut, customer, job, split, specification, type_essais.id_type_essai, type_essai, id_condition_temps, matieres.id_matiere, material, matiere, type_matiere, dessin, dessins.id_dessin, drawing, comments, nb_specimen, type_feuille, nb_type_feuille, tooling, MRI_req, MFG_qty, nb_MRI, sub_C, type_machine, nb_test_MRSAS, ordre, reception_eprouvette, retour_eprouvette, test_start, test_end, test_leadtime, estimated_turn_over, estimated_testing, invoiced_turn_over, invoiced_testing, checked, crea.technicien as createur, chec.technicien as checker, type1.consigne_type as c_type_1, type2.consigne_type as c_type_2, type1.id_consigne_type as id_c_type_1, type2.id_consigne_type as id_c_type_2, c_unite, tbljob_commentaire, waveform, instructions_particulieres, type, young
 				FROM tbljobs 
 				LEFT JOIN info_jobs ON info_jobs.id_info_job=tbljobs.id_info_job
 				LEFT JOIN techniciens as crea ON crea.id_technicien=tbljobs.createur
@@ -1140,10 +1140,14 @@
 		//echo $req;
 			$req_ep = $db->query($req) or die (mysql_error());
 			$liste_ep = array();
-			$mindate = array();			
+			$mindate = array();
+			$reportdate = array();
 			while ($tbl_ep = mysqli_fetch_array($req_ep)) {
 				$liste_ep[]=$tbl_ep;
-				$mindate[]=$tbl_ep['date'];
+				if (isset($tbl_ep['date']))					//date de l'enregistrement d'essai
+					$mindate[]=$tbl_ep['date'];
+				if (isset($tbl_ep['report_creation_date']))	//date du report
+					$reportdate[]=gmdate("Y-m-d", ($tbl_ep['report_creation_date']-25569)*86400);
 			}
 		?>	
 		<?php	//SELECT consigne_temperature
@@ -1332,7 +1336,11 @@
 												<td style="width: 16%">&nbsp;</td>
 												<td style="width:16%; padding: 0px 10px 0px 10px;" class="colored">	<!--demarrage 1ere eprouvette-->
 													<div class="titre">Demarrage 1ere eprouvette</div>
-													<div class="valeur" style="height:50%;"><?php	echo ((empty($mindate))?"":min($mindate));	?></div>
+													<div class="valeur" style="height:50%;">
+														<?php	
+															echo ((empty($mindate))?"":min($mindate));
+														?>
+													</div>
 												</td>
 											</tr>
 											<tr>
@@ -1354,10 +1362,46 @@
 												<td style="width: 23%; padding: 0px 0px 0px 10px;" class="colored">	<!--taille machine-->
 													<div class="titre">Taille machine (ToDo)</div>
 													<div class="valeur" style="height:50%; padding-top: 5px;text-align: center;">
-														<?php	//check des considtions d'essais pour determiner quels tranches de valeur d'effort contient le job. Coloration de chaque element si un essai le contient	?>
-														<div style="float:left; border:1px solid #666; border-radius:5px; padding:0 10 0 10px; margin:0 10 0 10px;">10</div>
-														<div style="float:left; border:1px solid #666; border-radius:5px; padding:0 10 0 10px; margin:0 10 0 10px;">100</div>
-														<div style="float:left; border:1px solid #666; border-radius:5px; padding:0 10 0 10px; margin:0 10 0 10px;">250</div> 
+														<?php	//check des conditions d'essais pour determiner quels tranches de valeur d'effort contient le job. Coloration de chaque element si un essai le contient	?>
+
+<?php
+$cell10="";
+$cell100="";
+$cell250="";
+	FOR($j=0;$j < count($liste_ep);$j++){
+		$niveau="";
+		niveaumaxmin($tbl_tbljobs['c_type_1'], $tbl_tbljobs['c_type_2'], $liste_ep[$j]['c_type_1_val'], $liste_ep[$j]['c_type_2_val']);
+		$area=area($tbl_tbljobs['type'],$liste_ep[$j]['dim_1'],$liste_ep[$j]['dim_2'],$liste_ep[$j]['dim_3']);
+	
+		if ($tbl_tbljobs['c_unite']=="kN"){
+			$niveau = max(abs($MAX),abs($MIN));
+		}
+		elseif ($tbl_tbljobs['c_unite']=="MPa"){
+			$niveau = max(abs($MAX*$area/1000),abs($MIN*$area/1000));
+		}
+		elseif ($tbl_tbljobs['c_unite']=="%"){
+			$niveau = max(abs($MAX),abs($MIN)) * $tbl_tbljobs['young'] * $area/100;
+		}
+
+//echo $niveau.'<br>';
+		if ($niveau==0)	{
+			$a="";
+		}
+		elseif ($niveau < 8)	{
+			$cell10 = 'background-color: #000';
+		}
+		elseif(($niveau>8) AND ($niveau<95))	{
+			$cell100 = 'background-color: #000';
+		}
+		elseif($niveau>95)	{
+			$cell250 = 'background-color: #000';
+		}
+
+	}
+?>
+														<div style="float:left; border:1px solid #666; border-radius:5px; padding:0 10 0 10px; margin:0 10 0 10px; <?php echo $cell10;	?>">10</div>
+														<div style="float:left; border:1px solid #666; border-radius:5px; padding:0 10 0 10px; margin:0 10 0 10px; <?php echo $cell100;	?>">100</div>
+														<div style="float:left; border:1px solid #666; border-radius:5px; padding:0 10 0 10px; margin:0 10 0 10px; <?php echo $cell250;	?>">250</div> 
 													</div>
 												</td>
 												<td style="width: 4%">&nbsp;</td>
@@ -1365,7 +1409,11 @@
 												<td style="width: 16%">&nbsp;</td>
 												<td style="width:16%; padding: 0px 10px 0px 10px;" class="colored">	<!--test end-->
 													<div class="titre">test end</div>
-													<div class="valeur" style="height:50%;">test end</div>
+													<div class="valeur" style="height:50%;">
+														<?php	
+															echo ((empty($reportdate))?"":max($reportdate));
+														?>
+													</div>
 												</td>
 											</tr>
 											<tr>
@@ -1380,15 +1428,35 @@
 												<td style="width: 4%">&nbsp;</td>
 												<td style="width:16%; padding: 0px 10px 0px 10px;" class="colored">	<!--nb test inf 24h-->
 													<div class="titre">nb test inf 24h</div>
-													<div class="valeur" style="height:50%;">nb test inf 24h</div>
+													<div class="valeur" style="height:50%;">
+														<?php
+															$nbinf24=0;														
+															for($j=0;$j < count($liste_ep);$j++)	{														
+																if (($liste_ep[$j]['temps_essais']>0) AND ($liste_ep[$j]['temps_essais']<24)) {
+																	$nbinf24+=1;
+																}	
+															}
+															echo $nbinf24;	
+														?>
+													</div>
 												</td>
 												<td style="width:16%; padding: 0px 10px 0px 10px;" class="colored">	<!--nb machine-->
 													<div class="titre">nb machine</div>
-													<div class="valeur" style="height:50%;">nb machine</div>
+													<div class="valeur" style="height:50%;">
+														<?php
+															unset ($machine);	
+															for($j=0;$j < count($liste_ep);$j++)	{														
+																if (isset($liste_ep[$j]['machine'])) {
+																	$machine[$liste_ep[$j]['machine']]=$liste_ep[$j]['machine'];
+																}	
+															}
+															echo ((isset($machine))?count($machine):0);
+														?>
+													</div>
 												</td>
 												<td style="width:16%; padding: 0px 10px 0px 10px;" class="colored">	<!--first yield pass-->
 													<div class="titre">first yield pass</div>
-													<div class="valeur" style="height:50%;">first yield pass</div>
+													<div class="valeur" style="height:50%;"></div>
 												</td>
 											</tr>
 											<tr>
@@ -1401,16 +1469,36 @@
 												</td>												
 												<td style="width: 4%">&nbsp;</td>
 												<td style="width:16%; padding: 0px 10px 0px 10px;" class="colored">	<!--hrs test w24h-->
-													<div class="titre">hrs test w24h</div>
-													<div class="valeur" style="height:50%;">hrs test w24h</div>
+													<div class="titre">hrs test inf 24h</div>
+													<div class="valeur" style="height:50%;">
+														<?php
+															$hrsinf24=0;														
+															for($j=0;$j < count($liste_ep);$j++)	{														
+																if (($liste_ep[$j]['temps_essais']>0) AND ($liste_ep[$j]['temps_essais']<24)) {
+																	$hrsinf24+=$liste_ep[$j]['temps_essais'];
+																}	
+															}
+															echo $hrsinf24;	
+														?>													
+													</div>
 												</td>
 												<td style="width:16%; padding: 0px 10px 0px 10px;" class="colored">	<!--ratio running/total-->
 													<div class="titre">ratio-running/total</div>
-													<div class="valeur" style="height:50%;">ratio</div>
+													<div class="valeur" style="height:50%;">
+														<?php
+															$ratiorunning=0;														
+															for($j=0;$j < count($liste_ep);$j++)	{														
+																if (isset($liste_ep[$j]['n_fichier'])) {
+																	$ratiorunning+=1;
+																}	
+															}
+															echo number_format($ratiorunning/count($liste_ep)*100,2);	
+														?> %													
+													</div>
 												</td>
 												<td style="width:16%; padding: 0px 10px 0px 10px;" class="colored">	<!--tests ok avec nc-->
 													<div class="titre">tests ok avec nc</div>
-													<div class="valeur" style="height:50%;">tests</div>
+													<div class="valeur" style="height:50%;"></div>
 												</td>
 											</tr>
 											<tr>
@@ -1419,7 +1507,17 @@
 												<td style="width: 4%">&nbsp;</td>
 												<td style="width:16%; padding: 0px 10px 0px 10px;" class="colored">	<!--hrs total-->
 													<div class="titre">hrs total</div>
-													<div class="valeur" style="height:50%;">hrs total</div>
+													<div class="valeur" style="height:50%;">
+														<?php
+															$tpstotal=0;														
+															for($j=0;$j < count($liste_ep);$j++)	{														
+																if (($liste_ep[$j]['temps_essais']>0)) {
+																	$tpstotal+=$liste_ep[$j]['temps_essais'];
+																}	
+															}
+															echo $tpstotal;	
+														?>													
+													</div>
 												</td>
 												<td style="width:16%; padding: 0px 10px 0px 10px;" class="colored">	<!--avance/Retard-->
 													<div class="titre">avance/Retard</div>
@@ -1427,7 +1525,7 @@
 												</td>
 												<td style="width:16%; padding: 0px 10px 0px 10px;" class="colored">	<!--tests void-->
 													<div class="titre">tests void</div>
-													<div class="valeur" style="height:50%;">tests void</div>
+													<div class="valeur" style="height:50%;"></div>
 												</td>																				
 											</tr>
 											<tr>
@@ -1436,12 +1534,22 @@
 												<td style="width: 4%">&nbsp;</td>
 												<td style="width:16%; padding: 0px 10px 0px 10px;" class="colored">	<!--hrs supp-->
 													<div class="titre">hrs supp</div>
-													<div class="valeur" style="height:50%;">heures supp</div>
+													<div class="valeur" style="height:50%;">
+														<?php
+															$hrssup=0;														
+															for($j=0;$j < count($liste_ep);$j++)	{														
+																if (($liste_ep[$j]['temps_essais']>24)) {
+																	$hrssup+=$liste_ep[$j]['temps_essais']-24;
+																}	
+															}
+															echo $hrssup;	
+														?>													
+													</div>
 												</td>												
 												<td style="width: 16%">&nbsp;</td>
 												<td style="width:16%; padding: 0px 10px 0px 10px;" class="colored">	<!--reclamation-->
 													<div class="titre">reclamation</div>
-													<div class="valeur" style="height:50%;">reclamation</div>
+													<div class="valeur" style="height:50%;"></div>
 												</td>							
 											</tr>
 											<tr>
@@ -1450,12 +1558,22 @@
 												<td style="width: 4%">&nbsp;</td>
 												<td style="width:16%; padding: 0px 10px 0px 10px;" class="colored">	<!--ratio inf 24h-->
 													<div class="titre">ratio inf 24h</div>
-													<div class="valeur" style="height:50%;">ratio</div>
+													<div class="valeur" style="height:50%;">
+														<?php
+															$ratioinf24=0;														
+															for($j=0;$j < count($liste_ep);$j++)	{														
+																if ((isset($liste_ep[$j]['temps_essais'])) AND ($liste_ep[$j]['temps_essais']<24)) {
+																	$ratioinf24+=1;
+																}	
+															}
+															echo (($ratiorunning>0)?number_format($ratioinf24/$ratiorunning*100,2):0);	
+														?> %													
+													</div>
 												</td>
 												<td style="width: 16%">&nbsp;</td>
 												<td style="width:16%; padding: 0px 10px 0px 10px;" class="colored">	<!--nc client-->
 													<div class="titre">nc client</div>
-													<div class="valeur" style="height:50%;">nc client</div>
+													<div class="valeur" style="height:50%;"></div>
 												</td>								
 											</tr>
 										</tbody>
@@ -2443,13 +2561,14 @@ if ( $split['split']>0)	{
 	}
 }
 else
-
-	for($k=0;$k < count($tbl_soustraitances);$k++)	{
-		if ($tbl_soustraitances[$k]['id_tbljob']==$_GET['id_tbljob'])	{
-				echo '<script type="text/javascript">
-					changeSplit('.($nombresplit-1).', '.$nombresplit.');
-					changeOnglet('.($nombresplit-1).','.$k.','.count($tbl_soustraitances).');
-				</script>';
+	if (isset($tbl_soustraitances))	{
+		for($k=0;$k < count($tbl_soustraitances);$k++)	{
+			if ($tbl_soustraitances[$k]['id_tbljob']==$_GET['id_tbljob'])	{
+					echo '<script type="text/javascript">
+						changeSplit('.($nombresplit-1).', '.$nombresplit.');
+						changeOnglet('.($nombresplit-1).','.$k.','.count($tbl_soustraitances).');
+					</script>';
+			}
 		}
 	}
 ?>
