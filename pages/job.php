@@ -1110,7 +1110,7 @@
 	<div id="contenuSplit<?php echo $splitencours;?>" style="display:none;">	<!--split <?php echo $splitencours;?>-->
 	
 		<?php	//SELECT tbljobs
-			$req="SELECT id_tbljob, id_statut, customer, job, split, specification, type_essais.id_type_essai, type_essai, id_condition_temps, matieres.id_matiere, material, matiere, type_matiere, dessin, dessins.id_dessin, drawing, comments, nb_specimen, type_feuille, nb_type_feuille, tooling, MRI_req, MFG_qty, nb_MRI, sub_C, type_machine, nb_test_MRSAS, ordre, reception_eprouvette, retour_eprouvette, test_start, test_end, test_leadtime, estimated_turn_over, estimated_testing, invoiced_turn_over, invoiced_testing, checked, crea.technicien as createur, chec.technicien as checker, type1.consigne_type as c_type_1, type2.consigne_type as c_type_2, type1.id_consigne_type as id_c_type_1, type2.id_consigne_type as id_c_type_2, c_unite, tbljob_commentaire, waveform, instructions_particulieres, type, young
+			$req="SELECT id_tbljob, id_statut, customer, job, split, specification, type_essais.id_type_essai, type_essai, id_condition_temps, matieres.id_matiere, material, matiere, type_matiere, dessin, dessins.id_dessin, drawing, comments, nb_specimen, type_feuille, nb_type_feuille, tooling, MRI_req, MFG_qty, nb_MRI, sub_C, type_machine, nb_test_MRSAS, ordre, reception_eprouvette, retour_eprouvette, test_start, test_end, test_leadtime, estimated_turn_over, estimated_testing, invoiced_turn_over, invoiced_testing, checked, crea.technicien as createur, chec.technicien as checker, type1.consigne_type as c_type_1, type2.consigne_type as c_type_2, type1.id_consigne_type as id_c_type_1, type2.id_consigne_type as id_c_type_2, c_unite, tbljob_commentaire, waveform, instructions_particulieres, type, young, retour_rapport
 				FROM tbljobs 
 				LEFT JOIN info_jobs ON info_jobs.id_info_job=tbljobs.id_info_job
 				LEFT JOIN techniciens as crea ON crea.id_technicien=tbljobs.createur
@@ -1290,11 +1290,26 @@
 													<div class="valeur" style="height:50%; padding-top: 5px;"><?php	echo $cons_temp;	?></div>
 												</td>
 												<td style="width: 4%">&nbsp;</td>
-												<td style="width: 16%">&nbsp;</td>
-												<td style="width: 16%">&nbsp;</td>
 												<td style="width:16%; padding: 0px 10px 0px 10px;" class="colored">	<!--reception eprouvette-->
-													<div class="titre">Reception d'eprouvette</div>
-													<div class="valeur" style="height:50%;"><?php	echo $tbl_tbljobs['reception_eprouvette'];	?></div>
+													<div class="titre">Reception eprouvettes</div>
+													<div class="valeur" style="height:50%;">
+														<INPUT name="<?php	echo $tbl_tbljobs['id_tbljob'];	?>-reception_eprouvette" value="<?php	echo $tbl_tbljobs['reception_eprouvette'];	?>" class="datepicker cache modified" style="font : 12px Batang, arial, serif;">
+														<a class="pascache"><?php	echo $tbl_tbljobs['reception_eprouvette'];	?></a>													
+													</div>
+												</td>
+												<td style="width:16%; padding: 0px 10px 0px 10px;" class="colored">	<!--retour eprouvette-->
+													<div class="titre">Envoi  eprouvettes</div>
+													<div class="valeur" style="height:50%;">
+														<INPUT name="<?php	echo $tbl_tbljobs['id_tbljob'];	?>-retour_eprouvette" value="<?php	echo $tbl_tbljobs['retour_eprouvette'];	?>" class="datepicker cache modified" style="font : 12px Batang, arial, serif;">
+														<a class="pascache"><?php	echo $tbl_tbljobs['retour_eprouvette'];	?></a>													
+													</div>
+												</td>
+												<td style="width:16%; padding: 0px 10px 0px 10px;" class="colored">	<!--envoi rapport-->
+													<div class="titre">Envoi rapport</div>
+													<div class="valeur" style="height:50%;">
+														<INPUT name="<?php	echo $tbl_tbljobs['id_tbljob'];	?>-retour_rapport" value="<?php	echo $tbl_tbljobs['retour_rapport'];	?>" class="datepicker cache modified" style="font : 12px Batang, arial, serif;">
+														<a class="pascache"><?php	echo $tbl_tbljobs['retour_rapport'];	?></a>													
+													</div>
 												</td>
 											</tr>
 											<tr>

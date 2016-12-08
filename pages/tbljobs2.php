@@ -121,6 +121,18 @@ function formfiltre(filtre)	{
 $titre=array(	'id_tbljob', 'statut',	'customer',		'job',	'split',	'instruction',	'type',		'temperature',		'matiere',	'drawing',	'comments',	'nb_specimen',  'tooling',	'MRI_req',	'MFG_qty',	'nb_MRI',	'sub_C',	'type_machine',	'nb_test_MRSAS',	'ordre',	'reception_eprouvette',	'retour_eprouvette',	'test_leadtime',	'test_start',	'test_end',	'test_leadtime',	'estimated_turn_over',	'estimated_testing',	'invoiced_turn_over',	'invoiced_testing');
 $titresql=array('id_tbljob', 'id_statut',	'customer',	'job',	'split',	'instruction',	'type_essai',	'id_condition_temps',	'matiere',	'drawing',	'comments',	'nb_specimen',  'tooling',	'MRI_req',	'MFG_qty',	'nb_MRI',	'sub_C',	'type_machine',	'nb_test_MRSAS',	'ordre',	'reception_eprouvette',	'retour_eprouvette',	'test_leadtime',	'test_start',	'test_end',	'test_leadtime',	'estimated_turn_over',	'estimated_testing',	'invoiced_turn_over',	'invoiced_testing');
 
+//$req ajoutant les temperatures des ep mais temps chargement tres long (>7s)
+$req = 'SELECT 
+	id_tbljob, id_statut, customer, job, split, instruction, type_essai, id_condition_temps, matiere, drawing, comments, nb_specimen, type_feuille, nb_type_feuille, tooling, MRI_req, MFG_qty, nb_MRI, sub_C, type_machine, nb_test_MRSAS, ordre, reception_eprouvette, retour_eprouvette, test_leadtime, test_start, test_end, test_leadtime, estimated_turn_over, estimated_testing, invoiced_turn_over, invoiced_testing, 
+		GROUP_CONCAT(DISTINCT Round(c_temperature,0) ORDER BY c_temperature ASC SEPARATOR " / ")
+	FROM tbljobs 
+	LEFT JOIN eprouvettes ON eprouvettes.id_job=tbljobs.id_tbljob
+	LEFT JOIN matieres ON matieres.id_matiere=tbljobs.id_matiere 
+	LEFT JOIN type_essais ON type_essais.id_type_essai=tbljobs.id_type_essai 
+	LEFT JOIN info_jobs ON info_jobs.id_info_job=tbljobs.id_info_job
+	LEFT JOIN contacts ON contacts.id_contact=info_jobs.id_contact	
+	where tbljob_actif=1
+    group by id_tbljob';
 $req = 'SELECT id_tbljob, id_statut, customer, job, split, instruction, type_essai, id_condition_temps, matiere, drawing, comments, nb_specimen, type_feuille, nb_type_feuille, tooling, MRI_req, MFG_qty, nb_MRI, sub_C, type_machine, nb_test_MRSAS, ordre, reception_eprouvette, retour_eprouvette, test_leadtime, test_start, test_end, test_leadtime, estimated_turn_over, estimated_testing, invoiced_turn_over, invoiced_testing 
 	FROM tbljobs 
 	LEFT JOIN matieres ON matieres.id_matiere=tbljobs.id_matiere 
