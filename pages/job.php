@@ -1362,43 +1362,41 @@
 												<td style="width: 23%; padding: 0px 0px 0px 10px;" class="colored">	<!--taille machine-->
 													<div class="titre">Taille machine (ToDo)</div>
 													<div class="valeur" style="height:50%; padding-top: 5px;text-align: center;">
-														<?php	//check des conditions d'essais pour determiner quels tranches de valeur d'effort contient le job. Coloration de chaque element si un essai le contient	?>
+														<?php
+															$cell10="";
+															$cell100="";
+															$cell250="";
+															FOR($j=0;$j < count($liste_ep);$j++){
+																$niveau="";
+																niveaumaxmin($tbl_tbljobs['c_type_1'], $tbl_tbljobs['c_type_2'], $liste_ep[$j]['c_type_1_val'], $liste_ep[$j]['c_type_2_val']);
+																$area=area($tbl_tbljobs['type'],$liste_ep[$j]['dim_1'],$liste_ep[$j]['dim_2'],$liste_ep[$j]['dim_3']);
+															
+																if ($tbl_tbljobs['c_unite']=="kN"){
+																	$niveau = max(abs($MAX),abs($MIN));
+																}
+																elseif ($tbl_tbljobs['c_unite']=="MPa"){
+																	$niveau = max(abs($MAX*$area/1000),abs($MIN*$area/1000));
+																}
+																elseif ($tbl_tbljobs['c_unite']=="%"){
+																	$niveau = max(abs($MAX),abs($MIN)) * $tbl_tbljobs['young'] * $area/100;
+																}
 
-<?php
-$cell10="";
-$cell100="";
-$cell250="";
-	FOR($j=0;$j < count($liste_ep);$j++){
-		$niveau="";
-		niveaumaxmin($tbl_tbljobs['c_type_1'], $tbl_tbljobs['c_type_2'], $liste_ep[$j]['c_type_1_val'], $liste_ep[$j]['c_type_2_val']);
-		$area=area($tbl_tbljobs['type'],$liste_ep[$j]['dim_1'],$liste_ep[$j]['dim_2'],$liste_ep[$j]['dim_3']);
-	
-		if ($tbl_tbljobs['c_unite']=="kN"){
-			$niveau = max(abs($MAX),abs($MIN));
-		}
-		elseif ($tbl_tbljobs['c_unite']=="MPa"){
-			$niveau = max(abs($MAX*$area/1000),abs($MIN*$area/1000));
-		}
-		elseif ($tbl_tbljobs['c_unite']=="%"){
-			$niveau = max(abs($MAX),abs($MIN)) * $tbl_tbljobs['young'] * $area/100;
-		}
+														//echo $niveau.'<br>';
+																if ($niveau==0)	{
+																	$a="";
+																}
+																elseif ($niveau < 8)	{
+																	$cell10 = 'background-color: #000';
+																}
+																elseif(($niveau>8) AND ($niveau<95))	{
+																	$cell100 = 'background-color: #000';
+																}
+																elseif($niveau>95)	{
+																	$cell250 = 'background-color: #000';
+																}
 
-//echo $niveau.'<br>';
-		if ($niveau==0)	{
-			$a="";
-		}
-		elseif ($niveau < 8)	{
-			$cell10 = 'background-color: #000';
-		}
-		elseif(($niveau>8) AND ($niveau<95))	{
-			$cell100 = 'background-color: #000';
-		}
-		elseif($niveau>95)	{
-			$cell250 = 'background-color: #000';
-		}
-
-	}
-?>
+															}
+														?>
 														<div style="float:left; border:1px solid #666; border-radius:5px; padding:0 10 0 10px; margin:0 10 0 10px; <?php echo $cell10;	?>">10</div>
 														<div style="float:left; border:1px solid #666; border-radius:5px; padding:0 10 0 10px; margin:0 10 0 10px; <?php echo $cell100;	?>">100</div>
 														<div style="float:left; border:1px solid #666; border-radius:5px; padding:0 10 0 10px; margin:0 10 0 10px; <?php echo $cell250;	?>">250</div> 

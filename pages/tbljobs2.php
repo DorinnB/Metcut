@@ -7,7 +7,7 @@ cursor:pointer;
 $(document).ready( function () {
 
     var table=$('#table_id').DataTable({
-		"iDisplayLength": 50,
+		"iDisplayLength": 10,
 		"columnDefs": [ {
             targets: [ 0 ],
             orderData: [ 0, 1 ]
@@ -23,7 +23,7 @@ $(document).ready( function () {
 	// Setup - add a text input to each footer cell
 	$('#table_id tfoot th').each( function () {
         var title = $(this).text();
-        $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+        $(this).html( '<input type="text" placeholder="Search '+title+'" size="10"/>' );
     } );
 	
 	table.columns().every( function () {
