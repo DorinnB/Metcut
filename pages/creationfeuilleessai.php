@@ -198,8 +198,9 @@ if (isset($_GET['n_fichier']) AND $_GET['n_fichier']!="" AND $_GET['n_fichier']>
 				$objPHPExcel->getActiveSheet()->setCellValue('J30', ($MAX-$MIN)/2*$area/1000);
 			$objPHPExcel->getActiveSheet()->setCellValue('J31', $MIN*$area/1000);
 			
-			$objPHPExcel->getActiveSheet()->setCellValue('B29', $MAX*$area/1000+$MAX*$area/1000*5/100);
-			$objPHPExcel->getActiveSheet()->setCellValue('D29', $MIN*$area/1000-$MAX*$area/1000*5/100);	
+			$limiteload=($MAX*$area/1000<10)?0.5:$MAX*$area/1000*5/100;
+			$objPHPExcel->getActiveSheet()->setCellValue('B29', $MAX*$area/1000+$limiteload);
+			$objPHPExcel->getActiveSheet()->setCellValue('D29', $MIN*$area/1000-$limiteload);	
 		}
 		Elseif ($tbl_essai['c_unite']=="kN")	{
 			$objPHPExcel->getActiveSheet()->setCellValue('J28', $MAX);
