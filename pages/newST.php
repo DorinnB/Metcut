@@ -84,7 +84,7 @@
 	LEFT JOIN type_essais ON type_essais.id_type_essai=tbljobs.id_type_essai 
 	WHERE info_jobs.id_info_job=(SELECT id_info_job FROM tbljobs WHERE id_tbljob=".$_GET['id_tbljob'].") AND tbljob_actif=1
 	ORDER BY split;";
-echo $req;	
+//echo $req;	
 	$req_split = $db->query($req);
 
 //	$splitencours=mysqli_num_rows($req_split)+1;
