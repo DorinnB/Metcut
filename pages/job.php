@@ -1273,7 +1273,7 @@
 						<!--Données du job-->
 							<div id="contenuOnglet<?php echo $splitencours; ?>-0" style="display:block;">	<!--Données du job-->
 
-								<form id="FormcontenuaOnglet<?php echo $splitencours; ?>-0" action="../index.php?page=tbljobs_maj2" method="POST" ENCTYPE="multipart/form-data">
+								<form id="FormcontenuaOnglet<?php echo $splitencours; ?>-0" action="../index.php?page=tbljobs_maj" method="POST" ENCTYPE="multipart/form-data">
 									<input type="hidden" class="user" name="<?php echo $tbl_tbljobs['id_tbljob'];	?>-noCheck|createur" value="">
 									<table class="datajob" >
 										<tbody>
@@ -1505,7 +1505,7 @@
 																	$ratiorunning+=1;
 																}	
 															}
-															echo number_format($ratiorunning/count($liste_ep)*100,2);	
+															echo (count($liste_ep)>0)?number_format($ratiorunning/count($liste_ep)*100,2):0;	
 														?> %													
 													</div>
 												</td>
@@ -2078,7 +2078,7 @@ echo '</tr>';
 										?>
 				
 									
-										<form id="FormcontenuaOnglet<?php echo $splitencours.'-'.$l; ?>" action="../index.php?page=tbljobs_maj2" method="POST" ENCTYPE="multipart/form-data">
+										<form id="FormcontenuaOnglet<?php echo $splitencours.'-'.$l; ?>" action="../index.php?page=tbljobs_maj" method="POST" ENCTYPE="multipart/form-data">
 											<input type="hidden" class="user" name="<?php echo $tbl_soustraitances[$l]['id_tbljob'];	?>-createur" value="">
 											<table class="datajob">
 												<tbody>
@@ -2292,7 +2292,7 @@ echo '</tr>';
 				<span class="close"></span>
   <!-- Modal content -->
   <div class="modal-content" style="margin:300px; height:100px">
-	  <form>	
+	  <form method='post' action='' onsubmit='logon();return false;'>	
 		<table class="datajob">
 			<tr>
 				<td class="colored">
@@ -2321,7 +2321,7 @@ echo '</tr>';
 				<td>
 					<a id="login" class="valid" onclick="logon();">
 						<img alt="" src="../img/checked.png" style="height:40px; width:35px;" />
-					</a>
+					</a>					
 				</td>
 			</tr>
 			<tr>

@@ -425,6 +425,8 @@ input[type=submit], input[type=reset] {
 												<?php	echo $tbl_tbljobs['customer'];?>-<?php	echo $tbl_tbljobs['job'];?>-<?php	echo 'ST'.-$splitencours;?>
 											</div>
 										</td>
+										<td style="text-align:right; width:15%"></td>
+										<td style="text-align: center; width:15%;"></td>
 										<td style="width: 15%; padding: 0px 10px 0px 10px;" class="colored">	<!--Type Essai-->
 											<div class="titre">Type Essai</div>
 											<div class="valeur" style="height:50%; padding-top: 5px;">
@@ -442,8 +444,6 @@ input[type=submit], input[type=reset] {
 												<a class="pascache"><?php	echo $tbl_tbljobs['type_soustraitance'];	?></a>
 											</div>
 										</td>
-										<td style="text-align: center; width:15%;"></td>
-										<td style="text-align:right; width:15%"></td>
 										<td style="width:15%; padding: 0px 10px 0px 10px;" class="colored">	<!--leadtime-->
 											<div class="titre">Lead Time (YYYY-MM-DD)</div>
 											<div class="valeur" style="height:50%; padding-top: 5px;">
@@ -555,8 +555,8 @@ input[type=submit], input[type=reset] {
 											<td style="width: 23%; padding: 0px 0px 0px 10px;" class="colored">	<!--specification-->
 												<div class="titre">Specification</div>
 												<div class="valeur" style="height:50%; padding-top: 5px; font : 12px Batang, arial, serif;">
-													<INPUT name="<?php	echo $tbl_tbljobs['id_tbljob'];	?>-specification" value="<?php	echo $tbl_tbljobs['specification'];	?>" class="cache" style="font : 12px Batang, arial, serif;">
-													<a class="pascache"><?php	echo $tbl_tbljobs['specification'];	?></a>
+													<INPUT name="<?php	echo $tbl_tbljobs['id_tbljob'];	?>-specification" value="<?php	//echo $tbl_tbljobs['specification'];	?>" class="cache" style="font : 12px Batang, arial, serif;">
+													<a class="pascache"><?php	//echo $tbl_tbljobs['specification'];	?></a>
 												</div>
 											</td>
 										</tr>

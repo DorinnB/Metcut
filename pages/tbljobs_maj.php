@@ -71,7 +71,7 @@ foreach ($job as $cle=>$value)	{	//un peu inutile car en théorie uniquement un 
 				$reqNoCheck_add=$reqNoCheck_add.", ".$titre."=".$val;
 			}
 			else {
-				$toBeCheck = "checked = 0";
+				$toBeCheck = ",checked = 0";
 				$val = ($val=="") ? 'null' : "'".mysqli_real_escape_string($db, $val)."'";
 				$reqCheck_add=$reqCheck_add.", ".$titre."=".$val;				
 			}
@@ -100,10 +100,10 @@ foreach ($job as $cle=>$value)	{	//un peu inutile car en théorie uniquement un 
 		
 	echo '<br/>noCheck----'.$reqNoCheck;
 	echo '<br/>check----'.$reqCheck;
-//		if ($toBeCheck!='')
-//			envoilog('tbljobs','id_tbljob',$cle,$reqCheck);		
+		if ($toBeCheck!='')
+			envoilog('tbljobs','id_tbljob',$cle,$reqCheck);		
 
-//		envoilog('tbljobs','id_tbljob',$cle,$reqNoCheck);			
+		envoilog('tbljobs','id_tbljob',$cle,$reqNoCheck);			
 exit();
 
 
