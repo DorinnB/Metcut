@@ -260,7 +260,8 @@ if (isset($_GET['n_fichier']) AND $_GET['n_fichier']!="" AND $_GET['n_fichier']>
 		$objPHPExcel->getActiveSheet()->setCellValue('I12', $tbl_essai['controleur']);
 
 		$objPHPExcel->getActiveSheet()->setCellValue('J17', $tbl_essai['operateur']);
-		$objPHPExcel->getActiveSheet()->setCellValue('J18', $tbl_essai['controleur']);
+		if ($tbl_essai['c_temperature']>=50)
+			$objPHPExcel->getActiveSheet()->setCellValue('J18', $tbl_essai['controleur']);
 		$objPHPExcel->getActiveSheet()->setCellValue('K20', $tbl_essai['c_temperature']);
 		$objPHPExcel->getActiveSheet()->setCellValue('K22', $R);
 		$objPHPExcel->getActiveSheet()->setCellValue('K23', $tbl_essai['c_frequence']);
@@ -360,7 +361,8 @@ if (isset($_GET['n_fichier']) AND $_GET['n_fichier']!="" AND $_GET['n_fichier']>
 		$objPHPExcel->getActiveSheet()->setCellValue('I12', $tbl_essai['controleur']);
 
 		$objPHPExcel->getActiveSheet()->setCellValue('J16', $tbl_essai['operateur']);
-		$objPHPExcel->getActiveSheet()->setCellValue('J17', $tbl_essai['controleur']);
+		if ($tbl_essai['c_temperature']>=50)
+			$objPHPExcel->getActiveSheet()->setCellValue('J17', $tbl_essai['controleur']);
 		$objPHPExcel->getActiveSheet()->setCellValue('K18', $tbl_essai['c_temperature']);
 		$objPHPExcel->getActiveSheet()->setCellValue('K21', $R);
 		$objPHPExcel->getActiveSheet()->setCellValue('K22', $tbl_essai['c_frequence']);
