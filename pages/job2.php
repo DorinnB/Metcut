@@ -13,7 +13,14 @@
 		<link rel="stylesheet" href="../jquery/jquery-ui-1.12.1.custom/jquery-ui.theme.css" type="text/css" media="all" />
 		<script src="../jquery/jquery-3.1.1.min.js" type="text/javascript"></script>
 		<script src="../jquery/jquery-ui-1.12.1.custom/jquery-ui.min.js" type="text/javascript"></script>
-	   
+	
+<link rel="stylesheet" type="text/css" href="../DataTables/datatables.min.css"/> 
+<script type="text/javascript" src="../DataTables/datatables.min.js"></script>
+<!--
+	<link rel="stylesheet" type="text/css" href="../DataTables/jquery.dataTables.css">
+	<script type="text/javascript" charset="utf8" src="../DataTables/jquery.dataTables.js"></script>
+	-->
+	
 <!--ancien jquery avant calendrier	<script src="https://code.jquery.com/jquery-1.10.2.js"></script>	-->
 	
 	
@@ -1220,7 +1227,7 @@
 												<div class="titre">Statut</div>
 												<div class="valeur" style="height:50%;">
 												<?php		
-													$titreLigne='id_statut';	echo '<SELECT form="FormcontenuaOnglet'.$splitencours.'-0" id="row-0'.$splitencours.'" name="'.$tbl_tbljobs['id_tbljob']."-noCheck|".$titreLigne.'" class=" modified" style="font : 18px Batang, arial, serif;">';
+													$titreLigne='id_statut';	echo '<SELECT form="FormcontenuaOnglet'.$splitencours.'-0" id="row-0'.$splitencours.'" name="'.$tbl_tbljobs['id_tbljob']."-noCheck|".$titreLigne.'" class=" jobmodified" style="font : 18px Batang, arial, serif;">';
 													for($k=0;$k < count($tbl_statuts);$k++)	{
 														$selected=($tbl_statuts[$k]['id_statut']==$tbl_tbljobs['id_statut'])?"selected":"";
 														echo '<option value="'.$tbl_statuts[$k]['id_statut'].'" '.$selected.'>'.$tbl_statuts[$k]['id_statut'].' - '.$tbl_statuts[$k]['statut'].'</option>';	
@@ -1257,7 +1264,7 @@
 											</td>
 											<td style="width:15%; padding: 0px 10px 0px 10px;" class="colored">	<!--leadtime-->
 												<div class="titre">Lead Time (YYYY-MM-DD)</div>
-												<div class="valeur" style="height:50%;"><?php	$titreLigne="test_leadtime"; echo '<input form="FormcontenuaOnglet'.$splitencours.'-0" name="'.$tblsplit[$splitencours-1]['id_tbljob']."-noCheck|".$titreLigne.'" class="datepicker  modified" type="text" value="'.$tblsplit[$splitencours-1][$titreLigne].'"/>';	?></div>	
+												<div class="valeur" style="height:50%;"><?php	$titreLigne="test_leadtime"; echo '<input form="FormcontenuaOnglet'.$splitencours.'-0" name="'.$tblsplit[$splitencours-1]['id_tbljob']."-noCheck|".$titreLigne.'" class="datepicker  jobmodified" type="text" value="'.$tblsplit[$splitencours-1][$titreLigne].'"/>';	?></div>	
 											</td>
 										</tr>
 									</tbody>
@@ -1273,7 +1280,7 @@
 						<!--Données du job-->
 							<div id="contenuOnglet<?php echo $splitencours; ?>-0" style="display:block;">	<!--Données du job-->
 
-								<form id="FormcontenuaOnglet<?php echo $splitencours; ?>-0" action="../index.php?page=tbljobs_maj2" method="POST" ENCTYPE="multipart/form-data">
+								<form id="FormcontenuaOnglet<?php echo $splitencours; ?>-0" action="../index.php?page=tbljobs_maj" method="POST" ENCTYPE="multipart/form-data">
 									<input type="hidden" class="user" name="<?php echo $tbl_tbljobs['id_tbljob'];	?>-noCheck|createur" value="">
 									<table class="datajob" >
 										<tbody>
@@ -1281,7 +1288,7 @@
 												<td style="width: 23%; padding: 0px 0px 0px 10px;" class="colored">	<!--specification-->
 													<div class="titre">Specification</div>
 													<div class="valeur" style="height:50%; padding-top: 5px; font : 12px Batang, arial, serif;">
-														<INPUT id="<?php	echo $tbl_tbljobs['id_tbljob'];	?>-check|specification" value="<?php	echo $tbl_tbljobs['specification'];	?>" class="cache  modified" style="font : 12px Batang, arial, serif;">
+														<INPUT id="<?php	echo $tbl_tbljobs['id_tbljob'];	?>-check|specification" value="<?php	echo $tbl_tbljobs['specification'];	?>" class="cache  jobmodified" style="font : 12px Batang, arial, serif;">
 														<a class="pascache"><?php	echo $tbl_tbljobs['specification'];	?></a>
 													</div>
 												</td>
@@ -1293,7 +1300,7 @@
 												<td style="width:16%; padding: 0px 10px 0px 10px;" class="colored">	<!--reception eprouvette-->
 													<div class="titre">Reception eprouvettes</div>
 													<div class="valeur" style="height:50%;">
-														<INPUT name="<?php	echo $tbl_tbljobs['id_tbljob'];	?>-noCheck|reception_eprouvette" value="<?php	echo $tbl_tbljobs['reception_eprouvette'];	?>" class="datepicker cache modified" style="font : 12px Batang, arial, serif;">
+														<INPUT name="<?php	echo $tbl_tbljobs['id_tbljob'];	?>-noCheck|reception_eprouvette" value="<?php	echo $tbl_tbljobs['reception_eprouvette'];	?>" class="datepicker cache jobmodified" style="font : 12px Batang, arial, serif;">
 														<a class="pascache"><?php	echo $tbl_tbljobs['reception_eprouvette'];	?></a>													
 													</div>
 												</td>
@@ -1307,7 +1314,7 @@
 												<td style="width:16%; padding: 0px 10px 0px 10px;" class="colored">	<!--envoi rapport-->
 													<div class="titre">Envoi rapport</div>
 													<div class="valeur" style="height:50%;">
-														<INPUT name="<?php	echo $tbl_tbljobs['id_tbljob'];	?>-noCheck|retour_rapport" value="<?php	echo $tbl_tbljobs['retour_rapport'];	?>" class="datepicker cache modified" style="font : 12px Batang, arial, serif;">
+														<INPUT name="<?php	echo $tbl_tbljobs['id_tbljob'];	?>-noCheck|retour_rapport" value="<?php	echo $tbl_tbljobs['retour_rapport'];	?>" class="datepicker cache jobmodified" style="font : 12px Batang, arial, serif;">
 														<a class="pascache"><?php	echo $tbl_tbljobs['retour_rapport'];	?></a>													
 													</div>
 												</td>
@@ -1315,9 +1322,9 @@
 											<tr>
 												<td style="width: 23%; padding: 0px 0px 0px 10px;" class="colored">	<!--matiere-->
 													<div class="titre">Matiere</div><div class="valeur" style="height:50%; padding-top: 5px;">
-														<INPUT id="<?php	echo $tbl_tbljobs['id_tbljob'];	?>-check|material" value="<?php	echo $tbl_tbljobs['material'];	?>" class="cache modified" style="float:left; font : 12px Batang, arial, serif; width:60%">
+														<INPUT id="<?php	echo $tbl_tbljobs['id_tbljob'];	?>-check|material" value="<?php	echo $tbl_tbljobs['material'];	?>" class="cache jobmodified" style="float:left; font : 12px Batang, arial, serif; width:60%">
 														<?php		
-															$titreLigne='matiere';	echo '<SELECT id="'.$tbl_tbljobs['id_tbljob']."-check|id_".$titreLigne.'" class="cache modified" style="font : 12px Batang, arial, serif; float:left; width:40%">
+															$titreLigne='matiere';	echo '<SELECT id="'.$tbl_tbljobs['id_tbljob']."-check|id_".$titreLigne.'" class="cache jobmodified" style="font : 12px Batang, arial, serif; float:left; width:40%">
 															';
 															for($k=0;$k < count($tbl_matieres);$k++)	{
 																$selected=($tbl_matieres[$k]['id_'.$titreLigne]==$tbl_tbljobs['id_'.$titreLigne])?"selected":"";
@@ -1333,7 +1340,7 @@
 													<div class="titre">Forme du signal</div>
 													<div class="valeur" style="height:50%; padding-top: 5px;">
 													<?php		
-														$titreLigne='waveform';	echo '<SELECT name="'.$tbl_tbljobs['id_tbljob']."-noCheck|".$titreLigne.'" class="cache modified">
+														$titreLigne='waveform';	echo '<SELECT name="'.$tbl_tbljobs['id_tbljob']."-noCheck|".$titreLigne.'" class="cache jobmodified">
 														';
 														$lst_waveform= array('Sinus','Triangle','Rampe');
 														for($k=0;$k < count($lst_waveform);$k++)	{
@@ -1362,7 +1369,7 @@
 												<td style="width: 23%; padding: 0px 0px 0px 10px;" class="colored">	<!--dessin-->
 													<div class="titre">Dessin</div><div class="valeur" style="height:50%; padding-top: 5px;">
 														<?php		
-															$titreLigne='dessin';	echo '<SELECT id="'.$tbl_tbljobs['id_tbljob']."-check|id_".$titreLigne.'" class="cache modified">
+															$titreLigne='dessin';	echo '<SELECT id="'.$tbl_tbljobs['id_tbljob']."-check|id_".$titreLigne.'" class="cache jobmodified">
 															';
 															for($k=0;$k < count($tbl_dessins);$k++)	{
 																$selected=($tbl_dessins[$k]['id_'.$titreLigne]==$tbl_tbljobs['id_'.$titreLigne])?"selected":"";
@@ -1433,7 +1440,7 @@
 												<td style="width:23%; padding: 0px 10px 0px 10px;" class="colored">	<!--Instructions Particulières-->
 													<div class="titre">Instructions Particulières</div>
 													<div class="valeur" style="height:50%; padding-top: 5px;">
-														<INPUT class="cache modified" TYPE="file" style="font : 8px Batang, arial, serif;" id="<?php	echo $tbl_tbljobs['id_tbljob'];	?>-check|instructions_particulieres">
+														<INPUT class="cache jobmodified" TYPE="file" style="font : 8px Batang, arial, serif;" id="<?php	echo $tbl_tbljobs['id_tbljob'];	?>-check|instructions_particulieres">
 														<a class="pascache" href="javascript:popup('readPDF.php?pathfile=<?php	echo 'C:/Quality/IP/'.$tbl_tbljobs['instructions_particulieres'];	?>',595,842,'IP')" ><?php	echo $tbl_tbljobs['instructions_particulieres'];	?></a>
 													</div>
 												</td>
@@ -1476,7 +1483,7 @@
 												<td style="width: 23%;" class="colored" colspan=2 rowspan=4>	<!--commentaire-->
 													<div class="titre" style="height: 5%;">Commentaire</div>
 													<div class="valeur" style="height:95%; padding-top: 5px;">
-														<textarea class="cache modified" style="font : 18px Batang, arial, serif;" name="<?php	echo $tbl_tbljobs['id_tbljob'];	?>-noCheck|tbljob_commentaire"><?php	echo $tbl_tbljobs['tbljob_commentaire'];	?></textarea>
+														<textarea class="cache jobmodified" style="font : 18px Batang, arial, serif;" name="<?php	echo $tbl_tbljobs['id_tbljob'];	?>-noCheck|tbljob_commentaire"><?php	echo $tbl_tbljobs['tbljob_commentaire'];	?></textarea>
 														<textarea class="pascache" readonly style="font : 18px Batang, arial, serif;" ><?php	echo $tbl_tbljobs['tbljob_commentaire'];	?></textarea>
 													</div>
 												</td>												
@@ -1505,7 +1512,7 @@
 																	$ratiorunning+=1;
 																}	
 															}
-															echo number_format($ratiorunning/count($liste_ep)*100,2);	
+															echo (count($liste_ep)>0)?number_format($ratiorunning/count($liste_ep)*100,2):0;	
 														?> %													
 													</div>
 												</td>
@@ -1606,7 +1613,217 @@
 									<table>
 										<tr>
 											<td>
-												<table id="my-table<?php echo $splitencours; ?>-1" class="job2">
+<script language="javascript">
+$(document).ready( function () {
+
+    var table=$('#my-table<?php echo $splitencours; ?>-1').DataTable({
+		"iDisplayLength": 10,
+		    "fixedColumns": {
+        leftColumns: 2
+    },
+	"scrollX": true,
+		"columnDefs": [ {
+            targets: [ 0 ],
+            orderData: [ 0, 1 ]
+        }, {
+            targets: [ 1 ],
+            orderData: [ 1, 0 ]
+        }, {
+            targets: [ 4 ],
+            orderData: [ 4, 0 ]
+        } ],
+	});
+
+	
+	// Setup - add a text input to each footer cell
+	$('#my-table<?php echo $splitencours; ?>-1 tfoot th').each( function () {
+        var title = $(this).text();
+        $(this).html( '<input type="text" placeholder="'+title+'" size="5"/>' );
+    } );
+	
+	table.columns().every( function () {
+        var that = this;
+ 
+        $( 'input', this.footer() ).on( 'keyup change', function () {
+            if ( that.search() !== this.value ) {
+                that
+                    .search( this.value )
+                    .draw();
+            }
+        } );
+    } );
+
+
+} );
+
+</script>
+											<table id="my-table<?php echo $splitencours; ?>-1" class="job2 display nowrap">
+												
+<style>
+div.dataTables_wrapper {
+        width: 800px;
+        margin: 0 auto;
+    }
+.incline{
+    transform: rotate(-48deg);
+    -moz-transform: rotate(-48deg);
+    -webkit-transform: rotate(-48deg);
+    -khtml-transform: rotate(-48deg);
+	 font-size: 80%;
+}
+.job2 thead{
+	background-color: white;
+	height:70;
+}
+</style>
+	<thead>
+		<tr>
+			<th><p class="incline">Prefixe</p></th>
+			<th><p class="incline">Nom éprouvette</p></th>
+			<th><p class="incline">Restart</p></th>
+			<th><p class="incline">n_essai</p></th>
+			<th><p class="incline">N° Fichier</p></th>
+			<th><p class="incline">Machine</p></th>
+			<th><p class="incline">date</p></th>
+			<th><p class="incline">Température</p></th>
+			<th><p class="incline">Frequence</p></th>
+			<th><p class="incline">Frequence STL</p></th>
+			<th><p class="incline">Cycle_STL</p></th>
+			<th><p class="incline">Largeur</p></th>
+			<th><p class="incline">Epaisseur</p></th>
+			<th><p class="incline">waveform</p></th>
+			<th><p class="incline"><?php	$titreLigne='c_type_1';	$units=(($tbl_tbljobs[$titreLigne]=="R") OR ($tbl_tbljobs[$titreLigne]=="A"))?		$tbl_tbljobs[$titreLigne]	:	$tbl_tbljobs[$titreLigne]." (".$tbl_tbljobs['c_unite'].")";	echo $units;	?></p></th>
+			<th><p class="incline"><?php	$titreLigne='c_type_2';	$units=(($tbl_tbljobs[$titreLigne]=="R") OR ($tbl_tbljobs[$titreLigne]=="A"))?		$tbl_tbljobs[$titreLigne]	:	$tbl_tbljobs[$titreLigne]." (".$tbl_tbljobs['c_unite'].")";	echo $units;	?></p></th>
+			<th><p class="incline">Max</p></th>
+			<th><p class="incline">Min</p></th>
+			<th><p class="incline">Cycle STL</p></th>
+			<th><p class="incline">Cycle_final</p></th>
+			<th><p class="incline">Rupture</p></th>
+			<th><p class="incline">Fracture</p></th>
+			<th><p class="incline">Temps d'essais</p></th>
+			<th><p class="incline">Cycle_min</p></th>
+			<th><p class="incline">Runout</p></th>
+			<th><p class="incline">Cycle estimé</p></th>
+			<th><p class="incline">Checked by</p></th>
+		</tr>
+	</thead>
+	<tfoot>
+		<tr>
+			<th>Prefixe</th>
+			<th>Nom éprouvette</th>
+			<th>Restart</th>
+			<th>n_essai</th>
+			<th>N° Fichier</th>
+			<th>Machine</th>
+			<th>date</th>
+			<th>Température</th>
+			<th>Frequence</th>
+			<th>Frequence STL</th>
+			<th>Cycle_STL</th>
+			<th>Largeur</th>
+			<th>Epaisseur</th>
+			<th>waveform</th>
+			<th>R</th>
+			<th>Max (kN)</th>
+			<th>Max</th>
+			<th>Min</th>
+			<th>Cycle STL</th>
+			<th>Cycle_final</th>
+			<th>Rupture</th>
+			<th>Fracture</th>
+			<th>Temps d'essais</th>
+			<th>Cycle_min</th>
+			<th>Runout</th>
+			<th>Cycle estimé</th>
+			<th>Checked by</th>
+		</tr>
+	</tfoot>	
+	<tbody>
+	<?php
+		for($k=0;$k < count($liste_ep);$k++)	{
+			echo'
+			<tr>
+<td>'.$liste_ep[$k]['prefixe'].'</td>
+<td>'.$liste_ep[$k]['nom_eprouvette'].'</td>
+<td>'.$liste_ep[$k]['dim_3'].'</td>
+<td>'.$liste_ep[$k]['n_essai'].'</td>
+<td>'.$liste_ep[$k]['n_fichier'].'</td>
+<td>'.$liste_ep[$k]['machine'].'</td>
+<td>'.$liste_ep[$k]['date'].'</td>
+<td>'.$liste_ep[$k]['c_temperature'].'</td>
+<td>'.$liste_ep[$k]['c_frequence'].'</td>
+<td>'.$liste_ep[$k]['c_frequence_STL'].'</td>
+<td>'.$liste_ep[$k]['c_cycle_STL'].'</td>
+<td>'.$liste_ep[$k]['dim_1'].'</td>
+<td>'.$liste_ep[$k]['dim_2'].'</td>
+<td>'.$liste_ep[$k]['waveform'].'</td>
+<td>'.$liste_ep[$k]['c_type_1_val'].'</td>
+<td>'.$liste_ep[$k]['c_type_2_val'].'</td>
+<td>'.$liste_ep[$k]['dim_3'].'</td>
+<td>'.$liste_ep[$k]['dim_3'].'</td>
+<td>'.$liste_ep[$k]['Cycle_STL'].'</td>
+<td>'.$liste_ep[$k]['Cycle_final'].'</td>
+<td>'.$liste_ep[$k]['Rupture'].'</td>
+<td>'.$liste_ep[$k]['Fracture'].'</td>
+<td>'.$liste_ep[$k]['temps_essais'].'</td>
+<td>'.$liste_ep[$k]['Cycle_min'].'</td>
+<td>'.$liste_ep[$k]['runout'].'</td>
+<td>'.$liste_ep[$k]['cycle_estime'].'</td>
+
+
+<td>';
+if ($liste_ep[$k]['c_checked']==0)	{
+
+	echo '<a class="pascache" href="javascript:updateEp(\''.$liste_ep[$k]['id_eprouvette'].'\',\'consigne\')">
+		<img id="consigne_'.$liste_ep[$k]['id_eprouvette'].'" alt="" src="../img/not-checked.png" style="height:30px; width:30px;" title="Created by : '.$liste_ep[$k]['createur'].' &#13; Updated by : '.$liste_ep[$k]['modif'].'"/>
+	</a>';
+}
+else	{
+	echo '<a class="pascache">
+		<img id="consigne_'.$liste_ep[$k]['id_eprouvette'].'" alt="" src="../img/checked.png" style="height:30px; width:30px;" title="Created by : '.$liste_ep[$k]['createur'].' &#13; Updated by : '.$liste_ep[$k]['modif'].' &#13;Approved by : '.$liste_ep[$k]['checker'].'"/>
+	</a>';
+}
+					
+echo' <a class="cache" href="javascript:delEp('.$liste_ep[$k]['id_eprouvette'].', '.$k.', \'my-table'.$splitencours.'-1\')">
+	<img alt="" src="../img/unchecked.png" style="height:30px; width:30px;" title="Created by : '.$liste_ep[$k]['createur'].' &#13; Updated by : '.$liste_ep[$k]['modif'].' &#13;Approved by : '.$liste_ep[$k]['checker'].'"/>
+</a>';
+echo '</td>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				</tr>
+				';
+		}
+		?>
+	</tbody>
+</table>	
+												
+												
+												
+												
+												
+<!--												
+	<table id="my-table<?php echo $splitencours; ?>-1" class="job2">											
+												
+												
 													<?php
 														$titreLigne='prefixe';	echo '<tr><td name="'.$titreLigne.'">'.$convTitre[$titreLigne].'</td>';	FOR($j=0;$j < count($liste_ep);$j++){echo '<td bgcolor="'.est_assigne($liste_ep[$j]['assigne']).'"><INPUT id="'.$splitencours.'-1_'.$j.'-'.$titreLigne.'" name="'.$j."-".$titreLigne.'" value="'.$liste_ep[$j][$titreLigne].'" class="cache modified"><a class="pascache">'.$liste_ep[$j][$titreLigne].'</a></td>';}	echo '</tr>';
 														
@@ -1627,27 +1844,27 @@
 														}
 														echo '</tr>';
 
-$titreLigne='Restart';
-echo '<tr><td name="'.$titreLigne.'">Restart</td>';	
-FOR($j=0;$j < count($liste_ep);$j++){
+														$titreLigne='Restart';
+														echo '<tr><td name="'.$titreLigne.'">Restart</td>';	
+														FOR($j=0;$j < count($liste_ep);$j++){
 
-	
-	
-	echo '<td bgcolor="'.est_assigne($liste_ep[$j]['assigne']).'">
-		<a class="pascache">';
-		if ($liste_ep[$j]['heritage']!="")	{
-			if(isset($lst_heritage[$liste_ep[$j]['heritage']]))
-				$lst_heritage[$liste_ep[$j]['heritage']]=$lst_heritage[$liste_ep[$j]['heritage']]+1;
-			else
-				$lst_heritage[$liste_ep[$j]['heritage']]=1;
-			
-			echo 'Restart - '.$lst_heritage[$liste_ep[$j]['heritage']];
-		}
-		echo '
-		</a>
-	</td>';
-}
-echo '</tr>';
+															
+															
+															echo '<td bgcolor="'.est_assigne($liste_ep[$j]['assigne']).'">
+																<a class="pascache">';
+																if ($liste_ep[$j]['heritage']!="")	{
+																	if(isset($lst_heritage[$liste_ep[$j]['heritage']]))
+																		$lst_heritage[$liste_ep[$j]['heritage']]=$lst_heritage[$liste_ep[$j]['heritage']]+1;
+																	else
+																		$lst_heritage[$liste_ep[$j]['heritage']]=1;
+																	
+																	echo 'Restart - '.$lst_heritage[$liste_ep[$j]['heritage']];
+																}
+																echo '
+																</a>
+															</td>';
+														}
+														echo '</tr>';
 
 
 														$titreLigne='n_essai';	echo '<tr><td>'.$convTitre[$titreLigne].'</td>';	FOR($j=0;$j < count($liste_ep);$j++){echo '<td bgcolor="'.est_assigne($liste_ep[$j]['assigne']).'">'.$liste_ep[$j][$titreLigne].'</td>';}	echo '</tr>';
@@ -1790,7 +2007,7 @@ echo '</tr>';
 														echo '</tr>';
 
 													?>
-												</table>
+												</table>-->
 											</td>
 											<td align="left" valign="top" style="padding:7">
 												<button value="Add column" onclick="javascript:appendColumn('<?php echo $splitencours; ?>-1')" class="append_column" type="button">
@@ -2078,7 +2295,7 @@ echo '</tr>';
 										?>
 				
 									
-										<form id="FormcontenuaOnglet<?php echo $splitencours.'-'.$l; ?>" action="../index.php?page=tbljobs_maj2" method="POST" ENCTYPE="multipart/form-data">
+										<form id="FormcontenuaOnglet<?php echo $splitencours.'-'.$l; ?>" action="../index.php?page=tbljobs_maj" method="POST" ENCTYPE="multipart/form-data">
 											<input type="hidden" class="user" name="<?php echo $tbl_soustraitances[$l]['id_tbljob'];	?>-createur" value="">
 											<table class="datajob">
 												<tbody>
@@ -2292,7 +2509,7 @@ echo '</tr>';
 				<span class="close"></span>
   <!-- Modal content -->
   <div class="modal-content" style="margin:300px; height:100px">
-	  <form>	
+	  <form method='post' action='' onsubmit='logon();return false;'>	
 		<table class="datajob">
 			<tr>
 				<td class="colored">
@@ -2321,7 +2538,7 @@ echo '</tr>';
 				<td>
 					<a id="login" class="valid" onclick="logon();">
 						<img alt="" src="../img/checked.png" style="height:40px; width:35px;" />
-					</a>
+					</a>					
 				</td>
 			</tr>
 			<tr>
@@ -2502,8 +2719,11 @@ var modalNewTest = document.getElementById('myModalNewTest');
 <script>	//couleur si on change une valeur
 	$( ".modified" ).change(function() {
 		$(this).css('background-color' , '#FF0000');
-		$(this).attr('name',$(this).attr('id'))
 	});
+	$( ".jobmodified" ).change(function() {
+		$(this).css('background-color' , '#FF0000');
+		$(this).attr('name',$(this).attr('id'));
+	});	
 </script>
 	
 

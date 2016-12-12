@@ -2,6 +2,12 @@
 function Connectionsql() {
 	global $db; 
 	$db = mysqli_connect('localhost', 'root', '', 'Metcut');
+//printf("Jeu de caractère initial : %s\n", $db->character_set_name());
+
+
+/* Modification du jeu de résultats en utf8 */
+$db->set_charset("utf8");
+//printf("Jeu de caractère initial : %s\n", $db->character_set_name());
 
 }
 //fleche up/down des tris
