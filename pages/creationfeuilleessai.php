@@ -224,7 +224,106 @@ if (isset($_GET['n_fichier']) AND $_GET['n_fichier']!="" AND $_GET['n_fichier']>
 		
 		
 	}
-	If (isset($tbl_essai['type_essai']) AND $tbl_essai['type_essai']=="HCF+Ext.")	{
+	ElseIf (isset($tbl_essai['type_essai']) AND $tbl_essai['type_essai']=="HCF+Ext.")	{
+
+		$objPHPExcel = $objReader->load("../Excel/templates/HCF-LCF CTRL EFFORT FT TestSuite.xlsx");
+
+
+		
+		$objPHPExcel->getActiveSheet()->setCellValue('B7', $identification);
+		$objPHPExcel->getActiveSheet()->setCellValue('B8', $tbl_essai['dessin']);
+		$objPHPExcel->getActiveSheet()->setCellValue('B9', $tbl_essai['material']);
+		$objPHPExcel->getActiveSheet()->setCellValue('B13', $tbl_essai['machine']);
+		$objPHPExcel->getActiveSheet()->setCellValue('B15', '40001');
+		$objPHPExcel->getActiveSheet()->setCellValue('B16', $tbl_essai['enregistreur']);
+		$objPHPExcel->getActiveSheet()->setCellValue('F13', $compresseur);
+		$objPHPExcel->getActiveSheet()->setCellValue('F17', $ind_temp);
+		$objPHPExcel->getActiveSheet()->setCellValue('B17', $tbl_essai['extensometre']);
+		$objPHPExcel->getActiveSheet()->setCellValue('F15', $coil);
+		$objPHPExcel->getActiveSheet()->setCellValue('F16', $four);
+
+		$objPHPExcel->getActiveSheet()->setCellValue('B24', $tbl_essai['cartouche_load']);
+		$objPHPExcel->getActiveSheet()->setCellValue('B23', $tbl_essai['cartouche_stroke']);
+		$objPHPExcel->getActiveSheet()->setCellValue('B25', $tbl_essai['cartouche_strain']);
+
+		$objPHPExcel->getActiveSheet()->setCellValue('B28', "6");
+
+		
+		$objPHPExcel->getActiveSheet()->setCellValue('D28', "-6");
+		
+
+		$objPHPExcel->getActiveSheet()->setCellValue('I7', $jobcomplet);
+		$objPHPExcel->getActiveSheet()->setCellValue('I8', $tbl_essai['n_essai']);
+		$objPHPExcel->getActiveSheet()->setCellValue('I9', $tbl_essai['n_fichier']);
+		$objPHPExcel->getActiveSheet()->setCellValue('I10', $tbl_essai['date']);
+		$objPHPExcel->getActiveSheet()->setCellValue('I11', $tbl_essai['operateur']);
+		$objPHPExcel->getActiveSheet()->setCellValue('I12', $tbl_essai['controleur']);
+
+		$objPHPExcel->getActiveSheet()->setCellValue('J17', $tbl_essai['operateur']);
+		if ($tbl_essai['c_temperature']>=50)
+			$objPHPExcel->getActiveSheet()->setCellValue('J18', $tbl_essai['controleur']);
+		$objPHPExcel->getActiveSheet()->setCellValue('K20', $tbl_essai['c_temperature']);
+		$objPHPExcel->getActiveSheet()->setCellValue('K22', $R);
+		$objPHPExcel->getActiveSheet()->setCellValue('K23', $tbl_essai['c_frequence']);
+		$objPHPExcel->getActiveSheet()->setCellValue('I22', $A);
+		$objPHPExcel->getActiveSheet()->setCellValue('I23', $tbl_essai['c_waveform']);	
+		
+		if ($nb_dim==1)	{
+			$objPHPExcel->getActiveSheet()->setCellValue('I24', $tbl_essai['dim_1']);
+		}
+		elseif ($nb_dim==2)	{
+			$objPHPExcel->getActiveSheet()->setCellValue('I24', $tbl_essai['dim_1']);
+			$objPHPExcel->getActiveSheet()->setCellValue('K24', $tbl_essai['dim_2']);
+		}
+		elseif ($nb_dim==3)	{
+			$objPHPExcel->getActiveSheet()->setCellValue('I24', $tbl_essai['dim_1']);
+			$objPHPExcel->getActiveSheet()->setCellValue('K24', $tbl_essai['dim_2']);
+			$objPHPExcel->getActiveSheet()->setCellValue('K25', $tbl_essai['dim_3']);
+		}
+		else	{
+			$objPHPExcel->getActiveSheet()->setCellValue('I24', "NA");
+		}
+
+
+		$objPHPExcel->getActiveSheet()->setCellValue('I25', $area);
+
+		if ($tbl_essai['c_unite']=="MPa")	{
+			$objPHPExcel->getActiveSheet()->setCellValue('I28', $MAX);
+				$objPHPExcel->getActiveSheet()->setCellValue('I29', ($MAX+$MIN)/2);
+				$objPHPExcel->getActiveSheet()->setCellValue('I30', ($MAX-$MIN)/2);
+			$objPHPExcel->getActiveSheet()->setCellValue('I31', $MIN);	
+
+			$objPHPExcel->getActiveSheet()->setCellValue('J28', $MAX*$area/1000);
+				$objPHPExcel->getActiveSheet()->setCellValue('J29', ($MAX+$MIN)/2*$area/1000);
+				$objPHPExcel->getActiveSheet()->setCellValue('J30', ($MAX-$MIN)/2*$area/1000);
+			$objPHPExcel->getActiveSheet()->setCellValue('J31', $MIN*$area/1000);
+			
+			$objPHPExcel->getActiveSheet()->setCellValue('B29', $MAX*$area/1000+$MAX*$area/1000*5/100);
+			$objPHPExcel->getActiveSheet()->setCellValue('D29', $MIN*$area/1000-$MAX*$area/1000*5/100);	
+		}
+		Elseif ($tbl_essai['c_unite']=="kN")	{
+			$objPHPExcel->getActiveSheet()->setCellValue('J28', $MAX);
+				$objPHPExcel->getActiveSheet()->setCellValue('J29', ($MAX+$MIN)/2);
+				$objPHPExcel->getActiveSheet()->setCellValue('J30', ($MAX-$MIN)/2);			
+			$objPHPExcel->getActiveSheet()->setCellValue('J31', $MIN);
+			
+			$objPHPExcel->getActiveSheet()->setCellValue('B29', $MAX+$MAX*5/100);
+			$objPHPExcel->getActiveSheet()->setCellValue('D29', $MIN-$MAX*5/100);			
+		}
+		Else	{
+			$objPHPExcel->getActiveSheet()->setCellValue('J28', "ERREUR d'unité");			
+		}
+		
+		$objPHPExcel->getActiveSheet()->setCellValue('K52', $STL);
+		$objPHPExcel->getActiveSheet()->setCellValue('I52', $F_STL);
+
+		
+		$objPHPExcel->getActiveSheet()->setCellValue('J46', $tbl_essai['Cycle_min']);
+		$objPHPExcel->getActiveSheet()->setCellValue('J49', $runout);
+		
+		
+	}
+	ElseIf (isset($tbl_essai['type_essai']) AND $tbl_essai['type_essai']=="Dwell")	{
 
 		$objPHPExcel = $objReader->load("../Excel/templates/HCF-LCF CTRL EFFORT FT TestSuite.xlsx");
 
@@ -403,6 +502,8 @@ if (isset($_GET['n_fichier']) AND $_GET['n_fichier']!="" AND $_GET['n_fichier']>
 		
 	}
 
+	
+	
 	$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
 	$objWriter->save('../Excel/'.$tbl_essai['n_fichier'].'.xlsx');
 
