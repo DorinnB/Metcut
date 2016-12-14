@@ -389,9 +389,10 @@
 				//Cell1
 			var checkbox = document.createElement('input');
 			checkbox.type = "checkbox";
-			checkbox.name= "newep-"+numInsertRow+"-checkbox";
+			checkbox.checked=true;
+			checkbox.name= "newep-"+idsoustraitant+"-checkbox";
 			checkbox.value="value";
-			checkbox.id = tbl+"_"+numInsertRow;
+			//checkbox.id = tbl+"_"+numInsertRow;
 			checkbox.setAttribute('class',tbl);
 			checkbox.setAttribute('style','visibility:visible');
 			
@@ -401,14 +402,14 @@
 				//Cell2
 			var nomep = document.createElement('input');
 			nomep.type = "text";
-			nomep.name= "newep-"+numInsertRow+"-nom_eprouvette";
+			nomep.name= "newep-"+idsoustraitant+"-nom_eprouvette";
 			nomep.value="";
-			nomep.id = tbl+"_"+numInsertRow+"_"+numInsertRow;
+			//nomep.id = tbl+"_"+idsoustraitant+"_"+numInsertRow;
 			nomep.setAttribute('class','modified');
 			
 			cell2.appendChild(nomep);
 			
-				//Cell3
+		/*		//Cell3
 			var dessin = document.createElement('select');
 			//dessin.type = "text";
 			dessin.name= "newep-"+numInsertRow+"-id_dessin";
@@ -424,13 +425,24 @@
 			//	dessin.setAttribute('class','modified');
 			
 			cell3.appendChild(dessin);
+		*/
+			var idjob = document.createElement('input');
+			idjob.type = "hidden";
+			idjob.name= "newep-"+idsoustraitant+"-id_job";
+			idjob.value=idsoustraitant;
+			
+			
+			cell3.innerHTML = document.getElementById(idsoustraitant + "-Check|id_dessin").options[document.getElementById(idsoustraitant + "-Check|id_dessin").selectedIndex].text;
+			
+			cell3.appendChild(idjob);
+						
 			
 				//Cell4
 			var specif = document.createElement('input');
 			specif.type = "text";
-			specif.name= "newep-"+numInsertRow+"-d_commentaire";
+			specif.name= "newep-"+idsoustraitant+"-d_commentaire";
 			specif.value="";
-			specif.id = tbl+"_"+numInsertRow+"_"+numInsertRow;
+			//specif.id = tbl+"_"+idsoustraitant+"_"+numInsertRow;
 			specif.setAttribute('class','modified');
 			
 			cell4.appendChild(specif);
@@ -1295,7 +1307,6 @@
 													<div class="valeur" style="height:50%;">
 														<INPUT name="<?php	echo $tbl_tbljobs['id_tbljob'];	?>-noCheck|reception_eprouvette" value="<?php	echo $tbl_tbljobs['reception_eprouvette'];	?>" class="datepicker cache modified" style="font : 12px Batang, arial, serif;">
 														<a class="pascache"><?php	echo $tbl_tbljobs['reception_eprouvette'];	?></a>
-
 													</div>
 												</td>
 												<td style="width:16%; padding: 0px 10px 0px 10px;" class="colored">	<!--retour eprouvette-->
@@ -2022,7 +2033,7 @@ echo '</tr>';
 														</td>
 														<td style="width:15%; padding: 0px 10px 0px 10px;" class="colored">	<!--leadtime-->
 															<div class="titre">Lead Time (YYYY-MM-DD)</div>
-															<div class="valeur" style="height:50%;"><?php	$titreLigne="test_leadtime"; echo '<input form="FormcontenuaOnglet'.$splitencours.'-0" name="'.$tbl_soustraitances[$l]['id_tbljob']."-".$titreLigne.'" class="datepicker  modified" type="text" value="'.$tbl_soustraitances[$l][$titreLigne].'"/>';	?></div>	
+															<div class="valeur" style="height:50%;"><?php	$titreLigne="test_leadtime"; echo '<input form="FormcontenuaOnglet'.$splitencours.'-0" name="'.$tbl_soustraitances[$l]['id_tbljob']."-noCheck|".$titreLigne.'" class="datepicker  modified" type="text" value="'.$tbl_soustraitances[$l][$titreLigne].'"/>';	?></div>	
 														</td>
 													</tr>
 												</tbody>
@@ -2080,7 +2091,7 @@ echo '</tr>';
 				
 									
 										<form id="FormcontenuaOnglet<?php echo $splitencours.'-'.$l; ?>" action="../index.php?page=tbljobs_maj" method="POST" ENCTYPE="multipart/form-data">
-											<input type="hidden" class="user" name="<?php echo $tbl_soustraitances[$l]['id_tbljob'];	?>-createur" value="">
+											<input type="hidden" class="user" name="<?php echo $tbl_soustraitances[$l]['id_tbljob'];	?>-noCheck|createur" value="">
 											<table class="datajob">
 												<tbody>
 													<tr>
@@ -2097,10 +2108,10 @@ echo '</tr>';
 														<td style="width: 4%">&nbsp;</td>
 														<td style="width: 16%; padding: 0px 0px 0px 10px;" class="colored">	<!--matiere-->
 															<div class="titre">Matiere</div><div class="valeur" style="height:50%; padding-top: 5px;">
-																<INPUT name="<?php	echo $tbl_soustraitances[$l]['id_tbljob'];	?>-material" value="<?php	echo $tbl_soustraitances[$l]['material'];	?>" class="cache modified" style="float:left; font : 12px Batang, arial, serif; width:60%">
+																<INPUT id="<?php	echo $tbl_soustraitances[$l]['id_tbljob'];	?>-Check|material" value="<?php	echo $tbl_soustraitances[$l]['material'];	?>" class="cache jobmodified" style="float:left; font : 12px Batang, arial, serif; width:60%">
 																<?php	
 														
-																	$titreLigne='matiere';	echo '<SELECT name="'.$tbl_soustraitances[$l]['id_tbljob']."-id_".$titreLigne.'" class="cache modified" style="font : 12px Batang, arial, serif; float:left; width:40%">
+																	$titreLigne='matiere';	echo '<SELECT id="'.$tbl_soustraitances[$l]['id_tbljob']."-Check|id_".$titreLigne.'" class="cache jobmodified" style="font : 12px Batang, arial, serif; float:left; width:40%">
 																	';
 																	for($k=0;$k < count($tbl_matieres);$k++)	{
 																		$selected=($tbl_matieres[$k]['id_'.$titreLigne]==$tbl_soustraitances[$l]['id_'.$titreLigne])?"selected":"";
@@ -2115,7 +2126,7 @@ echo '</tr>';
 														<td style="width:16%; padding: 0px 0px 0px 10px;" class="colored">	<!--dessin-->
 															<div class="titre">Dessin</div><div class="valeur" style="height:50%; padding-top: 5px;">
 																<?php		
-																	$titreLigne='dessin';	echo '<SELECT name="'.$tbl_soustraitances[$l]['id_tbljob']."-id_".$titreLigne.'" class="cache modified">
+																	$titreLigne='dessin';	echo '<SELECT id="'.$tbl_soustraitances[$l]['id_tbljob']."-Check|id_".$titreLigne.'" class="cache jobmodified">
 																	';
 																	for($k=0;$k < count($tbl_dessins);$k++)	{
 																		$selected=($tbl_dessins[$k]['id_'.$titreLigne]==$tbl_soustraitances[$l]['id_'.$titreLigne])?"selected":"";
@@ -2129,14 +2140,14 @@ echo '</tr>';
 														</td>
 														<td style="width:16%; padding: 0px 10px 0px 10px;" class="colored">	<!--envoi eprouvette-->
 															<div class="titre">envoi d'eprouvette</div>
-															<?php	$titreLigne='reception_eprouvette';	if ($tbl_soustraitances[$l][$titreLigne]==""){		$cache1="pascache";		$cache2="cache";	}	else	{		$cache1="cache";		$cache2="pascache";	}	echo '<div class="valeur '.$cache1.'" style="height:50%;"><input form="FormcontenuaOnglet'.$splitencours.'-'.$l.'" name="'.$tbl_soustraitances[$l]['id_tbljob'].'-'.$titreLigne.'" class="datepicker modified" type="text" value="'.$tbl_soustraitances[$l][$titreLigne].'"/></div>	<div class="valeur '.$cache2.'" style="height:50%;">'.$tbl_soustraitances[$l][$titreLigne].'</div>';	?>
+															<?php	$titreLigne='reception_eprouvette';	if ($tbl_soustraitances[$l][$titreLigne]==""){		$cache1="pascache";		$cache2="cache";	}	else	{		$cache1="cache";		$cache2="pascache";	}	echo '<div class="valeur '.$cache1.'" style="height:50%;"><input form="FormcontenuaOnglet'.$splitencours.'-'.$l.'" name="'.$tbl_soustraitances[$l]['id_tbljob'].'-noCheck|'.$titreLigne.'" class="datepicker modified" type="text" value="'.$tbl_soustraitances[$l][$titreLigne].'"/></div>	<div class="valeur '.$cache2.'" style="height:50%;">'.$tbl_soustraitances[$l][$titreLigne].'</div>';	?>
 														</td>
 													</tr>
 													<tr>
 														<td style="width:23%;" class="colored" colspan=2 rowspan=2>	<!--Commentaires-->
 															<div class="titre" style="height: 10%;">Commentaires</div>
 															<div class="valeur" style="height:90%; padding-top: 5px;">
-																<textarea class="cache modified" style="font : 18px Batang, arial, serif;" name="<?php	echo $tbl_soustraitances[$l]['id_tbljob'];	?>-tbljob_commentaire"><?php	echo $tbl_soustraitances[$l]['tbljob_commentaire'];	?></textarea>
+																<textarea class="cache jobmodified" style="font : 18px Batang, arial, serif;" id="<?php	echo $tbl_soustraitances[$l]['id_tbljob'];	?>-Check|tbljob_commentaire"><?php	echo $tbl_soustraitances[$l]['tbljob_commentaire'];	?></textarea>
 																<textarea class="pascache" readonly style="font : 18px Batang, arial, serif;" ><?php	echo $tbl_soustraitances[$l]['tbljob_commentaire'];	?></textarea>
 															</div>
 														</td>
@@ -2149,7 +2160,7 @@ echo '</tr>';
 														</td>
 														<td style="width:16%; padding: 0px 10px 0px 10px;" class="colored">	<!--reception eprouvette-->
 															<div class="titre">Reception d'eprouvette</div>
-															<?php	$titreLigne='retour_eprouvette';	if ($tbl_soustraitances[$l][$titreLigne]==""){		$cache1="pascache";		$cache2="cache";	}	else	{		$cache1="cache";		$cache2="pascache";	}	echo '<div class="valeur '.$cache1.'" style="height:50%;"><input form="FormcontenuaOnglet'.$splitencours.'-'.$l.'" name="'.$tbl_soustraitances[$l]['id_tbljob'].'-'.$titreLigne.'" class="datepicker modified" type="text" value="'.$tbl_soustraitances[$l][$titreLigne].'"/></div>	<div class="valeur '.$cache2.'" style="height:50%;">'.$tbl_soustraitances[$l][$titreLigne].'</div>';	?>
+															<?php	$titreLigne='retour_eprouvette';	if ($tbl_soustraitances[$l][$titreLigne]==""){		$cache1="pascache";		$cache2="cache";	}	else	{		$cache1="cache";		$cache2="pascache";	}	echo '<div class="valeur '.$cache1.'" style="height:50%;"><input form="FormcontenuaOnglet'.$splitencours.'-'.$l.'" name="'.$tbl_soustraitances[$l]['id_tbljob'].'-noCheck|'.$titreLigne.'" class="datepicker modified" type="text" value="'.$tbl_soustraitances[$l][$titreLigne].'"/></div>	<div class="valeur '.$cache2.'" style="height:50%;">'.$tbl_soustraitances[$l][$titreLigne].'</div>';	?>
 														</td>
 													</tr>
 													<tr>
@@ -2159,29 +2170,31 @@ echo '</tr>';
 														<td style="width:16%; padding: 0px 10px 0px 10px;" class="colored">	<!--Instructions Particulières-->
 															<div class="titre">Document (pdf)</div>
 															<div class="valeur" style="height:50%; padding-top: 5px;">
-																<INPUT class="cache modified" TYPE="file" style="font : 8px Batang, arial, serif;" name="<?php	echo $tbl_soustraitances[$l]['id_tbljob'];	?>-instructions_particulieres">
+																<INPUT class="cache jobmodified" TYPE="file" style="font : 8px Batang, arial, serif;" id="<?php	echo $tbl_soustraitances[$l]['id_tbljob'];	?>-Check|instructions_particulieres">
 																<a class="pascache" href="javascript:popup('readPDF.php?pathfile=<?php	echo 'C:/Quality/IP/'.$tbl_soustraitances[$l]['instructions_particulieres'];	?>',595,842,'IP')" ><?php	echo $tbl_soustraitances[$l]['instructions_particulieres'];	?></a>
 															</div>
 														</td>													
 														<td style="width: 16%; padding: 0px 0px 0px 10px;" class="colored">	<!--specification-->
 															<div class="titre">Specification</div>
 															<div class="valeur" style="height:50%; padding-top: 5px; font : 12px Batang, arial, serif;">
-																<INPUT name="<?php	echo $tbl_soustraitances[$l]['id_tbljob'];	?>-specification" value="<?php	echo $tbl_soustraitances[$l]['specification'];	?>" class="cache  modified" style="font : 12px Batang, arial, serif;">
+																<INPUT id="<?php	echo $tbl_soustraitances[$l]['id_tbljob'];	?>-Check|specification" value="<?php	echo $tbl_soustraitances[$l]['specification'];	?>" class="cache  jobmodified" style="font : 12px Batang, arial, serif;">
 																<a class="pascache"><?php	echo $tbl_soustraitances[$l]['specification'];	?></a>
 															</div>
 														</td>	
 														<td style="width:16%; padding: 0px 10px 0px 10px;" class="colored">	<!--reception rapport-->
 															<div class="titre">Reception rapport</div>
-															<?php	$titreLigne='retour_rapport';	if ($tbl_soustraitances[$l][$titreLigne]==""){		$cache1="pascache";		$cache2="cache";	}	else	{		$cache1="cache";		$cache2="pascache";	}	echo '<div class="valeur '.$cache1.'" style="height:50%;"><input form="FormcontenuaOnglet'.$splitencours.'-'.$l.'" name="'.$tbl_soustraitances[$l]['id_tbljob'].'-'.$titreLigne.'" class="datepicker modified" type="text" value="'.$tbl_soustraitances[$l][$titreLigne].'"/></div>	<div class="valeur '.$cache2.'" style="height:50%;">'.$tbl_soustraitances[$l][$titreLigne].'</div>';	?>
+															<?php	$titreLigne='retour_rapport';	if ($tbl_soustraitances[$l][$titreLigne]==""){		$cache1="pascache";		$cache2="cache";	}	else	{		$cache1="cache";		$cache2="pascache";	}	echo '<div class="valeur '.$cache1.'" style="height:50%;"><input form="FormcontenuaOnglet'.$splitencours.'-'.$l.'" name="'.$tbl_soustraitances[$l]['id_tbljob'].'-noCheck|'.$titreLigne.'" class="datepicker modified" type="text" value="'.$tbl_soustraitances[$l][$titreLigne].'"/></div>	<div class="valeur '.$cache2.'" style="height:50%;">'.$tbl_soustraitances[$l][$titreLigne].'</div>';	?>
 														</td>
 													</tr>
 													<tr>
 														<td style="height: 354px; padding: 0px 10px 0px 10px;" class="colored" colspan=6>	<!--ep-->
 															<div class="titre" style="height: 7%;">
 																<div style="float:left;">Eprouvettes
-																	<button style="margin-left: 30px;" class="append_column" value="Add column" onclick="newRow('ST_<?php	echo $l;	?>','<?php	echo $tbl_soustraitances[$l]['id_tbljob'];	?>')" type="button">
-																		<img src="../css/croix.png">
-																	</button>
+																	<?php	if ($tbl_soustraitances[$l]['id_type_soustraitance']!=15)	{	?>
+																		<button style="margin-left: 30px;" class="append_column" value="Add column" onclick="newRow('ST_<?php	echo $l;	?>','<?php	echo $tbl_soustraitances[$l]['id_tbljob'];	?>')" type="button">
+																			<img src="../css/croix.png">
+																		</button>
+																	<?php	}	?>
 																</div>
 																<div style="float:right;">
 																	<?php	

@@ -104,7 +104,7 @@ foreach ($job as $cle=>$value)	{	//un peu inutile car en théorie uniquement un 
 			envoilog('tbljobs','id_tbljob',$cle,$reqCheck);		
 
 		envoilog('tbljobs','id_tbljob',$cle,$reqNoCheck);			
-exit();
+//exit();
 
 
 		
@@ -116,8 +116,7 @@ exit();
 if(!empty($ep)) { 
 	foreach ($ep as $cle=>$value)	//pour chaque eprouvette de soustraitance
 	{	
-		if ($cle=="ep")			//update ou ajout eprouvette soustraitance
-		{
+		if ($cle=="ep")	{		//update ou ajout eprouvette soustraitance
 			foreach ($value as $key=>$val)	//on recupere l'id de l'ep / le champ / la valeur
 			{
 
@@ -156,14 +155,14 @@ if(!empty($ep)) {
 	
 			}
 		}
-		elseif ($cle=="newep")		//ajout eprouvette sous traitance
-		{
+		elseif ($cle=="newep")	{	//ajout eprouvette sous traitance	
 			foreach ($value as $key=>$val)	//on recupere l'id de l'ep / le champ / la valeur
 			{
 				if (!empty($val['checkbox']))	{
-					$req='INSERT INTO eprouvettes (nom_eprouvette, id_tbljob, id_dessin, d_commentaire) VALUES ("'.mysqli_real_escape_string($db, $val['nom_eprouvette']).'",'.$id_job.','.$val['id_dessin'].',"'.mysqli_real_escape_string($db, $val['d_commentaire']).'")';
-		echo '<br/>NE DEVRAIT PLUS APPARAITRE - '.$req;
-					//$db->query($req);
+					$req='INSERT INTO eprouvettes (nom_eprouvette, id_job, d_commentaire, eprouvette_actif) VALUES ("'.mysqli_real_escape_string($db, $val['nom_eprouvette']).'",'.$key.',"'.mysqli_real_escape_string($db, $val['d_commentaire']).'",1)';
+			echo '<br/>'.$req;
+		//echo '<br/>NE DEVRAIT PLUS APPARAITRE - '.$req;
+					$db->query($req);
 				}
 			}
 		}
