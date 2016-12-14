@@ -2,7 +2,7 @@
 	<head>
 
 
-	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>JOBS</title>
 	<link rel="shortcut icon" href="../css/favicon.ico" />
 	<link rel="stylesheet" href="../css/style.css" type="text/css" />

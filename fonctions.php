@@ -2,13 +2,14 @@
 function Connectionsql() {
 	global $db; 
 	$db = mysqli_connect('localhost', 'root', '', 'Metcut');
-//printf("Jeu de caractère initial : %s\n", $db->character_set_name());
 
+		/* Modification du jeu de résultats en utf8 */
+	$db->set_charset("utf8");
+		//printf("Jeu de caractère : %s\n", $db->character_set_name());
 
-/* Modification du jeu de résultats en utf8 */
-$db->set_charset("utf8");
-//printf("Jeu de caractère initial : %s\n", $db->character_set_name());
-
+		
+		
+		// ATTENTION $db est aussi defini dans envoilog. Toute modif doit etre reportée la bas
 }
 //fleche up/down des tris
 function fsens($colonne, $tri, $sens) {
@@ -101,6 +102,7 @@ function formulaire($type,$var)  {
 function envoilog($table,$nom,$id,$update)	{
 	
 	$db = mysqli_connect('localhost', 'root', '', 'Metcut');
+	$db->set_charset("utf8");
 	
 	$req_av = $db->query('SELECT * FROM '.$table.' WHERE '.$nom.'='.$id.';');
 	

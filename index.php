@@ -2,12 +2,14 @@
 	session_start();
 	Require("fonctions.php");
 	Connectionsql();
-?>	 
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Enregistrement des Essais</title>
-<link rel="shortcut icon" href="css/favicon.ico" />
-<link type="text/css" rel="stylesheet" href="css/style.css" />
-    
+?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Enregistrement des Essais</title>
+	<link rel="shortcut icon" href="css/favicon.ico" />
+	<link type="text/css" rel="stylesheet" href="css/style.css" />
 	
     <link type="text/css" rel="stylesheet" href="JSCal2/css/jscal2.css" />
     <link type="text/css" rel="stylesheet" href="JSCal2/css/border-radius.css" />
@@ -17,7 +19,8 @@
 	<script type="text/javascript" src="jquery/jquery-3.1.0.js"></script>
 	<link rel="stylesheet" type="text/css" href="DataTables/jquery.dataTables.css">
 	<script type="text/javascript" charset="utf8" src="DataTables/jquery.dataTables.js"></script>
-
+</head>
+<body>
 
 <?php			//Fonction microtime
 function getmicrotime()
@@ -85,3 +88,6 @@ else
 <div id="PiedDePage">
 	<?php  include('pages/pied.php');   // Nous appelons notre pied ?>
 </div>
+
+</body>
+</html>
