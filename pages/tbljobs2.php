@@ -53,7 +53,7 @@ $(document).ready( function () {
 <script language="javascript">
 	function filtre(col,regex){
 		var table=$('#table_id').DataTable();
-alert(regex);
+//alert(regex);
 		table.column(col)
 			.search(
 				regex, 
@@ -66,9 +66,9 @@ alert(regex);
 		
 <script language="javascript">
 function popup(fic)
-// on ouvre dans une fenêtre le fichier passé en paramètre.
-// cette ouverture peut être améliorée en passant d'autres
-// paramètres que la taille et la position de la fenêtre.
+// on ouvre dans une fenÃªtre le fichier passÃ© en paramÃ¨tre.
+// cette ouverture peut Ãªtre amÃ©liorÃ©e en passant d'autres
+// paramÃ¨tres que la taille et la position de la fenÃªtre.
 { window.open(fic,'Choisir','toolbar=yes, width=1300,height=840,top=50,left=50,scrollbars=yes'); }
 </script>
 
@@ -111,15 +111,15 @@ function formfiltre(filtre)	{
 }
 </style>
 <div class="filtre"><span onclick="javascript:filtre('1','')">Reset</span></div>
-<div class="filtre"><span onclick="javascript:filtre('1','^100')">Job terminé</span></div>
+<div class="filtre"><span onclick="javascript:filtre('1','^100')">Job terminÃ©</span></div>
 <div class="filtre"><span onclick="javascript:filtre('1','[2-5][0-9]')">en cours</span></div>
 <div class="filtre"><span onclick="javascript:filtre('4','^[^-]');filtre('1','^([0-9]|[1-9][0-9])$')">PQF</span></div>
 
 	
 	
 <?php
-$titre=array(	'id_tbljob', 'statut',	'customer',		'job',	'split',	'instruction',	'type',		'temperature',		'matiere',	'drawing',	'comments',	'nb_specimen',  'tooling',	'MRI_req',	'MFG_qty',	'nb_MRI',	'sub_C',	'type_machine',	'nb_test_MRSAS',	'ordre',	'reception_eprouvette',	'retour_eprouvette',	'test_leadtime',	'test_start',	'test_end',	'test_leadtime',	'estimated_turn_over',	'estimated_testing',	'invoiced_turn_over',	'invoiced_testing');
-$titresql=array('id_tbljob', 'id_statut',	'customer',	'job',	'split',	'instruction',	'type_essai',	'id_condition_temps',	'matiere',	'drawing',	'comments',	'nb_specimen',  'tooling',	'MRI_req',	'MFG_qty',	'nb_MRI',	'sub_C',	'type_machine',	'nb_test_MRSAS',	'ordre',	'reception_eprouvette',	'retour_eprouvette',	'test_leadtime',	'test_start',	'test_end',	'test_leadtime',	'estimated_turn_over',	'estimated_testing',	'invoiced_turn_over',	'invoiced_testing');
+$titre=array(	'id_tbljob', 'statut',	'customer',		'job',	'split',	'instruction',	'type','ST', 'temperature',		'matiere',	'drawing',	'comments',	'nb_specimen',  'tooling',	'MRI_req',	'MFG_qty',	'nb_MRI',	'sub_C',	'type_machine',	'nb_test_MRSAS',	'ordre',	'reception_eprouvette',	'retour_eprouvette',	'test_leadtime',	'test_start',	'test_end',	'test_leadtime',	'estimated_turn_over',	'estimated_testing',	'invoiced_turn_over',	'invoiced_testing');
+$titresql=array('id_tbljob', 'id_statut',	'customer',	'job',	'split',	'instruction',	'type_essai', 'type_soustraitance', 'id_condition_temps',	'matiere',	'drawing',	'comments',	'nb_specimen',  'tooling',	'MRI_req',	'MFG_qty',	'nb_MRI',	'sub_C',	'type_machine',	'nb_test_MRSAS',	'ordre',	'reception_eprouvette',	'retour_eprouvette',	'test_leadtime',	'test_start',	'test_end',	'test_leadtime',	'estimated_turn_over',	'estimated_testing',	'invoiced_turn_over',	'invoiced_testing');
 
 //$req ajoutant les temperatures des ep mais temps chargement tres long (>7s)
 $req = 'SELECT 
@@ -133,10 +133,11 @@ $req = 'SELECT
 	LEFT JOIN contacts ON contacts.id_contact=info_jobs.id_contact	
 	where tbljob_actif=1
     group by id_tbljob';
-$req = 'SELECT id_tbljob, id_statut, customer, job, split, instruction, type_essai, id_condition_temps, matiere, drawing, comments, nb_specimen, type_feuille, nb_type_feuille, tooling, MRI_req, MFG_qty, nb_MRI, sub_C, type_machine, nb_test_MRSAS, ordre, reception_eprouvette, retour_eprouvette, test_leadtime, test_start, test_end, test_leadtime, estimated_turn_over, estimated_testing, invoiced_turn_over, invoiced_testing 
+$req = 'SELECT id_tbljob, id_statut, customer, job, split, instruction, type_essai, type_soustraitance, id_condition_temps, matiere, drawing, comments, nb_specimen, type_feuille, nb_type_feuille, tooling, MRI_req, MFG_qty, nb_MRI, sub_C, type_machine, nb_test_MRSAS, ordre, reception_eprouvette, retour_eprouvette, test_leadtime, test_start, test_end, test_leadtime, estimated_turn_over, estimated_testing, invoiced_turn_over, invoiced_testing 
 	FROM tbljobs 
 	LEFT JOIN matieres ON matieres.id_matiere=tbljobs.id_matiere 
 	LEFT JOIN type_essais ON type_essais.id_type_essai=tbljobs.id_type_essai 
+	LEFT JOIN type_soustraitances ON type_soustraitances.id_type_soustraitance=tbljobs.id_type_essai
 	LEFT JOIN info_jobs ON info_jobs.id_info_job=tbljobs.id_info_job
 	LEFT JOIN contacts ON contacts.id_contact=info_jobs.id_contact	
 	where tbljob_actif=1;';	
