@@ -45,7 +45,7 @@ if (isset($_POST['modifposte']) AND $_POST['modifposte']="1")	{
 
 <?php										//info du poste
 if (isset($_POST['id_poste']) AND $_POST['id_poste']!="-")	{
-																	//recuperation des données de la machine
+																	//recuperation des donnÃ©es de la machine
 	$req_poste = $db->query("
 		SELECT * 
 		FROM postes
@@ -134,7 +134,7 @@ if (isset($_POST['id_poste']) AND $_POST['id_poste']!="-")	{
 						}
 						?>
 						</select></td></tr>
-						<tr><td>Extensomètre</td><td><select name="id_extensometre">
+						<tr><td>ExtensomÃ¨tre</td><td><select name="id_extensometre">
 						<?php
 						$req_extensometre = $db->query('SELECT id_extensometre, extensometre FROM extensometres WHERE extensometre_actif=1 ORDER BY extensometre;') or die (mysql_error());
 						if ($req_extensometre) {
@@ -293,7 +293,7 @@ if (isset($_POST['id_poste']) AND $_POST['id_poste']!="-")	{
 	<!--historique-->
 	<div id="historique">
 		<table class="job2">
-			<CAPTION>Historique des dernières modifications</CAPTION>
+			<CAPTION>Historique des derniÃ¨res modifications</CAPTION>
 			<tr>
 				<th>Date</th><th>Job</th><th>Cartouche Stroke (mm)</th><th>Cartouche Load (kN)</th><th>Cartouche Strain (%)</th><th>Enregistreur</th><th>Extensometre</th><th>Outillage Top</th><th>Outillage Bot</th><th>Chauffage</th><th>Ind. Temp Top</th><th>Ind. Temp Strap</th><th>Ind. Temp Bot</th><th>Compresseur</th>
 			</tr>

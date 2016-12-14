@@ -501,6 +501,85 @@ if (isset($_GET['n_fichier']) AND $_GET['n_fichier']!="" AND $_GET['n_fichier']>
 		
 		
 	}
+	ElseIf (isset($tbl_essai['type_essai']) AND $tbl_essai['type_essai']=="Pre-Straining")	{
+
+		$objPHPExcel = $objReader->load("../Excel/templates/FT PS.xlsx");
+
+
+		
+		$objPHPExcel->getActiveSheet()->setCellValue('B7', $identification);
+		$objPHPExcel->getActiveSheet()->setCellValue('B8', $tbl_essai['dessin']);
+		$objPHPExcel->getActiveSheet()->setCellValue('B9', $tbl_essai['material']);
+		$objPHPExcel->getActiveSheet()->setCellValue('B14', $tbl_essai['machine']);
+		$objPHPExcel->getActiveSheet()->setCellValue('B15', '40001');
+		$objPHPExcel->getActiveSheet()->setCellValue('B16', $tbl_essai['enregistreur']);
+		$objPHPExcel->getActiveSheet()->setCellValue('F14', $compresseur);
+		$objPHPExcel->getActiveSheet()->setCellValue('F17', $ind_temp);
+		$objPHPExcel->getActiveSheet()->setCellValue('B17', $tbl_essai['extensometre']);
+		$objPHPExcel->getActiveSheet()->setCellValue('F15', $coil);
+		$objPHPExcel->getActiveSheet()->setCellValue('F16', $four);
+
+		$objPHPExcel->getActiveSheet()->setCellValue('B24', $tbl_essai['cartouche_load']);
+		$objPHPExcel->getActiveSheet()->setCellValue('B23', $tbl_essai['cartouche_stroke']);
+		$objPHPExcel->getActiveSheet()->setCellValue('B25', $tbl_essai['cartouche_strain']);
+
+		$objPHPExcel->getActiveSheet()->setCellValue('B28', "");
+		$objPHPExcel->getActiveSheet()->setCellValue('B29', "");
+		$objPHPExcel->getActiveSheet()->setCellValue('B30', $MAX+0.15);
+		
+		$objPHPExcel->getActiveSheet()->setCellValue('D28', "");
+		$objPHPExcel->getActiveSheet()->setCellValue('D29', "");
+		$objPHPExcel->getActiveSheet()->setCellValue('D30', $MIN-0.15);		
+
+		$objPHPExcel->getActiveSheet()->setCellValue('I7', $jobcomplet);
+		$objPHPExcel->getActiveSheet()->setCellValue('I8', $tbl_essai['n_essai']);
+		$objPHPExcel->getActiveSheet()->setCellValue('I9', $tbl_essai['n_fichier']);
+		$objPHPExcel->getActiveSheet()->setCellValue('I10', $tbl_essai['date']);
+		$objPHPExcel->getActiveSheet()->setCellValue('I11', $tbl_essai['operateur']);
+		$objPHPExcel->getActiveSheet()->setCellValue('I12', $tbl_essai['controleur']);
+
+		$objPHPExcel->getActiveSheet()->setCellValue('J16', $tbl_essai['operateur']);
+		if ($tbl_essai['c_temperature']>=50)
+			$objPHPExcel->getActiveSheet()->setCellValue('J17', $tbl_essai['controleur']);
+		$objPHPExcel->getActiveSheet()->setCellValue('K18', $tbl_essai['c_temperature']);
+		$objPHPExcel->getActiveSheet()->setCellValue('K21', $R);
+		$objPHPExcel->getActiveSheet()->setCellValue('K22', $tbl_essai['c_frequence']);
+		$objPHPExcel->getActiveSheet()->setCellValue('I21', $A);
+		$objPHPExcel->getActiveSheet()->setCellValue('I22', $tbl_essai['c_waveform']);	
+		
+		if ($nb_dim==1)	{
+			$objPHPExcel->getActiveSheet()->setCellValue('J24', $tbl_essai['dim_1']);
+		}
+		elseif ($nb_dim==2)	{
+			$objPHPExcel->getActiveSheet()->setCellValue('I24', $tbl_essai['dim_1']);
+			$objPHPExcel->getActiveSheet()->setCellValue('J24', $tbl_essai['dim_2']);
+		}
+		elseif ($nb_dim==3)	{
+			$objPHPExcel->getActiveSheet()->setCellValue('I24', $tbl_essai['dim_1']);
+			$objPHPExcel->getActiveSheet()->setCellValue('J24', $tbl_essai['dim_2']);
+			$objPHPExcel->getActiveSheet()->setCellValue('I23', $tbl_essai['dim_3']);
+		}
+		else	{
+			$objPHPExcel->getActiveSheet()->setCellValue('J24', "NA");
+		}
+
+
+		$objPHPExcel->getActiveSheet()->setCellValue('J25', $area);
+		$objPHPExcel->getActiveSheet()->setCellValue('J26', $tbl_essai['Lo']);
+		
+		$objPHPExcel->getActiveSheet()->setCellValue('J29', $MAX-$MIN);
+		$objPHPExcel->getActiveSheet()->setCellValue('J30', $MAX);
+		$objPHPExcel->getActiveSheet()->setCellValue('J31', $MIN);
+		
+		$objPHPExcel->getActiveSheet()->setCellValue('B45', $STL);
+		$objPHPExcel->getActiveSheet()->setCellValue('B46', $F_STL);
+		//$objPHPExcel->getActiveSheet()->setCellValue('J47', $tbl_essai['c_temperature']);
+		
+		$objPHPExcel->getActiveSheet()->setCellValue('J56', $tbl_essai['Cycle_min']);
+		$objPHPExcel->getActiveSheet()->setCellValue('J59', $runout);
+		
+		
+	}
 
 	
 	

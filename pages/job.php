@@ -2515,10 +2515,10 @@ var modalNewTest = document.getElementById('myModalNewTest');
 
 <script>	//couleur si on change une valeur
 	$( ".modified" ).change(function() {
-		$(this).css('background-color' , '#FF0000');
+		$(this).css('background-color' , 'orange');
 	});
 	$( ".jobmodified" ).change(function() {
-		$(this).css('background-color' , '#FF0000');
+		$(this).css('background-color' , 'red');
 		$(this).attr('name',$(this).attr('id'));
 	});	
 </script>
