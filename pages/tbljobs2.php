@@ -17,7 +17,10 @@ $(document).ready( function () {
         }, {
             targets: [ 4 ],
             orderData: [ 4, 0 ]
-        } ],
+        }, {
+                "targets": [ 5 ],
+                "visible": false
+            } ],
 	});
 	
 	// Setup - add a text input to each footer cell
@@ -107,23 +110,24 @@ function formfiltre(filtre)	{
 	background-color: rgb(206, 227, 246);
     border-radius: 5px;
     box-shadow: 1px 1px 2px #c0c0c0 inset;
-	padding : 0 10 0 10px;
+	padding : 0 20px;
 }
 </style>
-<div class="filtre"><span onclick="javascript:filtre('1','')">Reset</span></div>
+<div class="filtre"><span onclick="javascript:filtre('1','');filtre('4','');filtre('5','')">Reset</span></div>
 <div class="filtre"><span onclick="javascript:filtre('1','^100')">Job terminé</span></div>
+<div class="filtre"><span onclick="javascript:filtre('5','^0')">ToBeCheck</span></div>
 <div class="filtre"><span onclick="javascript:filtre('1','[2-5][0-9]')">en cours</span></div>
-<div class="filtre"><span onclick="javascript:filtre('4','^[^-]');filtre('1','^([0-9]|[1-9][0-9])$')">PQF</span></div>
+<div class="filtre"><span onclick="javascript:filtre('4','^[^-]');filtre('1','^([0-9]|[1-9][0-9])$')">Labo</span></div>
 
 	
 	
 <?php
-$titre=array(	'id_tbljob', 'statut',	'customer',		'job',	'split',	'instruction',	'type','ST', 'temperature',		'matiere',	'drawing',	'comments',	'nb_specimen',  'tooling',	'MRI_req',	'MFG_qty',	'nb_MRI',	'sub_C',	'type_machine',	'nb_test_MRSAS',	'ordre',	'reception_eprouvette',	'retour_eprouvette',	'test_leadtime',	'test_start',	'test_end',	'test_leadtime',	'estimated_turn_over',	'estimated_testing',	'invoiced_turn_over',	'invoiced_testing');
-$titresql=array('id_tbljob', 'id_statut',	'customer',	'job',	'split',	'instruction',	'type_essai', 'type_soustraitance', 'id_condition_temps',	'matiere',	'drawing',	'comments',	'nb_specimen',  'tooling',	'MRI_req',	'MFG_qty',	'nb_MRI',	'sub_C',	'type_machine',	'nb_test_MRSAS',	'ordre',	'reception_eprouvette',	'retour_eprouvette',	'test_leadtime',	'test_start',	'test_end',	'test_leadtime',	'estimated_turn_over',	'estimated_testing',	'invoiced_turn_over',	'invoiced_testing');
+$titre=array(	'id_tbljob', 'statut',	'customer',		'job',	'split', 'checked',	'instruction',	'type','ST', 'temperature',		'matiere',	'drawing',	'comments',	'nb_specimen',  'tooling',	'MRI_req',	'MFG_qty',	'nb_MRI',	'sub_C',	'type_machine',	'nb_test_MRSAS',	'ordre',	'reception_eprouvette',	'retour_eprouvette',	'test_leadtime',	'test_start',	'test_end',	'test_leadtime',	'estimated_turn_over',	'estimated_testing',	'invoiced_turn_over',	'invoiced_testing');
+$titresql=array('id_tbljob', 'id_statut',	'customer',	'job',	'split', 'checked',	'instruction',	'type_essai', 'type_soustraitance', 'id_condition_temps',	'matiere',	'drawing',	'comments',	'nb_specimen',  'tooling',	'MRI_req',	'MFG_qty',	'nb_MRI',	'sub_C',	'type_machine',	'nb_test_MRSAS',	'ordre',	'reception_eprouvette',	'retour_eprouvette',	'test_leadtime',	'test_start',	'test_end',	'test_leadtime',	'estimated_turn_over',	'estimated_testing',	'invoiced_turn_over',	'invoiced_testing');
 
 //$req ajoutant les temperatures des ep mais temps chargement tres long (>7s)
 $req = 'SELECT 
-	id_tbljob, id_statut, customer, job, split, instruction, type_essai, id_condition_temps, matiere, drawing, comments, nb_specimen, type_feuille, nb_type_feuille, tooling, MRI_req, MFG_qty, nb_MRI, sub_C, type_machine, nb_test_MRSAS, ordre, reception_eprouvette, retour_eprouvette, test_leadtime, test_start, test_end, test_leadtime, estimated_turn_over, estimated_testing, invoiced_turn_over, invoiced_testing, 
+	id_tbljob, id_statut, customer, job, split, instruction, type_essai, id_condition_temps, matiere, drawing, comments, nb_specimen, type_feuille, nb_type_feuille, tooling, MRI_req, MFG_qty, nb_MRI, sub_C, type_machine, nb_test_MRSAS, ordre, reception_eprouvette, retour_eprouvette, test_leadtime, test_start, test_end, test_leadtime, estimated_turn_over, estimated_testing, invoiced_turn_over, invoiced_testing, checked,
 		GROUP_CONCAT(DISTINCT Round(c_temperature,0) ORDER BY c_temperature ASC SEPARATOR " / ")
 	FROM tbljobs 
 	LEFT JOIN eprouvettes ON eprouvettes.id_job=tbljobs.id_tbljob
@@ -133,7 +137,7 @@ $req = 'SELECT
 	LEFT JOIN contacts ON contacts.id_contact=info_jobs.id_contact	
 	where tbljob_actif=1
     group by id_tbljob';
-$req = 'SELECT id_tbljob, id_statut, customer, job, split, instruction, type_essai, type_soustraitance, id_condition_temps, matiere, drawing, comments, nb_specimen, type_feuille, nb_type_feuille, tooling, MRI_req, MFG_qty, nb_MRI, sub_C, type_machine, nb_test_MRSAS, ordre, reception_eprouvette, retour_eprouvette, test_leadtime, test_start, test_end, test_leadtime, estimated_turn_over, estimated_testing, invoiced_turn_over, invoiced_testing 
+$req = 'SELECT id_tbljob, id_statut, customer, job, split, instruction, type_essai, type_soustraitance, id_condition_temps, matiere, drawing, comments, nb_specimen, type_feuille, nb_type_feuille, tooling, MRI_req, MFG_qty, nb_MRI, sub_C, type_machine, nb_test_MRSAS, ordre, reception_eprouvette, retour_eprouvette, test_leadtime, test_start, test_end, test_leadtime, estimated_turn_over, estimated_testing, invoiced_turn_over, invoiced_testing, checked
 	FROM tbljobs 
 	LEFT JOIN matieres ON matieres.id_matiere=tbljobs.id_matiere 
 	LEFT JOIN type_essais ON type_essais.id_type_essai=tbljobs.id_type_essai 
