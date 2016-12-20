@@ -71,10 +71,7 @@ else	{
 	echo '<br/>';
 	echo 'n° d\'essai modifié = '.$n_essai;
 	echo '</div>';
-	echo '<form method="post" name="creationfeuilleessai" action="index.php?page=creationfeuilleessai">
-			<input type="hidden" name="n_fichier" value='.$ancien_n_fichier.'>
-			<input type="submit" value="Impression de la feuille d\'essai">
-		</form>';
+	echo '<a class="pascache" href="creationfeuilleessai.php?n_fichier='.$ancien_n_fichier.'">Feuille d\'essai</a>';
 
 }
 
